@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-module.exports.run = async (bot, msg, args) => {
+module.exports.run = async (bot, msg, args, prefix) => {
 
   let start = process.hrtime();
 
@@ -12,6 +12,10 @@ module.exports.run = async (bot, msg, args) => {
 
 }
 
+
 module.exports.help = {
-  name: "ping"
+  name: "ping",
+  desc: "Test the bot's latency",
+  usage: `ping`,
+  category: 'Bot'
 }

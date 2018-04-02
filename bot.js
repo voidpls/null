@@ -20,25 +20,26 @@ fs.readdir("./commands/", (err, files) => {
   if(jsfiles.length <= 0){
     return console.log("ERROR: No commands found.");
   }
-
+  console.log('→ Module Status: \n-------------------------------------');
   //load modules
   jsfiles.forEach((f, i) =>{
     let props = require(`./commands/${f}`);
-    console.log(`Module \"${f.slice(0, -3)}\" loaded successfully`);
+    console.log(`√ ${f.slice(0, -3)} loaded successfully`);
     bot.commands.set(props.help.name, props);
   });
   //terminal beautification
   console.log('-------------------------------------');
+
 });
 
 //on connect event handler
 bot.on("ready", async () => {
 
-  console.log(`Successfully connected as ${bot.user.username}`);
+  console.log(`→ Successfully connected as ${bot.user.username}`);
   //terminal beautification
   console.log('-------------------------------------');
-  console.log(`Bot is currently in ${bot.guilds.size} server(s)`);
-  console.log(`Bot is serving ${bot.users.size} members`)
+  console.log(`→ Bot is currently in ${bot.guilds.size} server(s)`);
+  console.log(`→ Bot is serving ${bot.users.size} members`)
 
   //set bot status
   bot.user.setActivity("SYNTAX ERROR", {type: "WATCHING"});
@@ -47,6 +48,7 @@ bot.on("ready", async () => {
   console.log('-------------------------------------');
 
 });
+
 
 //message event handler
 bot.on("message", async msg => {
@@ -64,7 +66,7 @@ bot.on("message", async msg => {
     };
   }
   //set prefix
-  let prefix = prefixes[msg.guild.id].prefixes;
+  let prefix = prefixes[msg.guild.id];
 
 /************************************************************/
 /*** Code below this line will ignore messages w/o prefix ***/
@@ -75,13 +77,13 @@ bot.on("message", async msg => {
   //array of words in the message
   let args = msg.content.split(" ").slice(1);
   //pulls command from message
-  let cmd = msg.content.split(" ")[0].slice(prefix.length);
+  let cmd = msg.content.split(" ")[0].slice(prefix.length).toLowerCase();
 
   let cmdFile = bot.commands.get(cmd);
-  if(cmdFile) cmdFile.run(bot, msg, args);
+  if (cmdFile) cmdFile.run(bot, msg, args, prefix);
   else return;
 
 });
 
-
+//login with token
 bot.login(config.token);

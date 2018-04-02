@@ -1,4 +1,9 @@
 {
   "token": "NDMwMDgxMzc0NDQ0MTkxNzc1.DaLAJA.ZC-N3rvjI0wjiKO6_ULua8EBuSw",
-  "prefix": ">"
+  "prefix": ">",
+  "colors": {
+    "white": "#ffffff"
+  },
+  "mainacc": "359542365926457359",
+  "invite": "https://discordapp.com/api/oauth2/authorize?client_id=430081374444191775&permissions=0&scope=bot"
 }
