@@ -59,3 +59,4 @@ typings/
 
 #prefix file 
 config/prefix.json
+*.json

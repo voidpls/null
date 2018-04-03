@@ -6,7 +6,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
   var {body} = await superagent
   .get(`http://aws.random.cat/meow`)
-  .catch(e => console.log(e.message))
+  .catch(e => msg.channel.send("ERROR: "+e.message))
 
   /*while (body.file.slice(-3) == 'mp4') {
     var {body} = await superagent
