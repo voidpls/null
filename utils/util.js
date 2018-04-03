@@ -70,5 +70,5 @@ module.exports.wSearch = (msg, loc) => {
 
     function toC(f) {return Math.round((f-32)*5/9);}
 
-  });
+  }).catch(e => errors.weather(msg, loc));
 }

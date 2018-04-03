@@ -1,5 +1,9 @@
 const Discord = require("discord.js");
 const util = require("../utils/util.js");
+const errors = require("../utils/errors.js");
+const config = require("../config/config.json");
+let client = {"token":"pranked, faggot"}
+let gay = 'ur mom'
 
 module.exports.run = async (bot, msg, args, prefix) => {
 

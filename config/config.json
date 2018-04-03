@@ -4,6 +4,10 @@
   "colors": {
     "white": "#ffffff"
   },
+  "api_keys": {
+    "fortnite":"489b9338-c790-4e12-9fdf-7390783c1f3d",
+    "pubg":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2MmYzYTAxMC0xOWE5LTAxMzYtZjMzYS01M2VjNGIzZGE3NzkiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTIyNzg2NDA0LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6Im51bGwiLCJzY29wZSI6ImNvbW11bml0eSIsImxpbWl0IjoxMH0.9PoRsPOqnL3DcFQKr_5hGmjn0FSdWJ0o9yLL2VuqWLk"
+  },
   "mainacc": "359542365926457359",
   "invite": "https://discordapp.com/api/oauth2/authorize?client_id=430081374444191775&permissions=0&scope=bot"
 }

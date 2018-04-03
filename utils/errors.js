@@ -28,3 +28,17 @@ module.exports.weather = (msg, loc) => {
     msg.channel.send(`**<:error:335660275481051136> Could not retreive weather data for \`${loc}\`**`);
 
 };
+
+//specify user
+module.exports.specifyUser = (msg) => {
+
+    msg.channel.send(`**<:error:335660275481051136> Please specify a username and platform.**`);
+
+};
+
+//player not found
+module.exports.noPlayer = (msg, name) => {
+
+    msg.channel.send(`**<:error:335660275481051136> Player ${name} not found**`);
+
+};

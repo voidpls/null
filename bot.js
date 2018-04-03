@@ -61,6 +61,9 @@ fs.readdir("./devCmds/", (err, files) => {
 
 });
 
+bot.on("error", (e) => console.error(e));
+//bot.on("warn", (e) => console.warn(e));
+//bot.on("debug", (e) => console.info(e));
 
 //on connect event handler
 bot.on("ready", async () => {
@@ -71,7 +74,7 @@ bot.on("ready", async () => {
   console.log(`→ Bot is currently in ${bot.guilds.size} server(s) \n→ Bot is serving ${bot.users.size} members`);
 
   //set bot status
-  bot.user.setActivity("SYNTAX ERROR", {type: "WATCHING"});
+  bot.user.setActivity("you shower", {type: "WATCHING"});
   bot.user.setStatus('dnd');
 
   //terminal beautification
