@@ -21,3 +21,10 @@ module.exports.notFound = (msg, def) => {
     msg.channel.send(`<:error:335660275481051136> Definition for **${def}** not found`).then(m => m.delete(5000));
 
 };
+
+//Weather data not found
+module.exports.weather = (msg, loc) => {
+
+    msg.channel.send(`**<:error:335660275481051136> Could not retreive weather data for \`${loc}\`**`);
+
+};

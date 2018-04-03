@@ -68,11 +68,11 @@ bot.on("ready", async () => {
   console.log(`→ Successfully connected as ${bot.user.username}`);
   //terminal beautification
   console.log('-------------------------------------');
-  console.log(`→ Bot is currently in ${bot.guilds.size} server(s)`);
-  console.log(`→ Bot is serving ${bot.users.size} members`)
+  console.log(`→ Bot is currently in ${bot.guilds.size} server(s) \n→ Bot is serving ${bot.users.size} members`);
 
   //set bot status
   bot.user.setActivity("SYNTAX ERROR", {type: "WATCHING"});
+  bot.user.setStatus('dnd');
 
   //terminal beautification
   console.log('-------------------------------------');

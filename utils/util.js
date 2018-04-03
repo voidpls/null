@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const config = require("../config/config.json");
+const errors = require("../utils/errors.js");
 
 //get user function
 module.exports.getUser = (msg, args) => {
@@ -47,7 +48,7 @@ module.exports.wSearch = (msg, loc) => {
   let weather = require("yahoo-weather");
   weather(loc, 'f').then(info => {
 
-    if (!info) return msg.channel.send(`**<:error:335660275481051136> Could not retreive weather data for \`${loc}\``);
+    if (!info) return errors.weather(msg, loc);
     let item = info.item;
     let cond = item.condition;
     let location = info.location;
