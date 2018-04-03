@@ -19,13 +19,13 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
    pidusage(process.pid, (err, stats) => {
 
-     embed.addField("CPU Usage",`**${stats.cpu}**%`, true)
+     embed.addField("CPU Usage",`**${Math.round(stats.cpu*10)/10}**%`, true)
      .addField("Memory Usage", `**${Math.round(process.memoryUsage().rss/100000)/10}**MB`, true)
      .addField("Uptime", `${uptime}`, true)
      .addField("**Node.js**", `[**${nodeVersion}**](https://nodejs.org/)`, true)
      .addField("**Discord.js**", `[**v${djsPkg.version}**](https://discord.js.org/#/)`, true)
      .addField("Bot Owner", `${mainacc.username}#${mainacc.discriminator}`, true)
-     .addField("Invite", `[**here**](${config.invite})`, true);
+     .addField("Invite", `[here](${config.invite})`, true);
      msg.channel.send(embed);
 
    });
@@ -36,5 +36,6 @@ module.exports.help = {
   name: "botinfo",
   desc: "Shows bot info",
   usage: "botinfo",
-  category: 'Info'
+  category: 'Info',
+  aliases: ['bot']
 }

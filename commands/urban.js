@@ -4,26 +4,30 @@ const config = require("../config/config.json");
 const urban = require('urban');
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  if (args.length >= 0) {
+  if (args.length > 0) {
     urban(args.join(' ')).first(json => {
 
       if (!json) return errors.notFound(msg, args.join(' '));
       if (json.definition.length > 2000) return msg.channel.send(`Definition is too long to send. Here's the link: **${json.permalink}**`);
-
-      msg.channel.send(urbanMsg(json));
+      msg.channel.send(urbanMsg(json, args));
 
     })
   }
   else {
-    return ;
+    urban.random().first(json => {
 
+      if (json.definition.length > 2000) return msg.channel.send(`Definition is too long to send. Here's the link: **${json.permalink}**`);
+      msg.channel.send(urbanMsg(json, ['None']));
+
+    })
   }
 
-  function urbanMsg(json) {
+  function urbanMsg(json, args) {
 
     let embed = new Discord.RichEmbed()
     .setAuthor(json.word, 'http://www.voidpls.tk/files/urban.jpg')
     .setColor(config.colors.white)
+    .setDescription(`Search term: ${args.join(' ')}`)
     .addField("**Definition:**", json.definition)
     .addField("**Example:**", json.example)
     .addField("**Rating:**",  `**👍 ${json.thumbs_up} 👎 ${json.thumbs_down}**`)
@@ -39,5 +43,6 @@ module.exports.help = {
   name: "urban",
   desc: "Find a word on Urban Dictionary. Random word if no term is given.",
   usage: "urban [term]",
-  category: 'Utilities'
+  category: 'Utilities',
+  aliases: ['ud']
 }

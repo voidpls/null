@@ -24,5 +24,7 @@ module.exports.help = {
   name: "prefix",
   desc: "Change the bot's prefix",
   usage: `prefix [new prefix]`,
-  category: 'Bot'
+  category: 'Bot',
+  aliases: []
+
 }

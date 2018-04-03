@@ -23,5 +23,6 @@ module.exports.help = {
   name: "avatar",
   desc: "Gets a user's avatar",
   usage: "avatar [user]",
-  category: 'Info'
+  category: 'Info',
+  aliases: ['pfp']
 }

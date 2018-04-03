@@ -4,12 +4,9 @@ const config = require("../config/config.json");
 
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  //bot.commands.first().help.category
 
 
     var categories = Array.from(new Set(bot.commands.map(c => c.help.category)));
-
-    //'Utilities', 'Fun'
 
     if (args.length != 0) {
 
@@ -19,12 +16,15 @@ module.exports.run = async (bot, msg, args, prefix) => {
       if (cmdFile){
 
         let cmdName = cmdFile.help.name[0].toUpperCase() + cmdFile.help.name.substr(1)
+        let aliasArr = cmdFile.help.aliases
+        aliasArr.unshift(cmd);
 
         let embed = new Discord.RichEmbed()
         .setAuthor(cmdName, bot.user.avatarURL)
         .setDescription(cmdFile.help.desc)
         .setColor(config.colors.white)
-        .addField("Usage", prefix+cmdFile.help.usage);
+        .addField("Usage", prefix+cmdFile.help.usage)
+        .addField("Aliases", aliasArr.join(' | '));
 
 
         return msg.channel.send(embed);
@@ -59,5 +59,6 @@ module.exports.help = {
   name: "help",
   desc: "View command info",
   usage: `help [command]`,
-  category: 'Info'
+  category: 'Info',
+  aliases: []
 }

@@ -17,5 +17,7 @@ module.exports.help = {
   name: "ping",
   desc: "Test the bot's latency",
   usage: `ping`,
-  category: 'Bot'
+  category: 'Bot',
+  aliases: []
+
 }
