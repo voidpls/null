@@ -7,7 +7,7 @@ module.exports.getUser = (msg, args) => {
 
   let user = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
 
-  if (user === undefined || user === null) {
+  if (!user) {
     user = msg.guild.members.find(m => m.user.username.toLowerCase() === args[0].toLowerCase());
     return user;
   }

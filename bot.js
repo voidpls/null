@@ -3,6 +3,7 @@ const fs = require("fs");
 
 const config = require("./config/config.json");
 const prefixFile = "./config/prefix.json"
+const blacklistFile = "./config/blacklist.json"
 const util = require("./utils/util.js");
 
 const bot = new Discord.Client();
@@ -96,6 +97,9 @@ bot.on("message", async msg => {
   if(!prefixes[msg.guild.id]){
     prefixes[msg.guild.id] = config.prefix;
   }
+
+  let blacklist = JSON.parse(fs.readFileSync(blacklistFile, "utf8"));
+
   //set prefix
   let prefix = prefixes[msg.guild.id];
 
@@ -117,6 +121,7 @@ bot.on("message", async msg => {
   let cmdFile = bot.commands.get(cmd);
   if (cmdFile) {
 
+    if (blacklist[msg.author.id]) return;
     //check if user is in cooldown set
     if (cooldown.has(msg.author.id)) {
 
