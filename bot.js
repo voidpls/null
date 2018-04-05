@@ -121,7 +121,7 @@ bot.on("message", async msg => {
   let cmdFile = bot.commands.get(cmd);
   if (cmdFile) {
 
-    if (blacklist[msg.author.id]) return setTimeout(() => {msg.delete()}, 3000);
+    if (blacklist[msg.author.id]) return;
     //check if user is in cooldown set
     if (cooldown.has(msg.author.id)) {
 
