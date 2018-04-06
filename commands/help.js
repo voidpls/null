@@ -40,7 +40,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setAuthor(bot.user.username + " Bot Help", bot.user.avatarURL)
     .setDescription(`Type **${prefix}invite** to invite me!`)
     .setColor(config.colors.white)
-    .setFooter(`Made by ${mainacc.username}#${mainacc.discriminator}`)
+    .setFooter(`Use ${prefix}help [command] for command specific help!`)
 
 
     categories.forEach((i) => {
