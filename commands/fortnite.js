@@ -6,7 +6,7 @@ const ftAPI = new Fortnite(config.api_keys.fortnite);
 
 module.exports.run = async (bot, msg, args, prefix) => {
 
-  if (!args[0]) return errors.specifyUser(msg);
+  if (!args[0]) return errors.specifyUser(msg, prefix);
   let username = args[0]
   let platform = args[1] || 'pc'
 
