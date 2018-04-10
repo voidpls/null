@@ -8,7 +8,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     urban(args.join(' ')).first(json => {
 
       if (!json) return errors.notFound(msg, args.join(' '));
-      if (json.definition.length > 2000) return msg.channel.send(`Definition is too long to send. Here's the link: **${json.permalink}**`);
+      if (json.definition.length > 1024) return msg.channel.send(`Definition is too long to send. Here's the link: **${json.permalink}**`);
       msg.channel.send(urbanMsg(json, args));
 
     })
@@ -16,7 +16,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   else {
     urban.random().first(json => {
 
-      if (json.definition.length > 2000) return msg.channel.send(`Definition is too long to send. Here's the link: **${json.permalink}**`);
+      if (json.definition.length > 1024) return msg.channel.send(`Definition is too long to send. Here's the link: **${json.permalink}**`);
       msg.channel.send(urbanMsg(json, ['None']));
 
     })
