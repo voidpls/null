@@ -13,14 +13,14 @@ module.exports.run = async (bot, msg, args, prefix) => {
   ftAPI.getInfo(args[0], platform).then(data => {
 
     let stats = data.lifetimeStats
-    let wins = fstat(stats, 'wins');
+      let wins = fstat(stats, 'wins');
     let winPercent = fstat(stats, 'win');
     let top3 = fstat(stats, 'top3s');
     let kills = fstat(stats, 'kills');
     let KD = fstat(stats, 'kd');
     let mPlayed = fstat(stats, 'matchesPlayed');
-    let tPlayed = fstat(stats, 'timePlayed');
-    let asTime = fstat(stats, 'avgSurvivalTime');
+    //  let tPlayed = fstat(stats, 'timePlayed');
+    //let asTime = fstat(stats, 'avgSurvivalTime');
 
     let embed = new Discord.RichEmbed()
     .setColor(config.colors.white)
@@ -35,8 +35,8 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .addField('Matches Played', mPlayed, true)
     .addField('Kills', kills, true)
     .addField('K/D', KD, true)
-    .addField('Avg. Survival Time', asTime, true)
-    .addField('Time Played', tPlayed, true);
+    //.addField('Avg. Survival Time', asTime, true)
+    //.addField('Time Played', tPlayed, true);
 
     msg.channel.send(embed)
 
