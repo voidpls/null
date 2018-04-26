@@ -24,7 +24,7 @@ fs.readdir("./commands/", (err, files) => {
   if(err) console.log(err);
 
   //remove '.js'
-  let jsfiles = files.filter(f => f.split(".").pop() === "js");
+  let jsfiles = files.filter(f => f.endsWith("js"));
   if(jsfiles.length <= 0){
     return console.log("ERROR: No commands found.");
   }
@@ -46,7 +46,7 @@ fs.readdir("./devCmds/", (err, files) => {
   if(err) console.log(err);
 
   //remove '.js'
-  let jsfiles = files.filter(f => f.split(".").pop() === "js");
+  let jsfiles = files.filter(f => f.endsWith("js"));
   if(jsfiles.length <= 0){
     return console.log("ERROR: No dev commands found.");
   }
