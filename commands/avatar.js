@@ -3,18 +3,9 @@ const util = require("../utils/util.js");
 
 module.exports.run = async (bot, msg, args, prefix) => {
 
-  if (args.length == 0) {
-    var avatarurl = msg.author.displayAvatarURL
-    msg.channel.send(`Here is **${msg.author.username}**'s avatar: \n` + msg.author.displayAvatarURL);
-  }
-
-  else if (args.length >= 1) {
-
-    let user = util.getUser(msg, args);
-    if (user) msg.channel.send(`Here is **${user.user.username}**'s avatar: \n` + user.user.displayAvatarURL);
-    else msg.channel.send(`Could not find user **${args[0]}**. Please mention the user.`);
-
-  }
+  let user = util.getUser(bot, msg, args);
+  if (user) msg.channel.send(`Here is **${user.username}**'s avatar: \n` + user.displayAvatarURL);
+  else msg.channel.send(`Could not find user **${args[0]}**. Please mention the user.`);
 
 };
 

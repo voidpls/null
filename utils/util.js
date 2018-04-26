@@ -2,18 +2,32 @@ const Discord = require("discord.js");
 const config = require("../config/config.json");
 const errors = require("../utils/errors.js");
 
-//get user function
-module.exports.getUser = (msg, args) => {
+//get member function
+module.exports.getMember = (msg, args) => {
 
   let user = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
 
   if (!user) {
     user = msg.guild.members.find(m => m.user.username.toLowerCase() === args[0].toLowerCase());
-    return user;
+    if (user) return user;
+    else return undefined;
   }
   else return user;
 }
 
+//get user function
+module.exports.getUser = (bot, msg, args) => {
+
+  let user = false;
+  if (!args[0]) {
+    user = msg.author
+  }
+  else {
+    user = bot.users.get(args[0]) || msg.mentions.users.first() || msg.guild.members.find(m => m.user.username.toLowerCase() === args[0].toLowerCase()).user;
+  }
+  if (!user) return undefined;
+  else return user;
+}
 
 //seconds to hours, mins, seconds
 module.exports.secsToHMS = (secs) => {
@@ -42,6 +56,15 @@ module.exports.clean = (text) => {
 }
 
 
+//get ordinal
+module.exports.ordinal = (num) => {
+
+  var s=["th","st","nd","rd"],
+      v=num%100;
+  return num+(s[(v-20)%10]||s[v]||s[0]);
+
+
+}
 //weather search
 module.exports.wSearch = (msg, loc) => {
 

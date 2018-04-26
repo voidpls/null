@@ -8,7 +8,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   if (!args[0]) return;
 
   let blacklist = JSON.parse(fs.readFileSync(blacklistFile, "utf8"));
-  let user = util.getUser(msg, args).user
+  let user = util.getMember(msg, args).user
 
   if (!user) return;
 
