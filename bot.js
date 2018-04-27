@@ -6,7 +6,7 @@ const prefixFile = "./config/prefix.json"
 const blacklistFile = "./config/blacklist.json"
 const util = require("./utils/util.js");
 
-const bot = new Discord.Client();
+const bot = new Discord.Client({disabledEvents: ['TYPING_START']});
 bot.commands = new Discord.Collection();
 bot.devCommands = new Discord.Collection();
 
