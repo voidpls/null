@@ -63,8 +63,17 @@ module.exports.ordinal = (num) => {
       v=num%100;
   return num+(s[(v-20)%10]||s[v]||s[0]);
 
+}
+
+//get color
+module.exports.getColor = async (url) => {
+  const Vibrant = require("node-vibrant");
+  vibrant = new Vibrant(url)
+  let palette = await vibrant.getPalette()
+  return palette.Vibrant.getHex();
 
 }
+
 //weather search
 module.exports.wSearch = (msg, loc) => {
 
