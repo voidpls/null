@@ -4,20 +4,17 @@ const config = require("../config/config.json");
 
 module.exports.run = async (bot, msg, args, prefix) => {
 
-  var {body} = await superagent
-  .get(`http://aws.random.cat/meow`)
+  let url = await superagent
+  .get(`https://thecatapi.com/api/images/get`)
+  .then(async res => {
+    return await res.headers.original_image
+  })
   .catch(e => msg.channel.send("ERROR: "+e.message))
-
-  /*while (body.file.slice(-3) == 'mp4') {
-    var {body} = await superagent
-    .get(`http://aws.random.cat/meow`);
-  }*/
-
   let embed = new Discord.RichEmbed()
   .setColor(config.colors.white)
   .setTitle('🐱 Random Cat')
-  .setImage(body.file)
-  .setFooter('Source: random.cat');
+  .setImage(url)
+  .setFooter('Source: thecatapi.com');
 
   await msg.channel.send(embed);
 
