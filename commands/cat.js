@@ -9,7 +9,8 @@ module.exports.run = async (bot, msg, args, prefix) => {
   .then(async res => {
     return await res.headers.original_image
   })
-  .catch(e => msg.channel.send("ERROR: "+e.message))
+  .catch(e => msg.channel.send("ERROR: "+e.message));
+  
   let embed = new Discord.RichEmbed()
   .setColor(config.colors.white)
   .setTitle('🐱 Random Cat')

@@ -16,7 +16,7 @@ const Weather = sequelize.define('weather', {
         type: Sequelize.STRING,
         unique: true
     },
-    location: Sequelize.STRING,
+    location: Sequelize.STRING
 });
 
 Weather.sync()
