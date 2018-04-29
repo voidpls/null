@@ -6,7 +6,7 @@ const prefixFile = "./config/prefix.json"
 const blacklistFile = "./config/blacklist.json"
 const util = require("./utils/util.js");
 
-const bot = new Discord.Client({disabledEvents: ['TYPING_START']});
+const bot = new Discord.Client({disabledEvents: ['TYPING_START'], disableEveryone: true});
 bot.commands = new Discord.Collection();
 bot.devCommands = new Discord.Collection();
 
@@ -75,7 +75,7 @@ bot.on("ready", async () => {
   console.log(`→ Bot is currently in ${bot.guilds.size} server(s) \n→ Bot is serving ${bot.users.size} members`);
 
   //set bot status
-  bot.user.setActivity("you shower", {type: "WATCHING"});
+  bot.user.setActivity("beep beep boop", {type: "LISTENING"});
   bot.user.setStatus('dnd');
 
   //terminal beautification
