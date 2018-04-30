@@ -13,7 +13,7 @@ bot.devCommands = new Discord.Collection();
 let cooldown = new Set();
 let cooldown2 = new Set();
 
-let CDsecs = 2;
+let CDsecs = 3;
 
 //terminal beautification
 console.log('-------------------------------------');
@@ -118,10 +118,11 @@ bot.on("message", async msg => {
   if (cmd == 'nic' && msg.guild.id == '317978984119795712') return msg.channel.send('<:forsen1:364142529207205889><:forsen2:364143062688989187>\n<:forsen3:364143324900229120><:forsen4:364143377400463360>');
 //COMMAND
 
+  if (blacklist[msg.author.id]) return;
+
   let cmdFile = bot.commands.get(cmd);
   if (cmdFile) {
 
-    if (blacklist[msg.author.id]) return;
     //check if user is in cooldown set
     if (cooldown.has(msg.author.id)) {
 
@@ -148,8 +149,32 @@ bot.on("message", async msg => {
   else if (bot.devCommands.get(cmd) && msg.author.id == config.mainacc) bot.devCommands.get(cmd).run(bot, msg, args, prefix);
 
   else {
+    //if alias matches
     bot.commands.forEach(c => {
-      if (c.help.aliases.includes(cmd)) c.run(bot, msg, args, prefix);
+      if (c.help.aliases.includes(cmd)) {
+
+        //check if user is in cooldown set
+        if (cooldown.has(msg.author.id)) {
+
+          //check if user is in 2nd cooldown set
+          if (cooldown2.has(msg.author.id)) {
+            return setTimeout(() => {msg.delete();}, 3000);
+          }
+          //add user to 2nd cooldown set
+          cooldown2.add(msg.author.id);
+          //warn + delete messages
+          return msg.channel.send(`Please wait **3** seconds between commands, **${msg.author.username}**.`).then(m => {
+            setTimeout(() => {m.delete(); msg.delete();}, 3000);
+          });
+        }
+
+        //add user to 1st cooldown set
+        cooldown.add(msg.author.id);
+        setTimeout(() => {cooldown.delete(msg.author.id); cooldown2.delete(msg.author.id)}, CDsecs*1000);
+        //run command if not in the cooldown set
+        c.run(bot, msg, args, prefix);
+
+      }
       else return;
     });
     return;
