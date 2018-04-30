@@ -13,7 +13,7 @@ bot.devCommands = new Discord.Collection();
 let cooldown = new Set();
 let cooldown2 = new Set();
 
-let CDsecs = 3;
+let CDsecs = 2.5;
 
 //terminal beautification
 console.log('-------------------------------------');
