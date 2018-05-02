@@ -40,8 +40,8 @@ module.exports.run = async (bot, msg, args, prefix) => {
   `☉ Server Region: **${guild.region}**\n`+
   `☉ Verification Level: **${verificationLvl} | ${veriName}**\n`+
   `☉ Members: **${members.size}** [ **${members.size-bots}** Users | **${bots}** Bots]\n`+
-  `     <:online:438877428807368705> **${onlineUsers}**\n`+
-  `     <:offline:313956277237710868> **${members.size-onlineUsers}**\n`+
+  `     <:online:438877428807368705> **${onlineUsers}** Online\n`+
+  `     <:offline:313956277237710868> **${members.size-onlineUsers}** Offline\n`+
   `☉ Channels: **${channels.size}** [ **${tChannels}** Text | **${vChannels}** Voice]\n`+
   `☉ Roles: **${roles}**\n`+
   `☉ Emotes: **${emotes}**\n`+
