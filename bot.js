@@ -76,7 +76,7 @@ bot.on("ready", async () => {
 
   //set bot status
   bot.user.setActivity("beep beep boop", {type: "LISTENING"});
-  bot.user.setStatus('dnd');
+  bot.user.setStatus('online');
 
   //terminal beautification
   console.log('-------------------------------------');
