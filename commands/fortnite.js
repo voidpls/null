@@ -7,27 +7,10 @@ const ftAPI = new Fortnite(config.api_keys.fortnite);
 module.exports.run = async (bot, msg, args, prefix) => {
 
   if (!args[0]) return errors.specifyUser(msg, prefix);
-  let platArr = ['pc', 'xbl', 'psn']
-  let username;
-  let platform;
-  let user = args
-  //console.log(args)
+  let username = args[0]
+  let platform = args[1] || 'pc'
 
-  if (platArr.includes(user.pop().toLowerCase())) {
-    user.pop()
-    username = user.join(' ')
-    platform = args.pop()
-    console.log('1')
-  }
-  else {
-    console.log(args)
-    username = args.join(' ')
-    platform = 'pc'
-    console.log('2')
-  }
-  console.log(username, platform)
-
-  ftAPI.getInfo(username, platform).then(data => {
+  ftAPI.getInfo(args[0], platform).then(data => {
 
     let stats = data.lifetimeStats
       let wins = fstat(stats, 'wins');
@@ -59,7 +42,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
   }).catch(e => {
     console.log(e);
-    return errors.noPlayer(msg, username)
+    return errors.noPlayer(msg, args[0])
   });
 
   function fstat(stats, str) {
