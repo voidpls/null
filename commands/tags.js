@@ -7,7 +7,7 @@ const moment = require('moment');
 const sequelize = new Sequelize('database', 'root', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
-    logging: console.log,
+    logging: false,
     storage: 'db/database.sqlite',
     operatorsAliases: false
 });

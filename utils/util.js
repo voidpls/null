@@ -86,7 +86,9 @@ module.exports.getColor = async (url) => {
   const Vibrant = require("node-vibrant");
   vibrant = new Vibrant(url)
   let palette = await vibrant.getPalette()
-  return palette.Vibrant.getHex();
+  if (palette.Vibrant) return palette.Vibrant.getHex();
+  else return config.colors.white;
+  
 
 }
 
