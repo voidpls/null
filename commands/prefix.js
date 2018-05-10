@@ -1,10 +1,11 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const errors = require("../utils/errors.js");
+const config = require("../config/config.json");
 
 module.exports.run = async (bot, msg, args, prefix) => {
 
-  if(!msg.member.hasPermission("ADMINISTRATOR")) return errors.noPerms(msg, "Administrator");
+  if(!msg.member.hasPermission("ADMINISTRATOR") && msg.author.id !== config.mainacc) return errors.noPerms(msg, "Administrator");
 
   let prefixes = JSON.parse(fs.readFileSync("./config/prefix.json", "utf8"));
 
