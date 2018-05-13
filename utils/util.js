@@ -88,7 +88,7 @@ module.exports.getColor = async (url) => {
   let palette = await vibrant.getPalette()
   if (palette.Vibrant) return palette.Vibrant.getHex();
   else return config.colors.white;
-  
+
 
 }
 
@@ -110,7 +110,7 @@ module.exports.wSearch = (msg, loc) => {
     .setAuthor(`${location.city}, ${location.region}, ${location.country}`)
     .setFooter(info.lastBuildDate.replace(/\w+[.!?]?$/, ''))
     .setDescription(`Search Term: ${loc}`)
-    .setThumbnail(`http://www.voidpls.tk/files/weather/${cond.code}.png`)
+    .setThumbnail(`https://voidxd.me/null/weather/${cond.code}.png`)
 
     .addField("**Temperature:**",`**${cond.temp}**°F/**${toC(cond.temp)}**°C`)
     .addField("**High/Low:**", `**${forecast.high}**°/**${forecast.low}**°F **| ${toC(forecast.high)}**°/**${toC(forecast.low)}**°C`)

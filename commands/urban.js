@@ -25,7 +25,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   function urbanMsg(json, args) {
 
     let embed = new Discord.RichEmbed()
-    .setAuthor(json.word, 'http://www.voidpls.tk/files/urban.jpg')
+    .setAuthor(json.word, 'http://voidxd.me/null/images/urban.jpg')
     .setColor(config.colors.white)
     .setDescription(`Search term: ${args.join(' ')}`)
     .addField("**Definition:**", json.definition)
