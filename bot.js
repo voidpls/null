@@ -6,7 +6,7 @@ const prefixFile = "./config/prefix.json"
 const blacklistFile = "./config/blacklist.json"
 const util = require("./utils/util.js");
 
-const bot = new Discord.Client({disabledEvents: ['TYPING_START'], disableEveryone: true});
+const bot = new Discord.Client({disabledEvents: ["TYPING_START"], disableEveryone: true});
 bot.commands = new Discord.Collection();
 bot.devCommands = new Discord.Collection();
 
@@ -16,7 +16,7 @@ let cooldown2 = new Set();
 let CDsecs = 2.5;
 
 //terminal beautification
-console.log('-------------------------------------');
+console.log("-------------------------------------");
 
 //check command files
 fs.readdir("./commands/", (err, files) => {
@@ -28,7 +28,7 @@ fs.readdir("./commands/", (err, files) => {
   if(jsfiles.length <= 0){
     return console.log("ERROR: No commands found.");
   }
-  console.log('→ Module Status: \n-------------------------------------');
+  console.log("→ Module Status: \n-------------------------------------");
   //load modules
   jsfiles.forEach((f, i) =>{
     let props = require(`./commands/${f}`);
@@ -36,7 +36,7 @@ fs.readdir("./commands/", (err, files) => {
     bot.commands.set(props.help.name, props);
   });
   //terminal beautification
-  console.log('-------------------------------------');
+  console.log("-------------------------------------");
 
 });
 
@@ -50,7 +50,7 @@ fs.readdir("./devCmds/", (err, files) => {
   if(jsfiles.length <= 0){
     return console.log("ERROR: No dev commands found.");
   }
-  console.log('→ Dev Module Status: \n-------------------------------------');
+  console.log("→ Dev Module Status: \n-------------------------------------");
   //load modules
   jsfiles.forEach((f, i) =>{
     let props = require(`./devCmds/${f}`);
@@ -58,7 +58,7 @@ fs.readdir("./devCmds/", (err, files) => {
     bot.devCommands.set(props.help.name, props);
   });
   //terminal beautification
-  console.log('-------------------------------------');
+  console.log("-------------------------------------");
 
 });
 
@@ -71,15 +71,15 @@ bot.on("ready", async () => {
 
   console.log(`→ Successfully connected as ${bot.user.username}`);
   //terminal beautification
-  console.log('-------------------------------------');
+  console.log("-------------------------------------");
   console.log(`→ Bot is currently in ${bot.guilds.size} server(s) \n→ Bot is serving ${bot.users.size} members`);
 
   //set bot status
   bot.user.setActivity("beep beep boop", {type: "LISTENING"});
-  bot.user.setStatus('online');
+  bot.user.setStatus("online");
 
   //terminal beautification
-  console.log('-------------------------------------');
+  console.log("-------------------------------------");
 
 });
 
@@ -115,7 +115,7 @@ bot.on("message", async msg => {
   let cmd = msg.content.split(" ")[0].slice(prefix.length).toLowerCase();
 
 //TEMPORARY
-  if (cmd == 'nic' && msg.guild.id == '317978984119795712') return msg.channel.send('<:forsen1:364142529207205889><:forsen2:364143062688989187>\n<:forsen3:364143324900229120><:forsen4:364143377400463360>');
+  if (cmd == "nic" && msg.guild.id == "317978984119795712") return msg.channel.send("<:forsen1:364142529207205889><:forsen2:364143062688989187>\n<:forsen3:364143324900229120><:forsen4:364143377400463360>");
 //COMMAND
 
   if (blacklist[msg.author.id]) return;

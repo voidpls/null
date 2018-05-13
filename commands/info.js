@@ -16,6 +16,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let joinPos = 'N/A'
   let status = user.presence.status
   let serverCt = bot.guilds.filter(g => g.members.get(user.id)).size
+  let roles = 'N/A'
 
   let statusMap = {
     'offline':'<:offline:313956277237710868>',
@@ -35,6 +36,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     color = member.displayHexColor
     joinTime = format(member.joinedTimestamp)
     topRole = member.highestRole.name
+    roles = member.roles.size - 1
 
     let sortedArr = member.guild.members.sort((a, b) => a.joinedTimestamp - b.joinedTimestamp)
     let sortedUsernames = sortedArr.map(m => m.user.id)
@@ -56,6 +58,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   `☉ Status: **${statusMap[status]}${status.toUpperCase()}**\n`+
   `☉ Shared Servers: **${serverCt}**\n`+
   `☉ Nickname: **${nick}**\n`+
+  `☉ Roles: **${roles}**\n`+
   `☉ Top Role: **${topRole}**\n`+
   `☉ Join Position: **${joinPos}**\n`+
   `☉ Server Join: **${joinTime}**\n`+
