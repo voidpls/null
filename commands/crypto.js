@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 //const errors = require("../utils/errors.js");
+global.fetch = require('node-fetch')
 const config = require("../config/config.json");
 const cc = require('cryptocompare');
 
@@ -30,6 +31,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let coin = args[0].toUpperCase();
     let currency = args[1] || 'USD';
     let coinlist = await cc.coinList();
+
     cc.priceFull(coin, currency.toUpperCase()).then(prices => {
 
       let cData = coinlist.Data[coin]
@@ -45,7 +47,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .setFooter(`Last Market: ${pData.LASTMARKET}`)
 
       msg.channel.send(embed);
-      
+
     }).catch(e => {
       console.log(e)
       return msg.channel.send(`<:error:335660275481051136> Could not find coin data for **${coin}** in **${currency.toUpperCase()}**`);
