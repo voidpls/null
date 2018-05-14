@@ -15,16 +15,16 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
       if (cmdFile){
 
-        let cmdName = cmdFile.help.name[0].toUpperCase() + cmdFile.help.name.substr(1)
+        let cmdName = cmdFile.help.name[0].toUpperCase() + cmdFile.help.name.substr(1);
         let aliasArr = cmdFile.help.aliases
-        aliasArr.unshift(cmd);
+        let aliases = `${cmd} | ${aliasArr.join(' | ')}`
 
         let embed = new Discord.RichEmbed()
         .setAuthor(cmdName, bot.user.avatarURL)
         .setDescription(cmdFile.help.desc)
         .setColor(config.colors.white)
         .addField("Usage", prefix+cmdFile.help.usage)
-        .addField("Aliases", aliasArr.join(' | '));
+        .addField("Aliases", aliases);
 
 
         return msg.channel.send(embed);
