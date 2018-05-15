@@ -88,7 +88,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       let tag = await Tags.findOne({ where: { tagname: `${msg.guild.id} ${tagname}` } });
       if (!tag) return msg.channel.send(`<:error:335660275481051136> The tag **\`${args[1]}\`** doesn't exist!`);
 
-      if (tag.get('userid') !== msg.author.id) return msg.channel.send(`<:error:335660275481051136> You do not own the tag **\`${tagname.split(' ')[1]}\`**!`);
+      if (tag.get('userid') !== msg.author.id) return msg.channel.send(`<:error:335660275481051136> You do not own the tag **\`${tagname}\`**!`);
       else {
         Tags.destroy({ where: { tagname: `${msg.guild.id} ${tagname}` } });
         return msg.channel.send(`<:check:335544753443831810> The tag **\`${tag.get('tagname').split(' ')[1]}\`** has been successfully deleted.`)
@@ -104,7 +104,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       let tag = await Tags.findOne({ where: { tagname: `${msg.guild.id} ${tagname}` } });
       if (!tag) return msg.channel.send(`<:error:335660275481051136> The tag **\`${args[1]}\`** doesn't exist!`);
 
-      if (tag.get('userid') !== msg.author.id) return msg.channel.send(`<:error:335660275481051136> You do not own the tag **\`${tagname.split(' ')[1]}\`**!`);
+      if (tag.get('userid') !== msg.author.id) return msg.channel.send(`<:error:335660275481051136> You do not own the tag **\`${tagname}\`**!`);
       else {
 
         if (!args[2]) return msg.channel.send(`<:error:335660275481051136> Specify what you want **\`${args[1]}\`**'s new content to be!`)
