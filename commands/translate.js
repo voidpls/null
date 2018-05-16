@@ -12,7 +12,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
   let embed = new Discord.RichEmbed()
   .setColor(config.colors.white)
-  .setAuthor('Google Translate', 'https://upload.wikimedia.org/wikipedia/commons/d/db/Google_Translate_Icon.png')
+  .setAuthor('Google Translate', 'https://upload.wikimedia.org/wikipedia/commons/d/db/Google_Translate_Icon.png');
   //.setFooter('translate.google.com');
 
   translate(text, {to: lang}).then(json => {
@@ -32,7 +32,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
     embed
     .setDescription(`**${fromLang}** to **${toLang}**:\n${json.text}`);
-    msg.channel.send(embed);
+    msg.channel.send(embed).catch(e => msg.channel.send(`**Error:** ${e.message}`));
 
   }).catch(e => msg.channel.send(`**Error:** ${e.message}`));
 
