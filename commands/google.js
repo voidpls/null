@@ -19,6 +19,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
   google(query, function (err, res) {
 
+    if (err) return msg.channel.send('**Error:** '+ err.error)
     let count = 0
     let count2 = 0
 
@@ -26,15 +27,20 @@ module.exports.run = async (bot, msg, args, prefix) => {
       let link = res.links[count]
       if (link && link.link) {
         count2++
-        embed.addField(link.title, link.link)
+        embed.addField(link.title, `**${link.link}**`)
       }
       if (count >= 6) return msg.channel.send(`**Error:** No results found for **${query}**`)
       count++
     }
 
-    msg.channel.send(embed).catch(e => msg.channel.send(e.error))
+    let url = res.url.split('&').splice(0, 2).join('&').slice(8)
+    embed.setFooter(url)
+
+    msg.channel.send(embed).catch(e => msg.channel.send('**Error:** '+e.error))
 
   })
+
+
 }
 
 module.exports.help = {
