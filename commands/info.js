@@ -6,7 +6,7 @@ const moment = require('moment')
 module.exports.run = async (bot, msg, args, prefix) => {
 
   let user = await util.getUser(bot, msg, args);
-  if (!user) return msg.channel.send(`<:error:335660275481051136> Could not find user info for **${args.join()}**`);
+  if (!user) return msg.channel.send(`**Error:** Could not find user info for **${args.join()}**`);
   let avatar = user.displayAvatarURL
   let color = config.colors.white
   let joinTime = 'N/A'

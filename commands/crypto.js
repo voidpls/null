@@ -50,7 +50,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
     }).catch(e => {
       console.log(e)
-      return msg.channel.send(`<:error:335660275481051136> Could not find coin data for **${coin}** in **${currency.toUpperCase()}**`);
+      return msg.channel.send(`**Error:** Could not find coin data for **${coin}** in **${currency.toUpperCase()}**`);
     });
 
   }
