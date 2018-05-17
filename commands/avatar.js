@@ -1,4 +1,3 @@
-const Discord = require('discord.js')
 const util = require('../utils/util.js')
 
 module.exports.run = async (bot, msg, args, prefix) => {

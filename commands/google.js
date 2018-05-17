@@ -18,8 +18,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setDescription(`Search results for: **${query}**`)
 
   google(query, function (err, res) {
-
-    if (err) return msg.channel.send('**Error:** '+ err.error)
+    if (err) return msg.channel.send('**Error:** ' + err.error)
     let count = 0
     let count2 = 0
 
@@ -36,11 +35,8 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let url = res.url.split('&').splice(0, 2).join('&').slice(8)
     embed.setFooter(url)
 
-    msg.channel.send(embed).catch(e => msg.channel.send('**Error:** '+e.error))
-
+    msg.channel.send(embed).catch(e => msg.channel.send('**Error:** ' + e.error))
   })
-
-
 }
 
 module.exports.help = {

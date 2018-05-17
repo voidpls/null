@@ -1,4 +1,3 @@
-const Discord = require('discord.js')
 const util = require('../utils/util.js')
 const Sequelize = require('sequelize')
 
@@ -21,10 +20,10 @@ const Weather = sequelize.define('weather', {
 Weather.sync()
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  if (args.length >= 1 && args[0] !== 'set' && msg.mentions.users.size == 0) {
+  if (args.length >= 1 && args[0] !== 'set' && msg.mentions.users.size === 0) {
     let loc = args.join(' ')
     return util.wSearch(msg, loc)
-  } else if (args.length >= 1 && args[0] == 'set') {
+  } else if (args.length >= 1 && args[0] === 'set') {
     if (!args[1]) return msg.channel.send(`Type ${prefix}weather set \`[location]\` to set a location.`)
     args.shift()
     let loc = args.join(' ')

@@ -16,12 +16,12 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
   translate(text, {to: lang}).then(json => {
     let fromLangISO = json.from.language.iso.toLowerCase()
-    let fromLang = language.find(obj => obj.code == fromLangISO).name
+    let fromLang = language.find(obj => obj.code === fromLangISO).name
     fromLang = fromLang.split(/;|,/)[0]
 
     let toLang = lang
-    if (toLang.length == 2) {
-      toLang = language.find(obj => obj.code == toLang).name
+    if (toLang.length === 2) {
+      toLang = language.find(obj => obj.code === toLang).name
       toLang = toLang.split(/;|,/)[0]
     } else {
       toLang = toLang.charAt(0).toUpperCase() + toLang.substr(1).toLowerCase()

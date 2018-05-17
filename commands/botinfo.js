@@ -17,6 +17,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .addField('Users', `**${bot.users.size}**`, true)
 
   pidusage(process.pid, (err, stats) => {
+    if (err) return msg.channel.send(`**Error: ** ${err.error}`)
     embed.addField('CPU Usage', `**${Math.round(stats.cpu * 10) / 10}**%`, true)
       .addField('Memory Usage', `**${Math.round(process.memoryUsage().rss / 100000) / 10}**MB`, true)
       .addField('Uptime', `${uptime}`, true)

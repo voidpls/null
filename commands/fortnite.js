@@ -9,7 +9,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let username = args[0]
   let platform = args[1] || 'pc'
 
-  ftAPI.getInfo(args[0], platform).then(data => {
+  ftAPI.getInfo(username, platform).then(data => {
     let stats = data.lifetimeStats
     let wins = fstat(stats, 'wins')
     let winPercent = fstat(stats, 'win')
@@ -43,7 +43,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   })
 
   function fstat (stats, str) {
-    return stats.find(s => s.stat == str).value
+    return stats.find(s => s.stat === str).value
   }
 }
 

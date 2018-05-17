@@ -6,7 +6,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let url = await superagent
     .get(`https://thecatapi.com/api/images/get`)
     .then(async res => {
-      return await res.headers.original_image
+      return res.headers.original_image
     })
     .catch(e => msg.channel.send('ERROR: ' + e.message))
 

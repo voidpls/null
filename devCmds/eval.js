@@ -1,26 +1,19 @@
-const Discord = require("discord.js");
-const util = require("../utils/util.js");
-const errors = require("../utils/errors.js");
-const config = require("../config/config.json");
-let client = {"token":"pranked, faggot"}
+const util = require('../utils/util.js')
+let client = {'token': 'pranked, faggot'}
 let gay = 'ur mom'
 
 module.exports.run = async (bot, msg, args, prefix) => {
-
   try {
-    var code = args.join(' ');
-    let evaled = eval(code);
+    var code = args.join(' ')
+    let evaled = eval(code)
 
-    if (typeof evaled !== 'string')
-    evaled = require("util").inspect(evaled);
-    msg.channel.send('\`\`\`xl\n'+util.clean(evaled)+'\`\`\`').catch(e => msg.channel.send(`\`ERROR\` \`\`\`xl\n${util.clean(e)}\n\`\`\``))
+    if (typeof evaled !== 'string') { evaled = require('util').inspect(evaled) }
+    msg.channel.send('```xl\n' + util.clean(evaled) + '```').catch(e => msg.channel.send(`\`ERROR\` \`\`\`xl\n${util.clean(e)}\n\`\`\``))
   } catch (err) {
-      msg.channel.send(`\`ERROR\` \`\`\`xl\n${util.clean(err)}\n\`\`\``)
+    msg.channel.send(`\`ERROR\` \`\`\`xl\n${util.clean(err)}\n\`\`\``)
   }
-
-
-};
+}
 
 module.exports.help = {
-  name: "eval",
+  name: 'eval'
 }

@@ -4,7 +4,6 @@ const fs = require('fs')
 const config = require('./config/config.json')
 const prefixFile = './config/prefix.json'
 const blacklistFile = './config/blacklist.json'
-const util = require('./utils/util.js')
 
 const bot = new Discord.Client({disabledEvents: ['TYPING_START'], disableEveryone: true})
 bot.commands = new Discord.Collection()
@@ -107,7 +106,7 @@ bot.on('message', async msg => {
   let cmd = msg.content.split(' ')[0].slice(prefix.length).toLowerCase()
 
   // TEMPORARY
-  if (cmd == 'nic' && msg.guild.id == '317978984119795712') return msg.channel.send('<:forsen1:364142529207205889><:forsen2:364143062688989187>\n<:forsen3:364143324900229120><:forsen4:364143377400463360>')
+  if (cmd === 'nic' && msg.guild.id === '317978984119795712') return msg.channel.send('<:forsen1:364142529207205889><:forsen2:364143062688989187>\n<:forsen3:364143324900229120><:forsen4:364143377400463360>')
   // COMMAND
 
   if (blacklist[msg.author.id]) return
@@ -133,7 +132,7 @@ bot.on('message', async msg => {
     setTimeout(() => { cooldown.delete(msg.author.id); cooldown2.delete(msg.author.id) }, CDsecs * 1000)
     // run command if not in the cooldown set
     cmdFile.run(bot, msg, args, prefix)
-  } else if (bot.devCommands.get(cmd) && msg.author.id == config.mainacc) bot.devCommands.get(cmd).run(bot, msg, args, prefix)
+  } else if (bot.devCommands.get(cmd) && msg.author.id === config.mainacc) bot.devCommands.get(cmd).run(bot, msg, args, prefix)
 
   else {
     // if alias matches
@@ -158,7 +157,7 @@ bot.on('message', async msg => {
         setTimeout(() => { cooldown.delete(msg.author.id); cooldown2.delete(msg.author.id) }, CDsecs * 1000)
         // run command if not in the cooldown set
         c.run(bot, msg, args, prefix)
-      } else return
+      }
     })
   }
 })

@@ -3,11 +3,11 @@ const superagent = require('superagent')
 const config = require('../config/config.json')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  var {body} = await superagent
+  let {body} = await superagent
     .get(`https://random.dog/woof.json`)
 
-  while (body.url.slice(-3) == 'mp4') {
-    var {body} = await superagent
+  while (body.url.slice(-3) === 'mp4') {
+    let {body} = await superagent
       .get(`https://random.dog/woof.json`)
   }
 

@@ -17,9 +17,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let members = guild.members
 
   let bots = members.filter(m => m.user.bot).size
-  let vChannels = channels.filter(c => c.type == 'voice').size
-  let tChannels = channels.filter(c => c.type == 'text').size
-  let onlineUsers = members.filter(m => m.presence.status != 'offline').size
+  let vChannels = channels.filter(c => c.type === 'voice').size
+  let tChannels = channels.filter(c => c.type === 'text').size
+  let onlineUsers = members.filter(m => m.presence.status !== 'offline').size
 
   if (guild.iconURL) {
     color = await util.getColor(icon)

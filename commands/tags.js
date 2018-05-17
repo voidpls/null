@@ -32,9 +32,9 @@ Tags.sync({
 
 module.exports.run = async (bot, msg, args, prefix) => {
   // if no tag specified
-  if (args.length == 0) return msg.channel.send(`**Error:** Please specify a tag or function! **\`${prefix}help tags\`** for more info.`)
+  if (args.length === 0) return msg.channel.send(`**Error:** Please specify a tag or function! **\`${prefix}help tags\`** for more info.`)
   // get tag
-  else if (args.length == 1 && args[0].toLowerCase() != 'list') {
+  else if (args.length === 1 && args[0].toLowerCase() !== 'list') {
     let tagname = args[0].toLowerCase()
     let tag = await Tags.findOne({ where: { tagname: `${msg.guild.id} ${tagname}` } })
     if (!tag) return msg.channel.send(`**Error:** Could not find server tag **${args[0]}**`)
@@ -46,7 +46,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   // message includes function
   else {
     // add tag func
-    if (args[0].toLowerCase() == 'add' || args[0].toLowerCase() == 'create') {
+    if (args[0].toLowerCase() === 'add' || args[0].toLowerCase() === 'create') {
       if (!args[1]) return msg.channel.send(`**Error:** Specify a tag name to add!`)
 
       let tagname = args[1].toLowerCase()
@@ -72,7 +72,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     }
 
     // delete tag func
-    if (args[0].toLowerCase() == 'delete' || args[0].toLowerCase() == 'remove') {
+    if (args[0].toLowerCase() === 'delete' || args[0].toLowerCase() === 'remove') {
       if (!args[1]) return msg.channel.send(`**Error:** Specify a tag name to delete!`)
       let tagname = args[1].toLowerCase()
 
@@ -87,7 +87,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     }
 
     // edit tag func
-    if (args[0].toLowerCase() == 'edit') {
+    if (args[0].toLowerCase() === 'edit') {
       if (!args[1]) return msg.channel.send(`**Error:** Specify a tag name to edit!`)
       let tagname = args[1].toLowerCase()
 
@@ -103,13 +103,13 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
         if (tagcontent.length > 1950) return msg.channel.send(`**Error:** The tag text cannot exceed **1950 characters**!`)
 
-        Tags.update({ content: tagcontent}, { where: { tagname: `${msg.guild.id} ${tagname}` } })
+        Tags.update({content: tagcontent}, {where: {tagname: `${msg.guild.id} ${tagname}`}})
         return msg.channel.send(`<:check:335544753443831810> The tag **\`${tag.get('tagname').split(' ')[1]}\`** has been successfully edited.`)
       }
     }
 
     // get tag info
-    if (args[0].toLowerCase() == 'info') {
+    if (args[0].toLowerCase() === 'info') {
       if (!args[1]) return msg.channel.send(`**Error:** Specify a tag name to view info!`)
       let tagname = args[1].toLowerCase()
       let tag = await Tags.findOne({ where: { tagname: `${msg.guild.id} ${tagname}` } })
@@ -117,7 +117,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       else {
         let username = `User Left Guild`
         if (bot.users.get(tag.get('userid'))) {
-          user = bot.users.get(tag.get('userid'))
+          let user = bot.users.get(tag.get('userid'))
           username = `${user.username}#${user.discriminator}`
         }
 
@@ -137,14 +137,14 @@ module.exports.run = async (bot, msg, args, prefix) => {
       }
     }
     // list user tags
-    if (args[0].toLowerCase() == 'list') {
+    if (args[0].toLowerCase() === 'list') {
       if (args.length >= 2) {
         let user = util.getUserFromArg(bot, msg, args[1])
 
         if (!user) return msg.channel.send(`**Error:** User **${args[1]}** not found!`)
         else {
           let tagArr = await getTags(user, msg)
-          if (tagArr.length == 0) return msg.channel.send(`**Error:** **${user.username}#${user.discriminator}** does now own any tags on **${msg.guild.name}**.`)
+          if (tagArr.length === 0) return msg.channel.send(`**Error:** **${user.username}#${user.discriminator}** does now own any tags on **${msg.guild.name}**.`)
           tagArr = tagArr.map(tag => tag.dataValues.tagname.split(' ')[1]).reverse()
 
           let embed = new Discord.RichEmbed()
@@ -156,7 +156,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       } else {
         let user = msg.author
         let tagArr = await getTags(user, msg)
-        if (tagArr.length == 0) return msg.channel.send(`**Error:** **${user.username}#${user.discriminator}** does now own any tags on **${msg.guild.name}**.`)
+        if (tagArr.length === 0) return msg.channel.send(`**Error:** **${user.username}#${user.discriminator}** does now own any tags on **${msg.guild.name}**.`)
         tagArr = tagArr.map(tag => tag.dataValues.tagname.split(' ')[1]).reverse()
 
         let embed = new Discord.RichEmbed()
@@ -174,8 +174,8 @@ function tFormat (txt) {
   txt = txt
     .replace('@everyone', '@\u200beveryone')
     .replace('@here', '@\u200bhere')
-    .replace("'", "\'")
-    .replace('"', '\"')
+    .replace("'", "'")
+    .replace('"', '"')
 
   return txt
 }
@@ -185,7 +185,7 @@ async function getTags (user, msg) {
     where: { userid: user.id },
     attributes: ['tagname']
   })
-  let tagArr = usertags.filter(tag => tag.dataValues.tagname.split(' ')[0] == msg.guild.id)
+  let tagArr = usertags.filter(tag => tag.dataValues.tagname.split(' ')[0] === msg.guild.id)
 
   return tagArr
 }

@@ -5,7 +5,7 @@ const config = require('../config/config.json')
 const cc = require('cryptocompare')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  if (args.length == 0) {
+  if (args.length === 0) {
     cc.priceMulti(['BTC', 'BCH', 'ETH', 'LTC', 'XRP', 'EOS'], 'USD')
       .then(prices => {
         let embed = new Discord.RichEmbed()
@@ -13,7 +13,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
           .setColor(config.colors.white)
           .setFooter(`Use ${prefix}crypto [crypto symbol] [currency] to get custom results`)
 
-        for (i in prices) {
+        for (const i in prices) {
           embed.addField(i, '$' + prices[i]['USD'], true)
         }
 

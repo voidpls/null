@@ -1,5 +1,4 @@
 const Discord = require('discord.js')
-const superagent = require('superagent')
 const config = require('../config/config.json')
 const xkcd = require('xkcd-api')
 
@@ -8,7 +7,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setColor(config.colors.white)
     .setAuthor('xkcd', 'https://i.imgur.com/tpBYAnU.jpg')
 
-  if (args.length == 1 && args[0].toLowerCase() == 'latest') {
+  if (args.length === 1 && args[0].toLowerCase() === 'latest') {
     xkcd.latest((err, res) => {
       if (err) console.log(err)
       embed.setImage(res.img)
@@ -17,7 +16,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .setFooter(`Comic #${res.num}`)
       msg.channel.send(embed)
     })
-  } else if (args.length == 1 && args[0] === parseInt(args[0], 10)) {
+  } else if (args.length === 1 && args[0] === parseInt(args[0], 10)) {
     xkcd.get(args[0], (err, res) => {
       if (err) console.log(err)
       embed.setImage(res.img)

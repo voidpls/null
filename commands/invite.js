@@ -1,5 +1,3 @@
-const Discord = require('discord.js')
-
 module.exports.run = async (bot, msg, args, prefix) => {
   let message = `**Want to add me to your server?** \nHere's my invite link, ${msg.author.toString()}:\n**:link: https://voidxd.me/null/ :link:**`
 
