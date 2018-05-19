@@ -31,11 +31,13 @@ module.exports.getUser = (bot, msg, args) => {
 
 // get user ANY ARG function
 module.exports.getUserFromArg = (bot, msg, arg) => {
-  let nameSearch = msg.guild.members.find(m => m.user.username.toLowerCase() === arg.toLowerCase())
-  if (bot.users.get(arg)) return bot.users.get(arg)
-  else if (msg.mentions.users.first()) return msg.mentions.users.first()
-  else if (nameSearch) return nameSearch.user
-  else return undefined
+
+    let nameSearch = msg.guild.members.find(m => m.user.username.toLowerCase() === arg.toLowerCase())
+    if (bot.users.get(arg)) return bot.users.get(arg)
+    else if (msg.mentions.users.first()) return msg.mentions.users.first()
+    else if (nameSearch) return nameSearch.user
+    else return undefined
+
 }
 
 // seconds to hours, mins, seconds

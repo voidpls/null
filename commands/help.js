@@ -12,7 +12,10 @@ module.exports.run = async (bot, msg, args, prefix) => {
     if (cmdFile) {
       let cmdName = cmdFile.help.name[0].toUpperCase() + cmdFile.help.name.substr(1)
       let aliasArr = cmdFile.help.aliases
-      let aliases = `${cmd} | ${aliasArr.join(' | ')}`
+      let aliases = cmd
+      if (aliasArr.length !== 0) {
+        aliases = aliases + ` | ${aliasArr.join(' | ')}`
+      }
 
       let embed = new Discord.RichEmbed()
         .setAuthor(cmdName, bot.user.avatarURL)
