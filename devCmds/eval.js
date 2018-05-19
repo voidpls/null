@@ -1,4 +1,7 @@
+const Discord = require('discord.js')
 const util = require('../utils/util.js')
+const config = require('../config/config.json')
+
 let client = {'token': 'pranked, faggot'}
 let gay = 'ur mom'
 

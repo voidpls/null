@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 
 module.exports = async (bot) => {
-  bot.on('guildCreate', async guild => {
+  bot.on('guildDelete', async guild => {
 
     guild.fetchMembers()
 
@@ -18,7 +18,7 @@ module.exports = async (bot) => {
       icon = 'https://voidxd.me/null/images/notfound.png'
     }
 
-    let color = '#50C878'
+    let color = '#ED2939'
     let desc = 'Bot to Member ratio is **'
     let members = guild.members.filter(m => !m.user.bot).size
     let bots = guild.members.size - members
@@ -26,14 +26,13 @@ module.exports = async (bot) => {
     let ratio = Math.floor((bots / members)*100).toFixed(1)
     if (ratio > 75) {
       desc = '**Might be a bot farm!** Bot to Member ratio is **'
-      color = '#ffcf3f'
     }
     let owner = guild.owner.user
 
     let embed = new Discord.RichEmbed()
 
       .setColor(color)
-      .setTitle(`I've been added to ${guild.name}`)
+      .setTitle(`I've been removed from ${guild.name}`)
       .setThumbnail(icon)
       .setDescription(desc + ratio + '%**')
       .addField('Members:', members, true)

@@ -4,12 +4,10 @@ const util = require('../utils/util.js')
 const moment = require('moment')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-
   let guild = msg.guild
-  //await guild.fetchMembers()
 
   let color = config.colors.white
-  let icon;
+  let icon
   let guildCreate = guild.createdTimestamp
   let verificationLvl = guild.verificationLevel
   let veriName = ['None', 'Low', 'Medium', '(╯°□°）╯︵ ┻━┻', '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'][verificationLvl]
@@ -27,8 +25,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   if (guild.iconURL !== null) {
     icon = guild.iconURL.replace('jpg', 'png?size=1024')
     color = await util.getColor(icon)
-  }
-  else {
+  } else {
     icon = 'https://voidxd.me/null/images/notfound.png'
   }
 
@@ -45,10 +42,10 @@ module.exports.run = async (bot, msg, args, prefix) => {
   `☉ Server ID: **${guild.id}**\n` +
   `☉ Server Region: **${guild.region}**\n` +
   `☉ Verification Level: **${verificationLvl} | ${veriName}**\n` +
-  `☉ Members: **${members.size}** [ **${members.size - bots}** Users | **${bots}** Bots]\n` +
+  `☉ Members: **${members.size}** [ **${members.size - bots}** Users | **${bots}** Bots ]\n` +
   `     <:online:438877428807368705> **${onlineUsers}** Online\n` +
   `     <:offline:313956277237710868> **${members.size - onlineUsers}** Offline\n` +
-  `☉ Channels: **${channels.size}** [ **${tChannels}** Text | **${vChannels}** Voice]\n` +
+  `☉ Channels: **${channels.size}** [ **${tChannels}** Text | **${vChannels}** Voice ]\n` +
   `☉ Roles: **${roles}**\n` +
   `☉ Emotes: **${emotes}**\n` +
   `☉ Server Created: **${format(guildCreate)}**`
