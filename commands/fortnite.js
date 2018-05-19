@@ -1,24 +1,38 @@
 const Discord = require('discord.js')
-const errors = require('../utils/errors.js')
 const config = require('../config/config.json')
 const Fortnite = require('fortnite')
 const ftAPI = new Fortnite(config.api_keys.fortnite)
 
 module.exports.run = async (bot, msg, args, prefix) => {
   if (!args[0]) return errors.specifyUser(msg, prefix)
-  let username = args[0]
-  let platform = args[1] || 'pc'
+
+  let platforms = {
+    'computer': 'pc',
+    'pc': 'pc',
+    'xbox': 'xbl',
+    'xbl': 'xbl',
+    'playstation': 'psn',
+    'psn': 'psn'
+  }
+  let lastarg = args[args.length - 1].toLowerCase()
+  let username
+  let platform = 'pc'
+  if (platforms[lastarg]) {
+    args.pop()
+    username = args.join(' ')
+    platform = platforms[lastarg]
+  } else {
+    username = args.join(' ')
+  }
 
   ftAPI.getInfo(username, platform).then(data => {
     let stats = data.lifetimeStats
     let wins = fstat(stats, 'wins')
     let winPercent = fstat(stats, 'win')
-    let top3 = fstat(stats, 'top3s')
+    let top3 = parseInt(fstat(stats, 'top3s')) + parseInt(wins)
     let kills = fstat(stats, 'kills')
     let KD = fstat(stats, 'kd')
     let mPlayed = fstat(stats, 'matchesPlayed')
-    //  let tPlayed = fstat(stats, 'timePlayed');
-    // let asTime = fstat(stats, 'avgSurvivalTime');
 
     let embed = new Discord.RichEmbed()
       .setColor(config.colors.white)
@@ -33,13 +47,12 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .addField('Matches Played', mPlayed, true)
       .addField('Kills', kills, true)
       .addField('K/D', KD, true)
-    // .addField('Avg. Survival Time', asTime, true)
-    // .addField('Time Played', tPlayed, true);
 
-    msg.channel.send(embed)
+    msg.channel.send(embed).catch(e => msg.channel.send(e.error))
   }).catch(e => {
     console.log(e)
-    return errors.noPlayer(msg, args[0])
+    msg.channel.send(`**Error:** Player **${username}** on **${platform.toUpperCase()}** not found`)
+      .then(m => m.delete(5000))
   })
 
   function fstat (stats, str) {

@@ -34,11 +34,6 @@ module.exports.specifyUser = async (msg, prefix) => {
     .then(m => { m.delete(5000); msg.delete(5000) })
 }
 
-// player not found
-module.exports.noPlayer = async (msg, name) => {
-  msg.channel.send(`**Error:** Player **${name} not found**`)
-    .then(m => m.delete(5000))
-}
 
 // user not in voice chat
 module.exports.noVC = async (msg) => {

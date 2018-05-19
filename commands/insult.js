@@ -12,15 +12,15 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let user = util.getUserFromArg(bot, msg, args[0])
 
     if (user) {
-      query = `${query}who="**${user.username}**"`
+      query = `${query}who=**${user.username}**`
     } else {
-      query = `${query}who="**${args.join(' ')}**"`
+      query = `${query}who=**${args.join(' ')}**`
     }
   }
 
   let res = await axios.get(`https://insult.mattbas.org/api/insult.json${query}`)
 
-  let insult = res.data.insult.replace(/["]/g, '')
+  let insult = res.data.insult
 
   msg.channel.send(insult).catch(e => msg.channel.send(e.error))
 
