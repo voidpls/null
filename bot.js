@@ -57,9 +57,25 @@ fs.readdir('./devCmds/', (err, files) => {
   console.log('-------------------------------------')
 })
 
-bot.on('error', (e) => console.error(e))
-// bot.on("warn", (e) => console.warn(e));
-// bot.on("debug", (e) => console.info(e));
+//check event files
+fs.readdir('./events/', (err, files) => {
+  if (err) console.log(err)
+
+  // remove '.js'
+  let jsfiles = files.filter(f => f.endsWith('js'))
+  if (jsfiles.length <= 0) {
+    return console.log('ERROR: No events found.')
+  }
+  console.log('→ Events Status: \n-------------------------------------')
+  // load modules
+  jsfiles.forEach((f, i) => {
+    let ev = require(`./events/${f}`)
+    console.log(`√ ${f.slice(0, -3)} loaded successfully`)
+    ev(bot)
+  })
+  // terminal beautification
+  console.log('-------------------------------------')
+})
 
 // on connect event handler
 bot.on('ready', async () => {
@@ -131,7 +147,7 @@ bot.on('message', async msg => {
     cooldown.add(msg.author.id)
     setTimeout(() => { cooldown.delete(msg.author.id); cooldown2.delete(msg.author.id) }, CDsecs * 1000)
     // run command if not in the cooldown set
-    cmdFile.run(bot, msg, args, prefix)
+    cmdFile.run()
   } else if (bot.devCommands.get(cmd) && msg.author.id === config.mainacc) bot.devCommands.get(cmd).run(bot, msg, args, prefix)
 
   else {

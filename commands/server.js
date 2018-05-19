@@ -29,7 +29,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     color = await util.getColor(icon)
   }
   else {
-    icon = 'https://d30y9cdsu7xlg0.cloudfront.net/png/140281-200.png'
+    icon = 'https://voidxd.me/null/images/notfound.png'
   }
 
   let owner = guild.owner.user
