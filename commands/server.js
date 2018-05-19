@@ -4,57 +4,61 @@ const util = require('../utils/util.js')
 const moment = require('moment')
 
 module.exports.run = async (bot, msg, args, prefix) => {
+  try {
+    let guild = msg.guild
+    //await guild.fetchMembers()
 
-  let guild = msg.guild
-  //await guild.fetchMembers()
+    let color = config.colors.white
+    let icon;
+    let guildCreate = guild.createdTimestamp
+    let verificationLvl = guild.verificationLevel
+    let veriName = ['None', 'Low', 'Medium', '(╯°□°）╯︵ ┻━┻', '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'][verificationLvl]
 
-  let color = config.colors.white
-  let icon;
-  let guildCreate = guild.createdTimestamp
-  let verificationLvl = guild.verificationLevel
-  let veriName = ['None', 'Low', 'Medium', '(╯°□°）╯︵ ┻━┻', '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'][verificationLvl]
+    let roles = guild.roles.size - 1
+    let emotes = guild.emojis.size
+    let channels = guild.channels
+    let members = guild.members
 
-  let roles = guild.roles.size - 1
-  let emotes = guild.emojis.size
-  let channels = guild.channels
-  let members = guild.members
+    let bots = members.filter(m => m.user.bot).size
+    let vChannels = channels.filter(c => c.type === 'voice').size
+    let tChannels = channels.filter(c => c.type === 'text').size
+    let onlineUsers = members.filter(m => m.presence.status !== 'offline').size
 
-  let bots = members.filter(m => m.user.bot).size
-  let vChannels = channels.filter(c => c.type === 'voice').size
-  let tChannels = channels.filter(c => c.type === 'text').size
-  let onlineUsers = members.filter(m => m.presence.status !== 'offline').size
+    if (guild.iconURL !== null) {
+      icon = guild.iconURL.replace('jpg', 'png?size=1024')
+      color = await util.getColor(icon)
+    }
+    else {
+      icon = 'https://voidxd.me/null/images/notfound.png'
+    }
 
-  if (guild.iconURL !== null) {
-    icon = guild.iconURL.replace('jpg', 'png?size=1024')
-    color = await util.getColor(icon)
+    let owner = guild.owner.user
+
+    function format (timestamp) { return moment.unix(timestamp / 1000).format('MMMM Do, YYYY hh:mma') }
+
+    let embed = new Discord.RichEmbed()
+      .setColor(color)
+      .setThumbnail(icon)
+
+      .setDescription(
+        `☉ Server Owner: **${owner.username}#${owner.discriminator}**\n` +
+    `☉ Server ID: **${guild.id}**\n` +
+    `☉ Server Region: **${guild.region}**\n` +
+    `☉ Verification Level: **${verificationLvl} | ${veriName}**\n` +
+    `☉ Members: **${members.size}** [ **${members.size - bots}** Users | **${bots}** Bots]\n` +
+    `     <:online:438877428807368705> **${onlineUsers}** Online\n` +
+    `     <:offline:313956277237710868> **${members.size - onlineUsers}** Offline\n` +
+    `☉ Channels: **${channels.size}** [ **${tChannels}** Text | **${vChannels}** Voice]\n` +
+    `☉ Roles: **${roles}**\n` +
+    `☉ Emotes: **${emotes}**\n` +
+    `☉ Server Created: **${format(guildCreate)}**`
+      )
+
+    msg.channel.send(`🔎 Server Info for **${guild.name}**:`, embed)
+
+  } catch (e) {
+    console.log(e)
   }
-  else {
-    icon = 'https://voidxd.me/null/images/notfound.png'
-  }
-
-  let owner = guild.owner.user
-
-  function format (timestamp) { return moment.unix(timestamp / 1000).format('MMMM Do, YYYY hh:mma') }
-
-  let embed = new Discord.RichEmbed()
-    .setColor(color)
-    .setThumbnail(icon)
-
-    .setDescription(
-      `☉ Server Owner: **${owner.username}#${owner.discriminator}**\n` +
-  `☉ Server ID: **${guild.id}**\n` +
-  `☉ Server Region: **${guild.region}**\n` +
-  `☉ Verification Level: **${verificationLvl} | ${veriName}**\n` +
-  `☉ Members: **${members.size}** [ **${members.size - bots}** Users | **${bots}** Bots]\n` +
-  `     <:online:438877428807368705> **${onlineUsers}** Online\n` +
-  `     <:offline:313956277237710868> **${members.size - onlineUsers}** Offline\n` +
-  `☉ Channels: **${channels.size}** [ **${tChannels}** Text | **${vChannels}** Voice]\n` +
-  `☉ Roles: **${roles}**\n` +
-  `☉ Emotes: **${emotes}**\n` +
-  `☉ Server Created: **${format(guildCreate)}**`
-    )
-
-  msg.channel.send(`🔎 Server Info for **${guild.name}**:`, embed)
 }
 
 module.exports.help = {
