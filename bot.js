@@ -56,7 +56,7 @@ fs.readdir('./devCmds/', (err, files) => {
   // terminal beautification
   console.log('-------------------------------------')
 })
-
+/*
 //check event files
 fs.readdir('./events/', (err, files) => {
   if (err) console.log(err)
@@ -75,7 +75,7 @@ fs.readdir('./events/', (err, files) => {
   })
   // terminal beautification
   console.log('-------------------------------------')
-})
+})*/
 
 // on connect event handler
 bot.on('ready', async () => {
