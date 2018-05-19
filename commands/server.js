@@ -4,14 +4,17 @@ const util = require('../utils/util.js')
 const moment = require('moment')
 
 module.exports.run = async (bot, msg, args, prefix) => {
+
   let guild = msg.guild
+  //await guild.fetchMembers()
+
   let color = config.colors.white
-  let icon = guild.iconURL.replace('jpg', 'png?size=1024')
+  let icon;
   let guildCreate = guild.createdTimestamp
   let verificationLvl = guild.verificationLevel
   let veriName = ['None', 'Low', 'Medium', '(╯°□°）╯︵ ┻━┻', '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'][verificationLvl]
 
-  let roles = guild.roles.size
+  let roles = guild.roles.size - 1
   let emotes = guild.emojis.size
   let channels = guild.channels
   let members = guild.members
@@ -21,8 +24,12 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let tChannels = channels.filter(c => c.type === 'text').size
   let onlineUsers = members.filter(m => m.presence.status !== 'offline').size
 
-  if (guild.iconURL) {
+  if (guild.iconURL !== null) {
+    icon = guild.iconURL.replace('jpg', 'png?size=1024')
     color = await util.getColor(icon)
+  }
+  else {
+    icon = 'https://d30y9cdsu7xlg0.cloudfront.net/png/140281-200.png'
   }
 
   let owner = guild.owner.user
