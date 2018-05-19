@@ -3,10 +3,10 @@ const Discord = require('discord.js')
 module.exports = async (bot) => {
   bot.on('guildCreate', async guild => {
 
-    guild.fetchMembers()
-
     let gID = '297191838983520257'
     let cID = '447206453749612545'
+
+    await guild.fetchMembers()
 
     let g = bot.guilds.get(gID)
     let channel = g.channels.get(cID)
@@ -20,15 +20,15 @@ module.exports = async (bot) => {
 
     let color = '#50C878'
     let desc = 'Bot to Member ratio is **'
-    let members = guild.members.filter(m => !m.user.bot).size
-    let bots = guild.members.size - members
+    let members = await guild.members.filter(m => !m.user.bot).size
+    let bots = await guild.members.size - members
 
     let ratio = Math.floor((bots / members)*100).toFixed(1)
     if (ratio > 75) {
       desc = '**Might be a bot farm!** Bot to Member ratio is **'
       color = '#ffcf3f'
     }
-    let owner = guild.owner.user
+    let owner = await guild.owner.user
 
     let embed = new Discord.RichEmbed()
 

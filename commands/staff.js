@@ -3,8 +3,6 @@ const config = require('../config/config.json')
 
 module.exports.run = async (bot, msg, args, prefix) => {
 
-  //msg.guild.fetchMembers()
-
   let members = msg.guild.members
 
   let staff = members.filter(m => m.hasPermission('MANAGE_ROLES', false, true, true))
