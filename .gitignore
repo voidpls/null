@@ -61,6 +61,9 @@ typings/
 *.json
 *.sqlite
 
+config.json
+
+prefix.json
+
 !language.json
-config/config.json
-config/prefix.json
+
