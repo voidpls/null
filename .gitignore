@@ -59,5 +59,7 @@ typings/
 
 #prefix file 
 *.json
+
 *.sqlite
 
+!package.json

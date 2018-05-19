@@ -1,0 +1,34 @@
+{
+  "name": "discordjs-null",
+  "version": "1.0.0",
+  "description": "Null Discord Bot.",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voidpls/null.git"
+  },
+  "author": "Void",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/voidpls/null/issues"
+  },
+  "homepage": "https://github.com/voidpls/null#readme",
+  "dependencies": {
+    "discord.js": "*",
+    "google": "*",
+    "superagent": "*",
+    "axios": "*",
+    "yahoo-weather": "*",
+    "google-translate-api": "*",
+    "pidusage": "*",
+    "fortnite": "*",
+    "urban": "*",
+    "cryptocompare": "*",
+    "moment": "*",
+    "xkcd-api": "*",
+    "sequelize": "*"
+  }
+}

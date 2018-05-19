@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 const config = require('../config/config.json')
 const util = require('../utils/util.js')
-var pidusage = require('pidusage')
+const pidusage = require('pidusage')
 
 module.exports.run = async (bot, msg, args, prefix) => {
   let nodeVersion = process.version
