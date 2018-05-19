@@ -31,7 +31,7 @@ module.exports.weather = async (msg, loc) => {
 // specify user
 module.exports.specifyUser = async (msg, prefix) => {
   msg.channel.send(`**Usage: \`${prefix}fortnite [username] [xbl/psn]\`**`)
-    .then(m => { m.delete(5000); msg.delete() })
+    .then(m => { m.delete(5000); msg.delete(5000) })
 }
 
 // player not found
