@@ -18,8 +18,14 @@ module.exports = async (bot) => {
     let channel = g.channels.get(cID)
 
 
-    let icon = guild.iconURL.replace('jpg', 'png?size=1024')
-    /*
+    let icon;
+    if (guild.iconURL !== null) {
+      icon = guild.iconURL.replace('jpg', 'png?size=1024')
+    }
+    else {
+      icon = 'https://voidxd.me/null/images/notfound.png'
+    }
+
     let members = guild.members.filter(m => !m.user.bot).size
     let bots = guild.members.size - members
 
@@ -37,7 +43,7 @@ module.exports = async (bot) => {
     .setFooter('Added at: ')
     .setTimestamp()
 
-    channel.send(embed)*/
+    channel.send(embed)
 
   })
 
