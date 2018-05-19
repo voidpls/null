@@ -27,6 +27,7 @@
     "node-fetch": "*",
     "pidusage": "*",
     "sequelize": "*",
+    "sqlite3": "*",
     "superagent": "*",
     "urban": "*",
     "xkcd-api": "*",
