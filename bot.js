@@ -56,7 +56,7 @@ fs.readdir('./devCmds/', (err, files) => {
   // terminal beautification
   console.log('-------------------------------------')
 })
-/*
+
 //check event files
 fs.readdir('./events/', (err, files) => {
   if (err) console.log(err)
@@ -75,7 +75,7 @@ fs.readdir('./events/', (err, files) => {
   })
   // terminal beautification
   console.log('-------------------------------------')
-})*/
+})
 
 // on connect event handler
 bot.on('ready', async () => {
@@ -147,7 +147,7 @@ bot.on('message', async msg => {
     cooldown.add(msg.author.id)
     setTimeout(() => { cooldown.delete(msg.author.id); cooldown2.delete(msg.author.id) }, CDsecs * 1000)
     // run command if not in the cooldown set
-    cmdFile.run()
+    cmdFile.run(bot, msg, args, prefix)
   } else if (bot.devCommands.get(cmd) && msg.author.id === config.mainacc) bot.devCommands.get(cmd).run(bot, msg, args, prefix)
 
   else {
