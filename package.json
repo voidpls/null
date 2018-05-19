@@ -30,6 +30,6 @@
     "superagent": "*",
     "urban": "*",
     "xkcd-api": "*",
-    "yahoo-weather": "*",
+    "yahoo-weather": "*"
   }
 }
