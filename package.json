@@ -17,18 +17,19 @@
   },
   "homepage": "https://github.com/voidpls/null#readme",
   "dependencies": {
-    "discord.js": "*",
-    "google": "*",
-    "superagent": "*",
     "axios": "*",
-    "yahoo-weather": "*",
-    "google-translate-api": "*",
-    "pidusage": "*",
-    "fortnite": "*",
-    "urban": "*",
     "cryptocompare": "*",
+    "discord.js": "*",
+    "fortnite": "*",
+    "google": "*",
+    "google-translate-api": "*",
     "moment": "*",
+    "node-fetch": "*",
+    "pidusage": "*",
+    "sequelize": "*",
+    "superagent": "*",
+    "urban": "*",
     "xkcd-api": "*",
-    "sequelize": "*"
+    "yahoo-weather": "*",
   }
 }
