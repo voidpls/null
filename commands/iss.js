@@ -11,7 +11,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let lat = valBetween(loc.latitude, -85, 85)
   let long = valBetween(loc.longitude, -175, 175)
   let longlat = `${long},${lat}`
-  let map = `https://api.mapbox.com/v4/mapbox.dark/pin-m-star+ff0000(${longlat})/${longlat},2/640x400@2x.png?access_token=${mbKey}`
+  let map = `https://api.mapbox.com/styles/v1/voidpls/cjhf4nx0t1lgn2ql0c2dgh99p/static/pin-s-star+ff0000(${longlat})/${longlat},1,0/640x400@2x?access_token=${mbKey}&attribution=false&logo=false`
 
   let file = new Discord.Attachment(map, 'ISS_Location.png')
   msg.channel
