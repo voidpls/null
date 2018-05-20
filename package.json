@@ -19,7 +19,6 @@
   "dependencies": {
     "ansi-canvas": "^1.0.0",
     "axios": "^0.18.0",
-    "canvas": "*",
     "cryptocompare": "^0.5.0",
     "d3": "^5.4.0",
     "d3-cloud": "*",
