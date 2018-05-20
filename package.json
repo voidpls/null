@@ -17,8 +17,12 @@
   },
   "homepage": "https://github.com/voidpls/null#readme",
   "dependencies": {
+    "ansi-canvas": "^1.0.0",
     "axios": "*",
+    "canvas": "*",
     "cryptocompare": "*",
+    "d3": "^5.4.0",
+    "d3-cloud": "*",
     "discord.js": "*",
     "fortnite": "*",
     "google": "*",

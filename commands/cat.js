@@ -1,22 +1,18 @@
 const Discord = require('discord.js')
-const superagent = require('superagent')
+const axios = require('axios')
 const config = require('../config/config.json')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  let url = await superagent
-    .get(`https://thecatapi.com/api/images/get`)
-    .then(async res => {
-      return res.headers.original_image
-    })
-    .catch(e => msg.channel.send('ERROR: ' + e.message))
+  let res = await axios.get(`https://thecatapi.com/api/images/get`)
+
+  let url = res.headers.original_image
 
   let embed = new Discord.RichEmbed()
     .setColor(config.colors.white)
     .setTitle('🐱 Random Cat')
     .setImage(url)
-    .setFooter('Source: thecatapi.com')
 
-  await msg.channel.send(embed)
+  msg.channel.send(embed).catch(e => msg.channel.send(e))
 }
 
 module.exports.help = {

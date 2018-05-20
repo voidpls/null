@@ -10,7 +10,8 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let cmdFile = bot.commands.get(cmd)
 
     if (cmdFile) {
-      let cmdName = cmdFile.help.name[0].toUpperCase() + cmdFile.help.name.substr(1)
+      let cmdName =
+        cmdFile.help.name[0].toUpperCase() + cmdFile.help.name.substr(1)
       let aliasArr = cmdFile.help.aliases
       let aliases = cmd
       if (aliasArr.length !== 0) {
@@ -34,9 +35,14 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setColor(config.colors.white)
     .setFooter(`Use ${prefix}help [command] for command specific help!`)
 
-  categories.forEach((i) => {
-    let cmds = bot.commands.filter(c => c.help.category === i)
-      .map(c => '**`' + c.help.name[0].toUpperCase() + c.help.name.substr(1) + '`**').join('\n')
+  categories.forEach(i => {
+    let cmds = bot.commands
+      .filter(c => c.help.category === i)
+      .map(
+        c =>
+          '**`' + c.help.name[0].toUpperCase() + c.help.name.substr(1) + '`**'
+      )
+      .join(' ')
 
     embed.addField(i, cmds, true)
   })

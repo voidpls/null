@@ -1,23 +1,20 @@
 const Discord = require('discord.js')
-const superagent = require('superagent')
+const axios = require('axios')
 const config = require('../config/config.json')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  let {body} = await superagent
-    .get(`https://random.dog/woof.json`)
+  let res = await axios.get(`https://random.dog/woof.json`)
 
-  while (body.url.slice(-3) === 'mp4') {
-    let {body} = await superagent
-      .get(`https://random.dog/woof.json`)
+  while (res.data.url.endsWith('.mp4')) {
+    res = await axios.get(`https://random.dog/woof.json`)
   }
 
   let embed = new Discord.RichEmbed()
     .setColor(config.colors.white)
     .setTitle('🐶 Random Dog')
-    .setImage(body.url)
-    .setFooter('Source: random.dog')
+    .setImage(res.data.url)
 
-  msg.channel.send(embed)
+  msg.channel.send(embed).catch(e => msg.channel.send(e))
 }
 
 module.exports.help = {
