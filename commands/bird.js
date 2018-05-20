@@ -3,22 +3,22 @@ const axios = require('axios')
 const config = require('../config/config.json')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  let res = await axios.get(`https://thecatapi.com/api/images/get`)
-
-  let url = res.headers.original_image
+  let res = await axios.get(
+    `http://shibe.online/api/birds?count=[1]&urls=[false]&httpsUrls=[false]`
+  )
 
   let embed = new Discord.RichEmbed()
     .setColor(config.colors.white)
-    .setTitle('🐱 Random Cat')
-    .setImage(url)
+    .setTitle('🐦 Random Bird')
+    .setImage(res.data[0])
 
   msg.channel.send(embed).catch(e => msg.channel.send(e.error))
 }
 
 module.exports.help = {
-  name: 'cat',
-  desc: 'Posts a random cat',
-  usage: 'cat',
+  name: 'bird',
+  desc: 'Posts a random bird',
+  usage: 'bird',
   category: 'Animals',
-  aliases: ['randomcat']
+  aliases: []
 }

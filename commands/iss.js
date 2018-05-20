@@ -30,6 +30,6 @@ module.exports.help = {
   name: 'ISS',
   desc: "Gets the ISS' current location",
   usage: 'ISS',
-  category: 'Random',
+  category: 'Fun',
   aliases: ['issloc']
 }
