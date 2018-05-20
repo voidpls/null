@@ -1,6 +1,5 @@
 const Discord = require('discord.js')
 const axios = require('axios')
-const config = require('../config/config.json')
 let mbKey =
   'pk.eyJ1Ijoidm9pZHBscyIsImEiOiJjamhlenZmbzYxMTFoM2RwY28wNXplaXR2In0.UCHDkjtshLi2fWVOLTkufg'
 
@@ -21,7 +20,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .catch(e => msg.channel.send(e.error))
 }
 
-valBetween = (v, min, max) => {
+let valBetween = (v, min, max) => {
   return Math.min(max, Math.max(min, v))
 }
 

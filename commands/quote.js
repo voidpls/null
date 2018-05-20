@@ -1,5 +1,3 @@
-const Discord = require('discord.js')
-const config = require('../config/config.json')
 const quotes = require('../config/quotes.json')
 
 module.exports.run = async (bot, msg, args, prefix) => {

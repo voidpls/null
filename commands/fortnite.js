@@ -65,7 +65,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .then(m => m.delete(5000))
     })
 
-  function fstat(stats, str) {
+  function fstat (stats, str) {
     return stats.find(s => s.stat === str).value
   }
 }
