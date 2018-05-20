@@ -28,6 +28,7 @@
     "google": "^2.1.0",
     "google-translate-api": "^2.3.0",
     "moment": "^2.22.1",
+    "node-vibrant": "*",
     "node-fetch": "^2.1.2",
     "pidusage": "^2.0.6",
     "sequelize": "^4.37.8",

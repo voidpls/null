@@ -1,7 +1,6 @@
 const Discord = require('discord.js')
 const axios = require('axios')
 const config = require('../config/config.json')
-//let mqKey = '7NzCi050ftPX93m9elMDytWj0uv9LAV8'
 let mbKey =
   'pk.eyJ1Ijoidm9pZHBscyIsImEiOiJjamhlenZmbzYxMTFoM2RwY28wNXplaXR2In0.UCHDkjtshLi2fWVOLTkufg'
 
