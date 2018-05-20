@@ -4,18 +4,22 @@ const util = require('../utils/util.js')
 module.exports.run = async (bot, msg, args, prefix) => {
   let query = 'random'
   if (args[0]) {
-    let user = util.getUserFromArg(bot, msg, args[0])
-
-    if (user) {
-      query = `personalized?q=**${user.username}**`
-    } else {
-      query = `personalized?q=**${args.join(' ')}**`
-    }
+    query = `personalized?q=**{PLACEHOLDER}**`
   }
   let res = await axios.get(
-    'https://api.whatdoestrumpthink.com/api/v1/quotes/' + query
+    `https://api.whatdoestrumpthink.com/api/v1/quotes/${query}`
   )
   let quote = res.data.message
+
+  if (args[0]) {
+    let user = util.getUserFromArg(bot, msg, args[0])
+    if (user) {
+      quote = quote.replace('{PLACEHOLDER}', user.username)
+    } else {
+      quote = quote.replace('{PLACEHOLDER}', args.join(' '))
+    }
+  }
+
   msg.channel
     .send(`"${quote}"\n\n*- Donald Trump*`)
     .catch(e => msg.channel.send(e.error))
