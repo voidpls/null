@@ -34,7 +34,7 @@ fs.readdir('./commands/', (err, files) => {
   jsfiles.forEach((f, i) => {
     let props = require(`./commands/${f}`)
     console.log(`√ ${f.slice(0, -3)} loaded successfully`)
-    bot.commands.set(props.help.name, props)
+    bot.commands.set(props.help.name.toLowerCase(), props)
   })
   // terminal beautification
   console.log('-------------------------------------')

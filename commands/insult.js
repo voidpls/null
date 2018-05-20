@@ -1,6 +1,3 @@
-const Discord = require('discord.js')
-const superagent = require('superagent')
-const config = require('../config/config.json')
 const util = require('../utils/util.js')
 const axios = require('axios')
 

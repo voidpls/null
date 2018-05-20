@@ -1,4 +1,3 @@
-const Discord = require('discord.js')
 const axios = require('axios')
 
 module.exports.run = async (bot, msg, args, prefix) => {
@@ -10,7 +9,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   })
 
   let joke = res.data.joke
-  msg.channel.send(joke).catch(e => msg.channel.send(e))
+  msg.channel.send(joke).catch(e => msg.channel.send(e.error))
 }
 
 module.exports.help = {
