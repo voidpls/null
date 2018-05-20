@@ -62,4 +62,6 @@ typings/
 
 *.sqlite
 
+
+!quotes.json
 !package.json
