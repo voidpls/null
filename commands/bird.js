@@ -20,5 +20,5 @@ module.exports.help = {
   desc: 'Posts a random bird',
   usage: 'bird',
   category: 'Animals',
-  aliases: []
+  aliases: ['birb']
 }

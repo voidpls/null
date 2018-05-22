@@ -63,4 +63,4 @@ typings/
 *.sqlite
 
 !package.json
-!quotes.json
+!config.json
