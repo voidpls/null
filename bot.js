@@ -132,7 +132,7 @@ bot.on('message', async msg => {
     .toLowerCase()
 
   // TEMPORARY
-  if (cmd === 'nic' && msg.guild.id === '317978984119795712')
+  if (cmd === 'nic')
     return msg.channel.send(
       '<:forsen1:364142529207205889><:forsen2:364143062688989187>\n<:forsen3:364143324900229120><:forsen4:364143377400463360>'
     )
