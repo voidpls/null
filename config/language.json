@@ -477,7 +477,8 @@
   },
   {
     "code": "cu",
-    "name": "Old Church Slavonic, Church Slavic, Church Slavonic, Old Bulgarian, Old Slavonic"
+    "name":
+      "Old Church Slavonic, Church Slavic, Church Slavonic, Old Bulgarian, Old Slavonic"
   },
   {
     "code": "om",
@@ -493,7 +494,7 @@
   },
   {
     "code": "pa",
-    "name": "Panjabi, Punjabi"
+    "name": "Punjabi, Panjabi"
   },
   {
     "code": "pi",

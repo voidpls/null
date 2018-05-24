@@ -27,15 +27,16 @@ module.exports.run = async (bot, msg, args, prefix) => {
   }
 
   ftAPI
-    .getInfo(username, platform)
+    .user(username, platform)
     .then(data => {
-      let stats = data.lifetimeStats
-      let wins = fstat(stats, 'wins')
-      let winPercent = fstat(stats, 'win')
-      let top3 = parseInt(fstat(stats, 'top3s')) + parseInt(wins)
-      let kills = fstat(stats, 'kills')
-      let KD = fstat(stats, 'kd')
-      let mPlayed = fstat(stats, 'matchesPlayed')
+      let stats = data.stats.lifetime
+
+      let wins = fstat(stats, 'Wins')
+      let winPercent = fstat(stats, 'Win%')
+      let top3 = parseInt(fstat(stats, 'Top 3')) + parseInt(wins)
+      let kills = fstat(stats, 'Kills')
+      let KD = fstat(stats, 'K/d')
+      let mPlayed = fstat(stats, 'Matches Played')
 
       let embed = new Discord.RichEmbed()
         .setColor(config.colors.white)
@@ -65,8 +66,8 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .then(m => m.delete(5000))
     })
 
-  function fstat (stats, str) {
-    return stats.find(s => s.stat === str).value
+  function fstat(stats, str) {
+    return stats.find(s => s[str])[str]
   }
 }
 
