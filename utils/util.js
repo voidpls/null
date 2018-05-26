@@ -122,7 +122,9 @@ module.exports.wSearch = (msg, loc) => {
           `${cond.text} | **${info.atmosphere.humidity}**% humidity`
         )
 
-      msg.channel.send(embed)
+      msg.channel
+        .send(embed)
+        .catch(e => msg.channel.send('**Error:** ' + e.message))
 
       function toC(f) {
         return Math.round((f - 32) * 5 / 9)
