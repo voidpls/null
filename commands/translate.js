@@ -10,8 +10,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
     )
 
   let toLang = args.shift().toLowerCase()
+
   if (toLang.length === 2) {
-    toLang = language.find(obj => obj.code === toLang).name.split(/;|,/)[0]
+    toLang = language[toLang] || toLang.toUpperCase()
   } else {
     toLang = toLang.charAt(0).toUpperCase() + toLang.substr(1).toLowerCase()
   }
@@ -28,15 +29,16 @@ module.exports.run = async (bot, msg, args, prefix) => {
   translate(text, { to: toLang })
     .then(json => {
       let fromLangISO = json.from.language.iso.toLowerCase()
-      let fromLang = language.find(obj => obj.code === fromLangISO).name
-      fromLang = fromLang.split(/;|,/)[0]
-
+      let fromLang = language[fromLangISO]
       embed.setDescription(`**${fromLang}** to **${toLang}**:\n${json.text}`)
       msg.channel
         .send(embed)
         .catch(e => msg.channel.send(`**Error:** ${e.message}`))
     })
-    .catch(e => msg.channel.send(`**Error:** ${e.message}`))
+    .catch(e => {
+      console.log(e)
+      msg.channel.send(`**Error:** ${e.message}`)
+    })
 }
 
 module.exports.help = {

@@ -92,7 +92,9 @@ bot.on('ready', async () => {
   )
 
   // set bot status
-  bot.user.setActivity('beep beep boop', { type: 'LISTENING' })
+  bot.user.setActivity(`${bot.guilds.length} servers | >help`, {
+    type: 'PLAYING'
+  })
   bot.user.setStatus('online')
 
   // terminal beautification
