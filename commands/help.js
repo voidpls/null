@@ -25,7 +25,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .addField('Usage', prefix + cmdFile.help.usage)
         .addField('Aliases', aliases)
 
-      return msg.channel.send(embed)
+      return msg.channel.send(embed).catch(e => msg.channel.send(e.message))
     } else return errors.noCmd(msg, args[0])
   }
 
@@ -47,7 +47,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     embed.addField(i, cmds, true)
   })
 
-  msg.channel.send(embed)
+  msg.channel.send(embed).catch(e => msg.channel.send(e.message))
 }
 
 module.exports.help = {

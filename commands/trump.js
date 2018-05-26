@@ -22,7 +22,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
   msg.channel
     .send(`"${quote}"\n\n*- Donald Trump*`)
-    .catch(e => msg.channel.send(e.error))
+    .catch(e => msg.channel.send(e.message))
 }
 
 module.exports.help = {

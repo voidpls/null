@@ -6,42 +6,62 @@ const cc = require('cryptocompare')
 
 module.exports.run = async (bot, msg, args, prefix) => {
   if (args.length === 0) {
-    cc.priceMulti(['BTC', 'BCH', 'ETH', 'LTC', 'XRP', 'EOS'], 'USD')
+    cc
+      .priceMulti(['BTC', 'BCH', 'ETH', 'LTC', 'XRP', 'EOS'], 'USD')
       .then(prices => {
         let embed = new Discord.RichEmbed()
-          .setAuthor('Cryptocurrency Values', 'https://cdn-images-1.medium.com/max/1600/1*U7phpu7aKKrU05JvMvs-wA.png')
+          .setAuthor(
+            'Cryptocurrency Values',
+            'https://cdn-images-1.medium.com/max/1600/1*U7phpu7aKKrU05JvMvs-wA.png'
+          )
           .setColor(config.colors.white)
-          .setFooter(`Use ${prefix}crypto [crypto symbol] [currency] to get custom results`)
+          .setFooter(
+            `Use ${prefix}crypto [crypto symbol] [currency] to get custom results`
+          )
 
         for (const i in prices) {
           embed.addField(i, '$' + prices[i]['USD'], true)
         }
 
-        msg.channel.send(embed)
+        msg.channel.send(embed).catch(e => msg.channel.send(e.message))
       })
   } else {
     let coin = args[0].toUpperCase()
     let currency = args[1] || 'USD'
     let coinlist = await cc.coinList()
 
-    cc.priceFull(coin, currency.toUpperCase()).then(prices => {
-      let cData = coinlist.Data[coin]
-      let pData = prices[coin][currency.toUpperCase()]
+    cc
+      .priceFull(coin, currency.toUpperCase())
+      .then(prices => {
+        let cData = coinlist.Data[coin]
+        let pData = prices[coin][currency.toUpperCase()]
 
-      let embed = new Discord.RichEmbed()
-        .setAuthor(cData.FullName, `https://www.cryptocompare.com${cData.ImageUrl}`)
-        .setColor(config.colors.white)
-        .addField(`Price (${currency})`, pData.PRICE)
-        .addField(`Market Cap (${currency})`, Math.round(pData.MKTCAP).toLocaleString())
-        .addField(`% Change (24h)`, Math.round(pData.CHANGEPCT24HOUR * 10) / 10 + '%')
-        .addField(`Supply`, Math.round(pData.SUPPLY).toLocaleString())
-        .setFooter(`Last Market: ${pData.LASTMARKET}`)
+        let embed = new Discord.RichEmbed()
+          .setAuthor(
+            cData.FullName,
+            `https://www.cryptocompare.com${cData.ImageUrl}`
+          )
+          .setColor(config.colors.white)
+          .addField(`Price (${currency})`, pData.PRICE)
+          .addField(
+            `Market Cap (${currency})`,
+            Math.round(pData.MKTCAP).toLocaleString()
+          )
+          .addField(
+            `% Change (24h)`,
+            Math.round(pData.CHANGEPCT24HOUR * 10) / 10 + '%'
+          )
+          .addField(`Supply`, Math.round(pData.SUPPLY).toLocaleString())
+          .setFooter(`Last Market: ${pData.LASTMARKET}`)
 
-      msg.channel.send(embed)
-    }).catch(e => {
-      console.log(e)
-      return msg.channel.send(`**Error:** Could not find coin data for **${coin}** in **${currency.toUpperCase()}**`)
-    })
+        msg.channel.send(embed).catch(e => msg.channel.send(e.message))
+      })
+      .catch(e => {
+        console.log(e)
+        return msg.channel.send(
+          `**Error:** Could not find coin data for **${coin}** in **${currency.toUpperCase()}**`
+        )
+      })
   }
 }
 

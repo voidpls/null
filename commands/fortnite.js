@@ -55,7 +55,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .addField('Kills', kills, true)
         .addField('K/D', KD, true)
 
-      msg.channel.send(embed).catch(e => msg.channel.send(e.error))
+      msg.channel.send(embed).catch(e => msg.channel.send(e.message))
     })
     .catch(e => {
       console.log(e)

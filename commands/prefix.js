@@ -3,18 +3,33 @@ const errors = require('../utils/errors.js')
 const config = require('../config/config.json')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  if (!msg.member.hasPermission('ADMINISTRATOR') && msg.author.id !== config.mainacc) return errors.noPerms(msg, 'Administrator')
+  if (
+    !msg.member.hasPermission('ADMINISTRATOR') &&
+    msg.author.id !== config.mainacc
+  )
+    return errors.noPerms(msg, 'Administrator')
 
   let prefixes = JSON.parse(fs.readFileSync('./config/prefix.json', 'utf8'))
 
-  if (!args[0]) return msg.channel.send(`**Usage:** \`${prefix}prefix [new prefix]\``).then(m => m.delete(5000))
+  if (!args[0])
+    return msg.channel
+      .send(`**Usage:** \`${prefix}prefix [new prefix]\``)
+      .then(m => m.delete(5000))
   prefixes[msg.guild.id] = args[0]
 
-  fs.writeFile('./config/prefix.json', JSON.stringify(prefixes, null, '\t'), (err) => {
-    if (err) console.log(err)
-  })
+  fs.writeFile(
+    './config/prefix.json',
+    JSON.stringify(prefixes, null, '\t'),
+    err => {
+      if (err) console.log(err)
+    }
+  )
 
-  msg.channel.send(`<:check:335544753443831810> Prefix has been updated to **${args[0]}**`)
+  msg.channel
+    .send(
+      `<:check:335544753443831810> Prefix has been updated to **${args[0]}**`
+    )
+    .catch(e => msg.channel.send(e.message))
 }
 
 module.exports.help = {
@@ -23,5 +38,4 @@ module.exports.help = {
   usage: `prefix [new prefix]`,
   category: 'Bot',
   aliases: []
-
 }

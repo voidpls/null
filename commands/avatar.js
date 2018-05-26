@@ -2,8 +2,14 @@ const util = require('../utils/util.js')
 
 module.exports.run = async (bot, msg, args, prefix) => {
   let user = util.getUser(bot, msg, args)
-  if (user) msg.channel.send(`Here is **${user.username}**'s avatar: \n` + user.displayAvatarURL)
-  else msg.channel.send(`Could not find user **${args[0]}**. Please mention the user.`)
+  if (user)
+    msg.channel.send(
+      `Here is **${user.username}**'s avatar: \n` + user.displayAvatarURL
+    )
+  else
+    msg.channel
+      .send(`Could not find user **${args[0]}**. Please mention the user.`)
+      .catch(e => msg.channel.send(e.message))
 }
 
 module.exports.help = {

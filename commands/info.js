@@ -5,7 +5,10 @@ const moment = require('moment')
 
 module.exports.run = async (bot, msg, args, prefix) => {
   let user = await util.getUser(bot, msg, args)
-  if (!user) return msg.channel.send(`**Error:** Could not find user info for **${args.join()}**`)
+  if (!user)
+    return msg.channel.send(
+      `**Error:** Could not find user info for **${args.join()}**`
+    )
   let avatar = user.displayAvatarURL
   let color = config.colors.white
   let joinTime = 'N/A'
@@ -18,13 +21,15 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let roles = 'N/A'
 
   let statusMap = {
-    'offline': '<:offline:313956277237710868>',
-    'idle': '<:idle:438877481831890944>',
-    'dnd': '<:dnd:438877374726144001>',
-    'online': '<:online:438877428807368705>'
+    offline: '<:offline:313956277237710868>',
+    idle: '<:idle:438877481831890944>',
+    dnd: '<:dnd:438877374726144001>',
+    online: '<:online:438877428807368705>'
   }
 
-  function format (timestamp) { return moment.unix(timestamp / 1000).format('MMMM Do, YYYY hh:mma') }
+  function format(timestamp) {
+    return moment.unix(timestamp / 1000).format('MMMM Do, YYYY hh:mma')
+  }
 
   if (user.bot) {
     accType = 'Bot'
@@ -36,7 +41,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
     topRole = member.highestRole.name
     roles = member.roles.size - 1
 
-    let sortedArr = member.guild.members.sort((a, b) => a.joinedTimestamp - b.joinedTimestamp)
+    let sortedArr = member.guild.members.sort(
+      (a, b) => a.joinedTimestamp - b.joinedTimestamp
+    )
     let sortedUsernames = sortedArr.map(m => m.user.id)
     joinPos = util.ordinal(sortedUsernames.indexOf(member.id) + 1)
 
@@ -51,18 +58,20 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
     .setDescription(
       `☉ Account Type: **${accType}**\n` +
-  `☉ User ID: **${user.id}**\n` +
-  `☉ Status: **${statusMap[status]}${status.toUpperCase()}**\n` +
-  `☉ Shared Servers: **${serverCt}**\n` +
-  `☉ Nickname: **${nick}**\n` +
-  `☉ Roles: **${roles}**\n` +
-  `☉ Top Role: **${topRole}**\n` +
-  `☉ Join Position: **${joinPos}**\n` +
-  `☉ Server Join: **${joinTime}**\n` +
-  `☉ Account Created: **${format(user.createdTimestamp)}**`
+        `☉ User ID: **${user.id}**\n` +
+        `☉ Status: **${statusMap[status]}${status.toUpperCase()}**\n` +
+        `☉ Shared Servers: **${serverCt}**\n` +
+        `☉ Nickname: **${nick}**\n` +
+        `☉ Roles: **${roles}**\n` +
+        `☉ Top Role: **${topRole}**\n` +
+        `☉ Join Position: **${joinPos}**\n` +
+        `☉ Server Join: **${joinTime}**\n` +
+        `☉ Account Created: **${format(user.createdTimestamp)}**`
     )
 
-  msg.channel.send(`🔎 User Info for **${user.username}#${user.discriminator}**:`, embed)
+  msg.channel
+    .send(`🔎 User Info for **${user.username}#${user.discriminator}**:`, embed)
+    .catch(e => msg.channel.send(e.message))
 }
 
 module.exports.help = {

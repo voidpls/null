@@ -8,7 +8,9 @@ google.lang = 'en'
 google.tld = 'com'
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  if (!args[0]) { return msg.channel.send('**Error:** Please specify a search query!') }
+  if (!args[0]) {
+    return msg.channel.send('**Error:** Please specify a search query!')
+  }
 
   let query = args.join(' ')
 
@@ -17,8 +19,8 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setColor(config.colors.white)
     .setDescription(`Search results for: **${query}**`)
 
-  google(query, function (err, res) {
-    if (err) return msg.channel.send('**Error:** ' + err.error)
+  google(query, function(err, res) {
+    if (err) return msg.channel.send('**Error:** ' + err.message)
     let count = 0
     let count2 = 0
 
@@ -28,7 +30,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
         count2++
         embed.addField(link.title, `**${link.link}**`)
       }
-      if (count >= 6) { return msg.channel.send(`**Error:** No results found for **${query}**`) }
+      if (count >= 6) {
+        return msg.channel.send(`**Error:** No results found for **${query}**`)
+      }
       count++
     }
 
@@ -39,9 +43,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .slice(8)
     embed.setFooter(url)
 
-    msg.channel
-      .send(embed)
-      .catch(e => msg.channel.send('**Error:** ' + e.error))
+    msg.channel.send(embed).catch(e => msg.channel.send(e.message))
   })
 }
 

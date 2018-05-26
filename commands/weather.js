@@ -24,7 +24,10 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let loc = args.join(' ')
     return util.wSearch(msg, loc)
   } else if (args.length >= 1 && args[0] === 'set') {
-    if (!args[1]) return msg.channel.send(`Type ${prefix}weather set \`[location]\` to set a location.`)
+    if (!args[1])
+      return msg.channel
+        .send(`Type ${prefix}weather set \`[location]\` to set a location.`)
+        .catch(e => msg.channel.send(e.message))
     args.shift()
     let loc = args.join(' ')
 
@@ -37,17 +40,31 @@ module.exports.run = async (bot, msg, args, prefix) => {
     } else {
       Weather.update({ location: loc }, { where: { userid: msg.author.id } })
     }
-    return msg.channel.send(`Your location has been successfully updated to **${loc}**`)
+    return msg.channel
+      .send(`Your location has been successfully updated to **${loc}**`)
+      .catch(e => msg.channel.send(e.message))
   } else if (msg.mentions.users.size !== 0) {
     let mentionID = msg.mentions.users.first().id
 
     let loc = await Weather.findOne({ where: { userid: mentionID } })
 
-    if (loc) { return util.wSearch(msg, loc.get('location')) } else return msg.channel.send(`No weather data found for user **${msg.mentions.users.first().username}**`)
+    if (loc) {
+      return util.wSearch(msg, loc.get('location'))
+    } else
+      return msg.channel
+        .send(
+          `No weather data found for user **${
+            msg.mentions.users.first().username
+          }**`
+        )
+        .catch(e => msg.channel.send(e.message))
   } else if (args.length === 0) {
     let loc = await Weather.findOne({ where: { userid: msg.author.id } })
     if (loc) return util.wSearch(msg, loc.get('location'))
-    else msg.channel.send(`Type \`${prefix}weather set [location]\` to set a location.`)
+    else
+      msg.channel
+        .send(`Type \`${prefix}weather set [location]\` to set a location.`)
+        .catch(e => msg.channel.send(e.message))
   }
 }
 

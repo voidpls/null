@@ -14,7 +14,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setTitle('🐶 Random Dog')
     .setImage(res.data.url)
 
-  msg.channel.send(embed).catch(e => msg.channel.send(e.error))
+  msg.channel.send(embed).catch(e => msg.channel.send(e.message))
 }
 
 module.exports.help = {

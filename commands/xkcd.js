@@ -10,29 +10,32 @@ module.exports.run = async (bot, msg, args, prefix) => {
   if (args.length === 1 && args[0].toLowerCase() === 'latest') {
     xkcd.latest((err, res) => {
       if (err) console.log(err)
-      embed.setImage(res.img)
+      embed
+        .setImage(res.img)
         .setTitle(`Latest Comic: *${res.title}*`)
         .setDescription(`Alt: *${res.alt}*`)
         .setFooter(`Comic #${res.num}`)
-      msg.channel.send(embed)
+      msg.channel.send(embed).catch(e => msg.channel.send(e.message))
     })
   } else if (args.length === 1 && args[0] === parseInt(args[0], 10)) {
     xkcd.get(args[0], (err, res) => {
       if (err) console.log(err)
-      embed.setImage(res.img)
+      embed
+        .setImage(res.img)
         .setTitle(`Latest Comic: *${res.title}*`)
         .setDescription(`Alt: *${res.alt}*`)
         .setFooter(`Comic #${res.num}`)
-      msg.channel.send(embed)
+      msg.channel.send(embed).catch(e => msg.channel.send(e.message))
     })
   } else {
     xkcd.random((err, res) => {
       if (err) console.log(err)
-      embed.setImage(res.img)
+      embed
+        .setImage(res.img)
         .setTitle(`Random Comic: *${res.title}*`)
         .setDescription(`Alt: *${res.alt}*`)
         .setFooter(`Comic #${res.num}`)
-      msg.channel.send(embed)
+      msg.channel.send(embed).catch(e => msg.channel.send(e.message))
     })
   }
 }
