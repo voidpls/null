@@ -53,17 +53,14 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .addField('Kills', kills, true)
       .addField('K/D', KD, true)
 
-    msg.channel
-      .send(embed)
-      .catch(e => msg.channel.send('**Error: **' + e.message))
-      .catch(e => {
-        console.log(e)
-        msg.channel
-          .send(
-            `**Error:** Player **${username}** on **${platform.toUpperCase()}** not found`
-          )
-          .then(m => m.delete(5000))
-      })
+    msg.channel.send(embed).catch(e => {
+      console.log(e)
+      msg.channel
+        .send(
+          `**Error:** Player **${username}** on **${platform.toUpperCase()}** not found`
+        )
+        .then(m => m.delete(5000))
+    })
 
     function fstat(stats, str) {
       return stats.find(s => s[str])[str]
