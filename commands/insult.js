@@ -18,7 +18,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
   )
   let insult = res.data.insult
 
-  msg.channel.send(insult).catch(e => msg.channel.send(e.message))
+  msg.channel
+    .send(insult)
+    .catch(e => msg.channel.send('**Error:**' + e.message))
 }
 
 module.exports.help = {

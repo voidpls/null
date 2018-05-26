@@ -43,7 +43,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .slice(8)
     embed.setFooter(url)
 
-    msg.channel.send(embed).catch(e => msg.channel.send(e.message))
+    msg.channel
+      .send(embed)
+      .catch(e => msg.channel.send('**Error:**' + e.message))
   })
 }
 

@@ -9,7 +9,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   })
 
   let joke = res.data.joke
-  msg.channel.send(joke).catch(e => msg.channel.send(e.message))
+  msg.channel.send(joke).catch(e => msg.channel.send('**Error:**' + e.message))
 }
 
 module.exports.help = {

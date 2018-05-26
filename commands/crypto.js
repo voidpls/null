@@ -23,7 +23,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
           embed.addField(i, '$' + prices[i]['USD'], true)
         }
 
-        msg.channel.send(embed).catch(e => msg.channel.send(e.message))
+        msg.channel
+          .send(embed)
+          .catch(e => msg.channel.send('**Error:**' + e.message))
       })
   } else {
     let coin = args[0].toUpperCase()
@@ -54,7 +56,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
           .addField(`Supply`, Math.round(pData.SUPPLY).toLocaleString())
           .setFooter(`Last Market: ${pData.LASTMARKET}`)
 
-        msg.channel.send(embed).catch(e => msg.channel.send(e.message))
+        msg.channel
+          .send(embed)
+          .catch(e => msg.channel.send('**Error:**' + e.message))
       })
       .catch(e => {
         console.log(e)

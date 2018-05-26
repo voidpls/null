@@ -17,15 +17,34 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .addField('Users', `**${bot.users.size}**`, true)
 
   pidusage(process.pid, (err, stats) => {
-    if (err) return msg.channel.send(`**Error: ** ${err.error}`)
-    embed.addField('CPU Usage', `**${Math.round(stats.cpu * 10) / 10}**%`, true)
-      .addField('Memory Usage', `**${Math.round(process.memoryUsage().rss / 100000) / 10}**MB`, true)
+    if (err) return msg.channel.send(`**Error: ** ${err.message}`)
+    embed
+      .addField('CPU Usage', `**${Math.round(stats.cpu * 10) / 10}**%`, true)
+      .addField(
+        'Memory Usage',
+        `**${Math.round(process.memoryUsage().rss / 100000) / 10}**MB`,
+        true
+      )
       .addField('Uptime', `${uptime}`, true)
-      .addField('**Node.js**', `[**${nodeVersion}**](https://nodejs.org/)`, true)
-      .addField('**Discord.js**', `[**v${djsPkg.version}**](https://discord.js.org/#/)`, true)
-      .addField('Bot Owner', `${mainacc.username}#${mainacc.discriminator}`, true)
+      .addField(
+        '**Node.js**',
+        `[**${nodeVersion}**](https://nodejs.org/)`,
+        true
+      )
+      .addField(
+        '**Discord.js**',
+        `[**v${djsPkg.version}**](https://discord.js.org/#/)`,
+        true
+      )
+      .addField(
+        'Bot Owner',
+        `${mainacc.username}#${mainacc.discriminator}`,
+        true
+      )
       .addField('Invite', `[here](${config.invite})`, true)
-    msg.channel.send(embed)
+    msg.channel
+      .send(embed)
+      .catch(e => msg.channel.send('**Error:**' + e.message))
   })
 }
 

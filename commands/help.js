@@ -3,7 +3,7 @@ const errors = require('../utils/errors.js')
 const config = require('../config/config.json')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  var categories = Array.from(new Set(bot.commands.map(c => c.help.category)))
+  let categories = Array.from(new Set(bot.commands.map(c => c.help.category)))
 
   if (args.length !== 0) {
     let cmd = args[0].toLowerCase()
@@ -25,7 +25,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .addField('Usage', prefix + cmdFile.help.usage)
         .addField('Aliases', aliases)
 
-      return msg.channel.send(embed).catch(e => msg.channel.send(e.message))
+      return msg.channel
+        .send(embed)
+        .catch(e => msg.channel.send('**Error:**' + e.message))
     } else return errors.noCmd(msg, args[0])
   }
 
@@ -47,7 +49,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     embed.addField(i, cmds, true)
   })
 
-  msg.channel.send(embed).catch(e => msg.channel.send(e.message))
+  msg.channel.send(embed).catch(e => msg.channel.send('**Error:**' + e.message))
 }
 
 module.exports.help = {

@@ -7,7 +7,7 @@ let gay = 'ur mom'
 
 module.exports.run = async (bot, msg, args, prefix) => {
   try {
-    var code = args.join(' ')
+    let code = args.join(' ')
     let evaled = eval(code)
 
     if (typeof evaled !== 'string') {
