@@ -25,7 +25,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
         msg.channel
           .send(embed)
-          .catch(e => msg.channel.send('**Error:**' + e.message))
+          .catch(e => msg.channel.send('**Error: **' + e.message))
       })
   } else {
     let coin = args[0].toUpperCase()
@@ -58,7 +58,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
         msg.channel
           .send(embed)
-          .catch(e => msg.channel.send('**Error:**' + e.message))
+          .catch(e => msg.channel.send('**Error: **' + e.message))
       })
       .catch(e => {
         console.log(e)

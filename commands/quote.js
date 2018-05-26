@@ -3,7 +3,9 @@ const quotes = require('../config/quotes.json')
 module.exports.run = async (bot, msg, args, prefix) => {
   let quote = quotes[Math.floor(Math.random() * quotes.length)]
   quote = `"${quote.quoteText}" \n\n*- ${quote.quoteAuthor}*`
-  msg.channel.send(quote).catch(e => msg.channel.send(e.message))
+  msg.channel
+    .send(quote)
+    .catch(e => msg.channel.send('**Error:** ' + e.message))
 }
 
 module.exports.help = {

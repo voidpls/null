@@ -9,7 +9,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   else
     msg.channel
       .send(`Could not find user **${args[0]}**. Please mention the user.`)
-      .catch(e => msg.channel.send('**Error:**' + e.message))
+      .catch(e => msg.channel.send('**Error: **' + e.message))
 }
 
 module.exports.help = {

@@ -24,7 +24,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setFooter(`Requested by ${msg.author.username}`)
     .setTimestamp()
 
-  msg.channel.send(embed).catch(e => msg.channel.send(e.message))
+  msg.channel
+    .send(embed)
+    .catch(e => msg.channel.send('**Error:** ' + e.message))
 }
 
 module.exports.help = {

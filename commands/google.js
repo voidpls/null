@@ -20,7 +20,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setDescription(`Search results for: **${query}**`)
 
   google(query, function(err, res) {
-    if (err) return msg.channel.send('**Error:** ' + err.message)
+    if (err) return msg.channel.send('**Error: ** ' + err.message)
     let count = 0
     let count2 = 0
 
@@ -45,7 +45,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
     msg.channel
       .send(embed)
-      .catch(e => msg.channel.send('**Error:**' + e.message))
+      .catch(e => msg.channel.send('**Error: **' + e.message))
   })
 }
 

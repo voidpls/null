@@ -92,7 +92,7 @@ bot.on('ready', async () => {
   )
 
   // set bot status
-  bot.user.setActivity(`${bot.guilds.length} servers | >help`, {
+  bot.user.setActivity(`${bot.guilds.size} servers | >help`, {
     type: 'PLAYING'
   })
   bot.user.setStatus('online')

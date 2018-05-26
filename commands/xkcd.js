@@ -15,7 +15,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .setTitle(`Latest Comic: *${res.title}*`)
         .setDescription(`Alt: *${res.alt}*`)
         .setFooter(`Comic #${res.num}`)
-      msg.channel.send(embed).catch(e => msg.channel.send(e.message))
+      msg.channel
+        .send(embed)
+        .catch(e => msg.channel.send('**Error:** ' + e.message))
     })
   } else if (args.length === 1 && args[0] === parseInt(args[0], 10)) {
     xkcd.get(args[0], (err, res) => {
@@ -25,7 +27,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .setTitle(`Latest Comic: *${res.title}*`)
         .setDescription(`Alt: *${res.alt}*`)
         .setFooter(`Comic #${res.num}`)
-      msg.channel.send(embed).catch(e => msg.channel.send(e.message))
+      msg.channel
+        .send(embed)
+        .catch(e => msg.channel.send('**Error:** ' + e.message))
     })
   } else {
     xkcd.random((err, res) => {
@@ -35,7 +39,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .setTitle(`Random Comic: *${res.title}*`)
         .setDescription(`Alt: *${res.alt}*`)
         .setFooter(`Comic #${res.num}`)
-      msg.channel.send(embed).catch(e => msg.channel.send(e.message))
+      msg.channel
+        .send(embed)
+        .catch(e => msg.channel.send('**Error:** ' + e.message))
     })
   }
 }

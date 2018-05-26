@@ -17,7 +17,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       `🛰 The **International Space Station** is currently located at:`,
       file
     )
-    .catch(e => msg.channel.send('**Error:**' + e.message))
+    .catch(e => msg.channel.send('**Error: **' + e.message))
 }
 
 let valBetween = (v, min, max) => {

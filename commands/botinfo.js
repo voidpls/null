@@ -44,7 +44,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .addField('Invite', `[here](${config.invite})`, true)
     msg.channel
       .send(embed)
-      .catch(e => msg.channel.send('**Error:**' + e.message))
+      .catch(e => msg.channel.send('**Error: **' + e.message))
   })
 }
 

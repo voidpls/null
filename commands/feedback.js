@@ -27,7 +27,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .addField('Server', guild)
     .setTimestamp()
 
-  channel.send(embed).catch(e => msg.channel.send('**Error:**' + e.message))
+  channel.send(embed).catch(e => msg.channel.send('**Error: **' + e.message))
   msg.react('335548356552294410')
 }
 

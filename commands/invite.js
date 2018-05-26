@@ -3,7 +3,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
   msg.channel
     .send(message)
-    .catch(e => msg.channel.send('**Error:**' + e.message))
+    .catch(e => msg.channel.send('**Error: **' + e.message))
 }
 
 module.exports.help = {

@@ -27,7 +27,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
       return msg.channel
         .send(embed)
-        .catch(e => msg.channel.send('**Error:**' + e.message))
+        .catch(e => msg.channel.send('**Error: **' + e.message))
     } else return errors.noCmd(msg, args[0])
   }
 
@@ -49,7 +49,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
     embed.addField(i, cmds, true)
   })
 
-  msg.channel.send(embed).catch(e => msg.channel.send('**Error:**' + e.message))
+  msg.channel
+    .send(embed)
+    .catch(e => msg.channel.send('**Error: **' + e.message))
 }
 
 module.exports.help = {

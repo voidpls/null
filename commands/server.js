@@ -65,7 +65,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
   msg.channel
     .send(`🔎 Server Info for **${guild.name}**:`, embed)
-    .catch(e => msg.channel.send(e.message))
+    .catch(e => msg.channel.send('**Error:** ' + e.message))
 }
 
 module.exports.help = {

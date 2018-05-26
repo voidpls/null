@@ -20,7 +20,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
   msg.channel
     .send(insult)
-    .catch(e => msg.channel.send('**Error:**' + e.message))
+    .catch(e => msg.channel.send('**Error: **' + e.message))
 }
 
 module.exports.help = {

@@ -29,7 +29,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .send(
       `<:check:335544753443831810> Prefix has been updated to **${args[0]}**`
     )
-    .catch(e => msg.channel.send('**Error:**' + e.message))
+    .catch(e => msg.channel.send('**Error:** ' + e.message))
 }
 
 module.exports.help = {

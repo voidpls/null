@@ -13,7 +13,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
             json.permalink
           }**`
         )
-      msg.channel.send(urbanMsg(json, args))
+      msg.channel
+        .send(urbanMsg(json, args))
+        .catch(e => msg.channel.send('**Error:** ' + e.message))
     })
   } else {
     urban.random().first(json => {
@@ -25,7 +27,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
         )
       msg.channel
         .send(urbanMsg(json, ['None']))
-        .catch(e => msg.channel.send(e.message))
+        .catch(e => msg.channel.send('**Error:** ' + e.message))
     })
   }
 

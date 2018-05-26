@@ -12,7 +12,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setTitle('🐦 Random Bird')
     .setImage(res.data[0])
 
-  msg.channel.send(embed).catch(e => msg.channel.send('**Error:**' + e.message))
+  msg.channel
+    .send(embed)
+    .catch(e => msg.channel.send('**Error: **' + e.message))
 }
 
 module.exports.help = {

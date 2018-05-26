@@ -27,39 +27,59 @@ const Tags = sequelize.define('tags', {
 })
 
 Tags.sync({
-//  force: true
+  //  force: true
 })
 
 module.exports.run = async (bot, msg, args, prefix) => {
   // if no tag specified
-  if (args.length === 0) return msg.channel.send(`**Error:** Please specify a tag or function! **\`${prefix}help tags\`** for more info.`)
-  // get tag
+  if (args.length === 0)
+    return msg.channel.send(
+      `**Error:** Please specify a tag or function! **\`${prefix}help tags\`** for more info.`
+    )
   else if (args.length === 1 && args[0].toLowerCase() !== 'list') {
+    // get tag
     let tagname = args[0].toLowerCase()
-    let tag = await Tags.findOne({ where: { tagname: `${msg.guild.id} ${tagname}` } })
-    if (!tag) return msg.channel.send(`**Error:** Could not find server tag **${args[0]}**`)
+    let tag = await Tags.findOne({
+      where: { tagname: `${msg.guild.id} ${tagname}` }
+    })
+    if (!tag)
+      return msg.channel.send(
+        `**Error:** Could not find server tag **${args[0]}**`
+      )
     else {
       tag.increment('uses')
       msg.channel.send(tag.get('content'))
     }
-  }
-  // message includes function
-  else {
+  } else {
+    // message includes function
     // add tag func
     if (args[0].toLowerCase() === 'add' || args[0].toLowerCase() === 'create') {
-      if (!args[1]) return msg.channel.send(`**Error:** Specify a tag name to add!`)
+      if (!args[1])
+        return msg.channel.send(`**Error:** Specify a tag name to add!`)
 
       let tagname = args[1].toLowerCase()
-      let tag = await Tags.findOne({ where: { tagname: `${msg.guild.id} ${tagname}` } })
+      let tag = await Tags.findOne({
+        where: { tagname: `${msg.guild.id} ${tagname}` }
+      })
 
-      if (tag) return msg.channel.send(`**Error:** The tag **\`${tagname.split(' ')[1]}\`** already exists!`)
-      if (!args[2]) return msg.channel.send(`**Error:** Specify the tag's content to add!`)
+      if (tag)
+        return msg.channel.send(
+          `**Error:** The tag **\`${tagname.split(' ')[1]}\`** already exists!`
+        )
+      if (!args[2])
+        return msg.channel.send(`**Error:** Specify the tag's content to add!`)
 
       args.splice(0, 2)
       let tagcontent = tFormat(args.join(' '))
 
-      if (tagname.length > 32) return msg.channel.send(`**Error:** The tag name cannot exceed **32 characters**!`)
-      if (tagcontent.length > 1950) return msg.channel.send(`**Error:** The tag text cannot exceed **1950 characters**!`)
+      if (tagname.length > 32)
+        return msg.channel.send(
+          `**Error:** The tag name cannot exceed **32 characters**!`
+        )
+      if (tagcontent.length > 1950)
+        return msg.channel.send(
+          `**Error:** The tag text cannot exceed **1950 characters**!`
+        )
       else {
         let newtag = await Tags.create({
           tagname: `${msg.guild.id} ${tagname}`,
@@ -67,53 +87,103 @@ module.exports.run = async (bot, msg, args, prefix) => {
           userid: msg.author.id
         })
 
-        return msg.channel.send(`<:check:335544753443831810> The tag **\`${newtag.get('tagname').split(' ')[1]}\`** has been successfully created.`)
+        return msg.channel.send(
+          `<:check:335544753443831810> The tag **\`${
+            newtag.get('tagname').split(' ')[1]
+          }\`** has been successfully created.`
+        )
       }
     }
 
     // delete tag func
-    if (args[0].toLowerCase() === 'delete' || args[0].toLowerCase() === 'remove') {
-      if (!args[1]) return msg.channel.send(`**Error:** Specify a tag name to delete!`)
+    if (
+      args[0].toLowerCase() === 'delete' ||
+      args[0].toLowerCase() === 'remove'
+    ) {
+      if (!args[1])
+        return msg.channel.send(`**Error:** Specify a tag name to delete!`)
       let tagname = args[1].toLowerCase()
 
-      let tag = await Tags.findOne({ where: { tagname: `${msg.guild.id} ${tagname}` } })
-      if (!tag) return msg.channel.send(`**Error:** The tag **\`${args[1]}\`** doesn't exist!`)
+      let tag = await Tags.findOne({
+        where: { tagname: `${msg.guild.id} ${tagname}` }
+      })
+      if (!tag)
+        return msg.channel.send(
+          `**Error:** The tag **\`${args[1]}\`** doesn't exist!`
+        )
 
-      if (tag.get('userid') !== msg.author.id) return msg.channel.send(`**Error:** You do not own the tag **\`${tagname}\`**!`)
+      if (tag.get('userid') !== msg.author.id)
+        return msg.channel.send(
+          `**Error:** You do not own the tag **\`${tagname}\`**!`
+        )
       else {
         Tags.destroy({ where: { tagname: `${msg.guild.id} ${tagname}` } })
-        return msg.channel.send(`<:check:335544753443831810> The tag **\`${tag.get('tagname').split(' ')[1]}\`** has been successfully deleted.`)
+        return msg.channel.send(
+          `<:check:335544753443831810> The tag **\`${
+            tag.get('tagname').split(' ')[1]
+          }\`** has been successfully deleted.`
+        )
       }
     }
 
     // edit tag func
     if (args[0].toLowerCase() === 'edit') {
-      if (!args[1]) return msg.channel.send(`**Error:** Specify a tag name to edit!`)
+      if (!args[1])
+        return msg.channel.send(`**Error:** Specify a tag name to edit!`)
       let tagname = args[1].toLowerCase()
 
-      let tag = await Tags.findOne({ where: { tagname: `${msg.guild.id} ${tagname}` } })
-      if (!tag) return msg.channel.send(`**Error:** The tag **\`${args[1]}\`** doesn't exist!`)
+      let tag = await Tags.findOne({
+        where: { tagname: `${msg.guild.id} ${tagname}` }
+      })
+      if (!tag)
+        return msg.channel.send(
+          `**Error:** The tag **\`${args[1]}\`** doesn't exist!`
+        )
 
-      if (tag.get('userid') !== msg.author.id) return msg.channel.send(`**Error:** You do not own the tag **\`${tagname}\`**!`)
+      if (tag.get('userid') !== msg.author.id)
+        return msg.channel.send(
+          `**Error:** You do not own the tag **\`${tagname}\`**!`
+        )
       else {
-        if (!args[2]) return msg.channel.send(`**Error:** Specify what you want **\`${args[1]}\`**'s new content to be!`)
+        if (!args[2])
+          return msg.channel.send(
+            `**Error:** Specify what you want **\`${
+              args[1]
+            }\`**'s new content to be!`
+          )
 
         args.splice(0, 2)
         let tagcontent = tFormat(args.join(' '))
 
-        if (tagcontent.length > 1950) return msg.channel.send(`**Error:** The tag text cannot exceed **1950 characters**!`)
+        if (tagcontent.length > 1950)
+          return msg.channel.send(
+            `**Error:** The tag text cannot exceed **1950 characters**!`
+          )
 
-        Tags.update({content: tagcontent}, {where: {tagname: `${msg.guild.id} ${tagname}`}})
-        return msg.channel.send(`<:check:335544753443831810> The tag **\`${tag.get('tagname').split(' ')[1]}\`** has been successfully edited.`)
+        Tags.update(
+          { content: tagcontent },
+          { where: { tagname: `${msg.guild.id} ${tagname}` } }
+        )
+        return msg.channel.send(
+          `<:check:335544753443831810> The tag **\`${
+            tag.get('tagname').split(' ')[1]
+          }\`** has been successfully edited.`
+        )
       }
     }
 
     // get tag info
     if (args[0].toLowerCase() === 'info') {
-      if (!args[1]) return msg.channel.send(`**Error:** Specify a tag name to view info!`)
+      if (!args[1])
+        return msg.channel.send(`**Error:** Specify a tag name to view info!`)
       let tagname = args[1].toLowerCase()
-      let tag = await Tags.findOne({ where: { tagname: `${msg.guild.id} ${tagname}` } })
-      if (!tag) return msg.channel.send(`**Error:** The tag **\`${args[1]}\`** doesn't exist!`)
+      let tag = await Tags.findOne({
+        where: { tagname: `${msg.guild.id} ${tagname}` }
+      })
+      if (!tag)
+        return msg.channel.send(
+          `**Error:** The tag **\`${args[1]}\`** doesn't exist!`
+        )
       else {
         let username = `User Left Guild`
         if (bot.users.get(tag.get('userid'))) {
@@ -128,12 +198,14 @@ module.exports.run = async (bot, msg, args, prefix) => {
           .setColor(config.colors.white)
           .setDescription(
             `☉ Tag Owner: **${username}**\n` +
-          `☉ Usage Count: **${tag.get('uses')}**\n` +
-          `☉ Creation: **${createdTS}**\n` +
-          `☉ Last Update: **${updatedTS}**`
+              `☉ Usage Count: **${tag.get('uses')}**\n` +
+              `☉ Creation: **${createdTS}**\n` +
+              `☉ Last Update: **${updatedTS}**`
           )
         //  console.log(tag.get('tagname'),tag.get('userid'), , tag.get('createdAt'))
-        msg.channel.send(`📋 Info for tag **${tagname}**:`, embed)
+        msg.channel
+          .send(`📋 Info for tag **${tagname}**:`, embed)
+          .catch(e => msg.channel.send('**Error:** ' + e.message))
       }
     }
     // list user tags
@@ -141,35 +213,58 @@ module.exports.run = async (bot, msg, args, prefix) => {
       if (args.length >= 2) {
         let user = util.getUserFromArg(bot, msg, args[1])
 
-        if (!user) return msg.channel.send(`**Error:** User **${args[1]}** not found!`)
+        if (!user)
+          return msg.channel.send(`**Error:** User **${args[1]}** not found!`)
         else {
           let tagArr = await getTags(user, msg)
-          if (tagArr.length === 0) return msg.channel.send(`**Error:** **${user.username}#${user.discriminator}** does now own any tags on **${msg.guild.name}**.`)
-          tagArr = tagArr.map(tag => tag.dataValues.tagname.split(' ')[1]).reverse()
+          if (tagArr.length === 0)
+            return msg.channel.send(
+              `**Error:** **${user.username}#${
+                user.discriminator
+              }** does now own any tags on **${msg.guild.name}**.`
+            )
+          tagArr = tagArr
+            .map(tag => tag.dataValues.tagname.split(' ')[1])
+            .reverse()
 
           let embed = new Discord.RichEmbed()
             .setColor(config.colors.white)
             .setDescription(tagArr.join(' | '))
 
-          msg.channel.send(`📋 Tag list for **${user.username}#${user.discriminator}**:\n`, embed)
+          msg.channel
+            .send(
+              `📋 Tag list for **${user.username}#${user.discriminator}**:\n`,
+              embed
+            )
+            .catch(e => msg.channel.send('**Error:** ' + e.message))
         }
       } else {
         let user = msg.author
         let tagArr = await getTags(user, msg)
-        if (tagArr.length === 0) return msg.channel.send(`**Error:** **${user.username}#${user.discriminator}** does now own any tags on **${msg.guild.name}**.`)
-        tagArr = tagArr.map(tag => tag.dataValues.tagname.split(' ')[1]).reverse()
+        if (tagArr.length === 0)
+          return msg.channel.send(
+            `**Error:** **${user.username}#${
+              user.discriminator
+            }** does now own any tags on **${msg.guild.name}**.`
+          )
+        tagArr = tagArr
+          .map(tag => tag.dataValues.tagname.split(' ')[1])
+          .reverse()
 
         let embed = new Discord.RichEmbed()
           .setColor(config.colors.white)
           .setDescription(tagArr.join(' | '))
 
-        msg.channel.send(`📋 Tag list for **${user.username}#${user.discriminator}**:\n`, embed)
+        msg.channel.send(
+          `📋 Tag list for **${user.username}#${user.discriminator}**:\n`,
+          embed
+        )
       }
     }
   }
 }
 
-function tFormat (txt) {
+function tFormat(txt) {
   txt = '\u180E' + txt
   txt = txt
     .replace('@everyone', '@\u200beveryone')
@@ -180,12 +275,14 @@ function tFormat (txt) {
   return txt
 }
 
-async function getTags (user, msg) {
+async function getTags(user, msg) {
   let usertags = await Tags.findAll({
     where: { userid: user.id },
     attributes: ['tagname']
   })
-  let tagArr = usertags.filter(tag => tag.dataValues.tagname.split(' ')[0] === msg.guild.id)
+  let tagArr = usertags.filter(
+    tag => tag.dataValues.tagname.split(' ')[0] === msg.guild.id
+  )
 
   return tagArr
 }
