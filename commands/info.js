@@ -52,25 +52,33 @@ module.exports.run = async (bot, msg, args, prefix) => {
     }
   }
 
+  let desc =
+    `☉ Account Type: **${accType}**\n` +
+    `☉ User ID: **${user.id}**\n` +
+    `☉ Status: **${statusMap[status]}${status.toUpperCase()}**\n` +
+    `☉ Shared Servers: **${serverCt}**\n` +
+    `☉ Nickname: **${nick}**\n` +
+    `☉ Roles: **${roles}** [Top - **${topRole}**]\n` +
+    `☉ Join Position: **${joinPos}**\n` +
+    `☉ Server Join: **${joinTime}**\n` +
+    `☉ Account Created: **${format(user.createdTimestamp)}**`
+
+  let text = `🔎 User Info for **${user.username}#${user.discriminator}**:`
+  let botMem = msg.guild.member(bot.user)
+  let botPerms = msg.channel.permissionsFor(botMem)
+
   let embed = new Discord.RichEmbed()
     .setColor(color)
     .setThumbnail(avatar)
 
-    .setDescription(
-      `☉ Account Type: **${accType}**\n` +
-        `☉ User ID: **${user.id}**\n` +
-        `☉ Status: **${statusMap[status]}${status.toUpperCase()}**\n` +
-        `☉ Shared Servers: **${serverCt}**\n` +
-        `☉ Nickname: **${nick}**\n` +
-        `☉ Roles: **${roles}**\n` +
-        `☉ Top Role: **${topRole}**\n` +
-        `☉ Join Position: **${joinPos}**\n` +
-        `☉ Server Join: **${joinTime}**\n` +
-        `☉ Account Created: **${format(user.createdTimestamp)}**`
-    )
+    .setDescription(desc)
+
+  if (!botPerms.has('EMBED_LINKS')) {
+    text = desc
+  }
 
   msg.channel
-    .send(`🔎 User Info for **${user.username}#${user.discriminator}**:`, embed)
+    .send(text, embed)
     .catch(e => msg.channel.send('**Error: **' + e.message))
 }
 

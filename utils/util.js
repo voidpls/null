@@ -2,6 +2,13 @@ const Discord = require('discord.js')
 const config = require('../config/config.json')
 const errors = require('../utils/errors.js')
 
+// No missing perm log
+module.exports.delCatch = e => {
+  let noPermErr = 'Missing Permissions'
+  if (e.message === noPermErr) return
+  else return console.log(e)
+}
+
 // get member function
 module.exports.getMember = (msg, args) => {
   let user = msg.guild.member(

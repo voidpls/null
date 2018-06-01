@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const fs = require('fs')
+const util = require('./utils/util.js')
 
 const config = require('./config/config.json')
 const prefixFile = './config/prefix.json'
@@ -148,9 +149,7 @@ bot.on('message', async msg => {
     if (cooldown.has(msg.author.id)) {
       // check if user is in 2nd cooldown set
       if (cooldown2.has(msg.author.id)) {
-        return setTimeout(() => {
-          msg.delete()
-        }, 3000)
+        msg.delete(3000).catch(e => util.delCatch(e))
       }
       // add user to 2nd cooldown set
       cooldown2.add(msg.author.id)
@@ -162,10 +161,8 @@ bot.on('message', async msg => {
           }**.`
         )
         .then(m => {
-          setTimeout(() => {
-            m.delete()
-            msg.delete()
-          }, 3000)
+          m.delete(3000)
+          msg.delete(3000).catch(e => util.delCatch(e))
         })
     }
 
@@ -187,9 +184,7 @@ bot.on('message', async msg => {
         if (cooldown.has(msg.author.id)) {
           // check if user is in 2nd cooldown set
           if (cooldown2.has(msg.author.id)) {
-            return setTimeout(() => {
-              msg.delete()
-            }, 3000)
+            msg.delete(3000).catch(e => util.delCatch(e))
           }
           // add user to 2nd cooldown set
           cooldown2.add(msg.author.id)
@@ -201,10 +196,8 @@ bot.on('message', async msg => {
               }**.`
             )
             .then(m => {
-              setTimeout(() => {
-                m.delete()
-                msg.delete()
-              }, 3000)
+              m.delete(3000)
+              msg.delete(3000).catch(e => util.delCatch(e))
             })
         }
 

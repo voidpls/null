@@ -1,40 +1,36 @@
+const util = require('./util.js')
+
 // No perms error
 module.exports.noPerms = async (msg, perm) => {
   msg.channel
     .send(`**Error:** You need the **${perm}** perm to use this command`)
     .then(m => {
       m.delete(5000)
-      msg.delete()
+      msg.delete(5000).catch(e => util.delCatch(e))
     })
 }
 
 module.exports.noPerms2 = async (msg, perm) => {
   msg.channel.send(`**Error:** I don't have the **${perm}** perm`).then(m => {
     m.delete(5000)
-    msg.delete()
+    msg.delete(5000).catch(e => util.delCatch(e))
   })
 }
 
 // Command not found error
 module.exports.noCmd = async (msg, cmd) => {
-  msg.channel
-    .send(`**Error:** Command **${cmd}** not found`)
-    .then(m => m.delete(5000))
-    .then(m => {
-      m.delete(5000)
-      msg.delete()
-    })
+  msg.channel.send(`**Error:** Command **${cmd}** not found`).then(m => {
+    msg.delete(5000).catch(e => util.delCatch(e))
+    m.delete(5000)
+  })
 }
 
 // Definition not found error
 module.exports.notFound = async (msg, def) => {
-  msg.channel
-    .send(`**Error:** Definition for **${def}** not found`)
-    .then(m => m.delete(5000))
-    .then(m => {
-      m.delete(5000)
-      msg.delete()
-    })
+  msg.channel.send(`**Error:** Definition for **${def}** not found`).then(m => {
+    m.delete(5000)
+    msg.delete(5000).catch(e => util.delCatch(e))
+  })
 }
 
 // Weather data not found
@@ -43,7 +39,7 @@ module.exports.weather = async (msg, loc) => {
     .send(`**Error:** Could not retreive weather data for **\`${loc}\`**`)
     .then(m => {
       m.delete(5000)
-      msg.delete()
+      msg.delete(5000).catch(e => util.delCatch(e))
     })
 }
 
@@ -53,7 +49,7 @@ module.exports.specifyUser = async (msg, prefix) => {
     .send(`**Usage: \`${prefix}fortnite [username] [xbl/psn]\`**`)
     .then(m => {
       m.delete(5000)
-      msg.delete(5000)
+      msg.delete(5000).catch(e => util.delCatch(e))
     })
 }
 

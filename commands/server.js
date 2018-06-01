@@ -36,35 +36,41 @@ module.exports.run = async (bot, msg, args, prefix) => {
   }
 
   let owner = guild.owner.user
+  let botMem = msg.guild.member(bot.user)
+  let botPerms = msg.channel.permissionsFor(botMem)
 
   function format(timestamp) {
     return moment.unix(timestamp / 1000).format('MMMM Do, YYYY hh:mma')
   }
 
+  let desc =
+    `☉ Server Owner: **${owner.username}#${owner.discriminator}**\n` +
+    `☉ Server ID: **${guild.id}**\n` +
+    `☉ Server Region: **${guild.region}**\n` +
+    `☉ Verification Level: **${verificationLvl} | ${veriName}**\n` +
+    `☉ Members: **${members.size}** [ **${members.size -
+      bots}** Users | **${bots}** Bots ]\n` +
+    `     <:online:438877428807368705> **${onlineUsers}** Online | <:offline:313956277237710868> **${members.size -
+      onlineUsers}** Offline\n` +
+    `☉ Channels: **${
+      channels.size
+    }** [ **${tChannels}** Text | **${vChannels}** Voice ]\n` +
+    `☉ Roles: **${roles}**\n` +
+    `☉ Emotes: **${emotes}**\n` +
+    `☉ Server Created: **${format(guildCreate)}**`
+
+  let text = `🔎 Server Info for **${guild.name}**:`
+
   let embed = new Discord.RichEmbed()
     .setColor(color)
     .setThumbnail(icon)
+    .setDescription(desc)
 
-    .setDescription(
-      `☉ Server Owner: **${owner.username}#${owner.discriminator}**\n` +
-        `☉ Server ID: **${guild.id}**\n` +
-        `☉ Server Region: **${guild.region}**\n` +
-        `☉ Verification Level: **${verificationLvl} | ${veriName}**\n` +
-        `☉ Members: **${members.size}** [ **${members.size -
-          bots}** Users | **${bots}** Bots ]\n` +
-        `     <:online:438877428807368705> **${onlineUsers}** Online\n` +
-        `     <:offline:313956277237710868> **${members.size -
-          onlineUsers}** Offline\n` +
-        `☉ Channels: **${
-          channels.size
-        }** [ **${tChannels}** Text | **${vChannels}** Voice ]\n` +
-        `☉ Roles: **${roles}**\n` +
-        `☉ Emotes: **${emotes}**\n` +
-        `☉ Server Created: **${format(guildCreate)}**`
-    )
-
+  if (!botPerms.has('EMBED_LINKS')) {
+    text = desc
+  }
   msg.channel
-    .send(`🔎 Server Info for **${guild.name}**:`, embed)
+    .send(text, embed)
     .catch(e => msg.channel.send('**Error:** ' + e.message))
 }
 
