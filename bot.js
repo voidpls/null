@@ -144,12 +144,23 @@ bot.on('message', async msg => {
   if (blacklist[msg.author.id]) return
 
   let cmdFile = bot.commands.get(cmd)
-  if (cmdFile) {
+
+  if (cmdFile) return runCMD(cmdFile)
+  else if (bot.devCommands.get(cmd) && msg.author.id === config.mainacc)
+    return bot.devCommands.get(cmd).run(bot, msg, args, prefix)
+  else {
+    //if alias matches
+    bot.commands.forEach(c => {
+      if (c.help.aliases.includes(cmd)) return runCMD(c)
+    })
+  }
+
+  function runCMD(c) {
     // check if user is in cooldown set
     if (cooldown.has(msg.author.id)) {
       // check if user is in 2nd cooldown set
       if (cooldown2.has(msg.author.id)) {
-        msg.delete(3000).catch(e => util.delCatch(e))
+        return msg.delete(3000).catch(e => util.delCatch(e))
       }
       // add user to 2nd cooldown set
       cooldown2.add(msg.author.id)
@@ -173,44 +184,9 @@ bot.on('message', async msg => {
       cooldown2.delete(msg.author.id)
     }, CDsecs * 1000)
     // run command if not in the cooldown set
-    cmdFile.run(bot, msg, args, prefix)
-  } else if (bot.devCommands.get(cmd) && msg.author.id === config.mainacc)
-    bot.devCommands.get(cmd).run(bot, msg, args, prefix)
-  else {
-    // if alias matches
-    bot.commands.forEach(c => {
-      if (c.help.aliases.includes(cmd)) {
-        // check if user is in cooldown set
-        if (cooldown.has(msg.author.id)) {
-          // check if user is in 2nd cooldown set
-          if (cooldown2.has(msg.author.id)) {
-            msg.delete(3000).catch(e => util.delCatch(e))
-          }
-          // add user to 2nd cooldown set
-          cooldown2.add(msg.author.id)
-          // warn + delete messages
-          return msg.channel
-            .send(
-              `Please wait **3** seconds between commands, **${
-                msg.author.username
-              }**.`
-            )
-            .then(m => {
-              m.delete(3000)
-              msg.delete(3000).catch(e => util.delCatch(e))
-            })
-        }
-
-        // add user to 1st cooldown set
-        cooldown.add(msg.author.id)
-        setTimeout(() => {
-          cooldown.delete(msg.author.id)
-          cooldown2.delete(msg.author.id)
-        }, CDsecs * 1000)
-        // run command if not in the cooldown set
-        c.run(bot, msg, args, prefix)
-      }
-    })
+    let memUsed = Math.round(process.memoryUsage().rss / 1000000)
+    console.log(`${memUsed} MB - ${c.help.name} ran`)
+    return c.run(bot, msg, args, prefix)
   }
 })
 
