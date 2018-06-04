@@ -43,8 +43,11 @@ module.exports.run = async (bot, msg, args, prefix) => {
     return msg.channel
       .send(`Your location has been successfully updated to **${loc}**`)
       .catch(e => msg.channel.send('**Error:** ' + e.message))
-  } else if (msg.mentions.users.size !== 0) {
-    let mentionID = msg.mentions.users.first().id
+  } else if (
+    msg.mentions.users.size !== 0 &&
+    msg.mentions.users.last().id !== bot.user.id
+  ) {
+    let mentionID = msg.mentions.users.last().id
 
     let loc = await Weather.findOne({ where: { userid: mentionID } })
 
@@ -54,7 +57,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       msg.channel
         .send(
           `No weather data found for user **${
-            msg.mentions.users.first().username
+            msg.mentions.users.last().username
           }**`
         )
         .catch(e => msg.channel.send('**Error:** ' + e.message))
