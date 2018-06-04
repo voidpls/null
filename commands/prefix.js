@@ -12,9 +12,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let prefixes = JSON.parse(fs.readFileSync('./config/prefix.json', 'utf8'))
 
   if (!args[0])
-    return msg.channel
-      .send(`**Usage:** \`${prefix}prefix [new prefix]\``)
-      .then(m => m.delete(5000))
+    return msg.channel.send(
+      `My current prefix is **${prefix}** \n\n**Usage:** \`${prefix}prefix [new prefix]\``
+    )
   prefixes[msg.guild.id] = args[0]
 
   fs.writeFile(

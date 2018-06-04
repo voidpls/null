@@ -1,8 +1,7 @@
 const Discord = require('discord.js')
 
-module.exports = async (bot) => {
+module.exports = async bot => {
   bot.on('guildCreate', async guild => {
-
     let gID = '297191838983520257'
     let cID = '447206453749612545'
 
@@ -21,9 +20,9 @@ module.exports = async (bot) => {
     let color = '#50C878'
     let desc = 'Bot to Member ratio is **'
     let members = await guild.members.filter(m => !m.user.bot).size
-    let bots = await guild.members.size - members
+    let bots = (await guild.members.size) - members
 
-    let ratio = Math.floor((bots / members)*100).toFixed(1)
+    let ratio = Math.floor(bots / members * 100).toFixed(1)
     if (ratio > 75) {
       desc = '**Might be a bot farm!** Bot to Member ratio is **'
       color = '#ffcf3f'
@@ -38,11 +37,17 @@ module.exports = async (bot) => {
       .setDescription(desc + ratio + '%**')
       .addField('Members:', members, true)
       .addField('Bots:', bots, true)
-      .addField('Owner:', `${owner.username}#${owner.discriminator} | ${owner.id}`)
+      .addField(
+        'Owner:',
+        `${owner.username}#${owner.discriminator} | ${owner.id}`
+      )
       .addField('Server ID:', guild.id)
       .setFooter(`I am now in ${bot.guilds.size} servers`)
       .setTimestamp()
 
     channel.send(embed)
+    bot.user.setActivity(`${bot.guilds.size} servers | >help`, {
+      type: 'PLAYING'
+    })
   })
 }

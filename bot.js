@@ -105,33 +105,42 @@ bot.on('ready', async () => {
 // message event handler
 bot.on('message', async msg => {
   // ignore bots
-  if (msg.author.bot) return
-  // ignore dms
-  if (msg.channel.type === 'dm') return
+  if (msg.author.bot || msg.channel.type === 'dm') return
+
+  /*************************************************/
+  /*                   DEV MODE                    */
+  if (msg.guild.id !== '297191838983520257') return
+  /*************************************************/
 
   // parse prefix file
   let prefixes = JSON.parse(fs.readFileSync(prefixFile, 'utf8'))
-  if (!prefixes[msg.guild.id]) {
-    prefixes[msg.guild.id] = config.prefix
-  }
 
   let blacklist = JSON.parse(fs.readFileSync(blacklistFile, 'utf8'))
 
   // set prefix
-  let prefix = prefixes[msg.guild.id]
+  let prefix = prefixes[msg.guild.id] || config.prefix
+  let preLen = prefix.length
+
+  // array of words in the message
+
+  if (msg.content.startsWith(`<@${bot.user.id}>`))
+    preLen = `<@${bot.user.id}>`.length + 1
+  else if (msg.content.startsWith(`<@!${bot.user.id}>`))
+    preLen = `<@!${bot.user.id}>`.length + 1
+  else if (!msg.content.startsWith(prefix)) return
 
   /************************************************************/
   /** * Code below this line will ignore messages w/o prefix ***/
   /************************************************************/
 
-  if (!msg.content.startsWith(prefix)) return
-
-  // array of words in the message
-  let args = msg.content.split(' ').slice(1)
+  let args = msg.content
+    .slice(preLen)
+    .split(' ')
+    .slice(1)
   // pulls command from message
   let cmd = msg.content
+    .slice(preLen)
     .split(' ')[0]
-    .slice(prefix.length)
     .toLowerCase()
 
   // TEMPORARY
