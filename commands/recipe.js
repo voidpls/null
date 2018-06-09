@@ -80,13 +80,13 @@ module.exports.run = async (bot, msg, args, prefix) => {
           nEmbed
             .addField('Recipe Link', `**${newR.url}**`)
             .setFooter('Powered by Edamam Recipe Search')
-          message
-            .edit(nEmbed)
+          message.delete()
+          msg.channel
+            .send(nEmbed)
             .catch(e => msg.channel.send(`**Error:** ${e.message}`))
         })
         .catch(e => {
           msg.channel.send("Time's up, selection closed.")
-          message.delete()
         })
     })
 }
