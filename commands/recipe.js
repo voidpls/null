@@ -6,7 +6,7 @@ let apikey = config.api_keys.edamam
 let appID = '476d170f'
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  if (!args[0]) return //add random func later ;)
+  if (!args[0]) return msg.channel.send(`**Usage:** ${prefix}recipe [query]`)
   let q = args.join(' ')
   let embed = new Discord.RichEmbed()
   let recipe = await axios.get(
