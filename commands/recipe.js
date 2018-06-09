@@ -17,7 +17,11 @@ module.exports.run = async (bot, msg, args, prefix) => {
     }
   )
   if (recipe.data.hits.length === 0)
-    return msg.channel.send(`**Error:** No results found for **${q}**`)
+    return msg.channel
+      .send(`**Error:** No results found for **${q}**`)
+      .catch(e => {
+        msg.channel.send(`**Error:** ${e.message}`)
+      })
 
   recipe.data.hits.forEach(hit => {
     let r = hit.recipe
@@ -33,56 +37,58 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setThumbnail(recipe.data.hits[0].recipe.image)
     .setDescription(`Total results: **${util.commas(recipe.data.count)}**`)
     .setAuthor('Recipe Search', 'https://i.imgur.com/f8rp2PF.png')
-  let message = await msg.channel.send(embed).catch(e => {
-    msg.channel.send(`**Error:** ${e.message}`)
-    return null
-  })
-  // .then(message => {
-  if (!message) return
-  let filter = m =>
-    m.author.id === msg.author.id &&
-    ~~parseInt(m.content) <= recipe.data.hits.length &&
-    ~~parseInt(m.content) > 0
-  message.channel
-    .awaitMessages(filter, { maxMatches: 1, time: 20000, errors: ['time'] })
-    .then(c => {
-      let index = ~~parseInt(c.first().content) - 1
-      let newR = recipe.data.hits[index].recipe
-      let rYield = `**${newR.yield}** servings` || 'N/A'
-      let nEmbed = new Discord.RichEmbed()
-        .setThumbnail(newR.image)
-        .setColor(config.colors.white)
-        .setAuthor(
-          `${newR.label} | ${newR.source}`,
-          'https://i.imgur.com/f8rp2PF.png'
-        )
-        .addField('Yield', rYield, true)
-        .addField('Calories', `**${util.commas(~~newR.calories)}**`, true)
-        .addField(
-          'Total Ingredients',
-          `**${newR.ingredientLines.length}** Ingredients`,
-          true
-        )
-      if (newR.totalTime > 0)
-        nEmbed.addField('Time', `**${newR.totalTime}** mins`, true)
-      if (newR.healthLabels.length > 0)
-        nEmbed.addField('Health Labels', newR.healthLabels.join(', '), true)
-      if (newR.dietLabels.length > 0)
-        nEmbed.addField('Diet Labels', newR.dietLabels.join(', '), true)
-      if (newR.cautions.length > 0)
-        nEmbed.addField('Cautions', newR.cautions.join(', '), true)
-      nEmbed
-        .addField('Recipe Link', `**${newR.url}**`)
-        .setFooter('Powered by Edamam Recipe Search')
-      message
-        .edit(nEmbed)
-        .catch(e => msg.channel.send(`**Error:** ${e.message}`))
-    })
+  msg.channel
+    .send(embed)
     .catch(e => {
-      msg.channel.send('Times up, selection closed.')
-      message.delete()
+      msg.channel.send(`**Error:** ${e.message}`)
+      return null
     })
-  // })
+    .then(message => {
+      if (!message) return
+      let filter = m =>
+        m.author.id === msg.author.id &&
+        ~~parseInt(m.content) <= recipe.data.hits.length &&
+        ~~parseInt(m.content) > 0
+      message.channel
+        .awaitMessages(filter, { maxMatches: 1, time: 20000, errors: ['time'] })
+        .then(c => {
+          let index = ~~parseInt(c.first().content) - 1
+          let newR = recipe.data.hits[index].recipe
+          let rYield = `**${newR.yield}** servings` || 'N/A'
+          let nEmbed = new Discord.RichEmbed()
+            .setThumbnail(newR.image)
+            .setColor(config.colors.white)
+            .setAuthor(
+              `${newR.label} | ${newR.source}`,
+              'https://i.imgur.com/f8rp2PF.png'
+            )
+            .addField('Yield', rYield, true)
+            .addField('Calories', `**${util.commas(~~newR.calories)}**`, true)
+            .addField(
+              'Total Ingredients',
+              `**${newR.ingredientLines.length}** Ingredients`,
+              true
+            )
+          if (newR.totalTime > 0)
+            nEmbed.addField('Time', `**${newR.totalTime}** mins`, true)
+          if (newR.healthLabels.length > 0)
+            nEmbed.addField('Health Labels', newR.healthLabels.join(', '), true)
+          if (newR.dietLabels.length > 0)
+            nEmbed.addField('Diet Labels', newR.dietLabels.join(', '), true)
+          if (newR.cautions.length > 0)
+            nEmbed.addField('Cautions', newR.cautions.join(', '), true)
+          nEmbed
+            .addField('Recipe Link', `**${newR.url}**`)
+            .setFooter('Powered by Edamam Recipe Search')
+          message
+            .edit(nEmbed)
+            .catch(e => msg.channel.send(`**Error:** ${e.message}`))
+        })
+        .catch(e => {
+          msg.channel.send("Time's up, selection closed.")
+          message.delete()
+        })
+    })
 }
 
 module.exports.help = {
