@@ -78,7 +78,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
           if (newR.cautions.length > 0)
             nEmbed.addField('Cautions', newR.cautions.join(', '), true)
           nEmbed
-            .addField('Recipe Link', `**${newR.url}**`)
+            .addField('Recipe Link', `**${newR.url}**`, true)
             .setFooter('Powered by Edamam Recipe Search')
           message.delete()
           msg.channel
