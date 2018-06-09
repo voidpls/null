@@ -1,8 +1,7 @@
 const Discord = require('discord.js')
 const axios = require('axios')
-let mbKey =
-  'pk.eyJ1Ijoidm9pZHBscyIsImEiOiJjamhlenZmbzYxMTFoM2RwY28wNXplaXR2In0.UCHDkjtshLi2fWVOLTkufg'
-
+const config = require('../config/config.json')
+let mbKey = config.api_keys.mapbox
 module.exports.run = async (bot, msg, args, prefix) => {
   let iss = await axios.get('http://api.open-notify.org/iss-now.json')
   let loc = iss.data.iss_position

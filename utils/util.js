@@ -86,6 +86,11 @@ module.exports.ordinal = num => {
   return num + (s[(v - 20) % 10] || s[v] || s[0])
 }
 
+//commas in num
+module.exports.commas = num => {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
 // get color
 module.exports.getColor = async url => {
   const Vibrant = require('node-vibrant')
