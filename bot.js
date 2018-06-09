@@ -7,7 +7,12 @@ const prefixFile = './config/prefix.json'
 const blacklistFile = './config/blacklist.json'
 
 const bot = new Discord.Client({
-  disabledEvents: ['TYPING_START'],
+  disabledEvents: [
+    'TYPING_START',
+    'MESSAGE_REACTION_ADD',
+    'MESSAGE_REACTION_REMOVE'
+  ],
+  messageCacheMaxSize: 150,
   disableEveryone: true
 })
 bot.commands = new Discord.Collection()
