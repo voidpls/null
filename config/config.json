@@ -11,5 +11,8 @@
     "mapbox": "pk.eyJ1Ijoidm9pZHBscyIsImEiOiJjamhlenZmbzYxMTFoM2RwY28wNXplaXR2In0.UCHDkjtshLi2fWVOLTkufg"
   },
   "mainacc": "394413240731435009",
+  "regex": {
+    "invites": "(http[s]?:\\/\\/)*discord((app\\.com\\/invite)|(\\.gg)|(\\.io)|(\\.me))\\/(invite\\/)?(#\\/)?([A-Za-z0-9\\-]+)(\\/)?"
+  },
   "invite": "https://discordapp.com/api/oauth2/authorize?client_id=430081374444191775&permissions=0&scope=bot"
 }
