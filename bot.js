@@ -35,13 +35,15 @@ fs.readdir('./commands/', (err, files) => {
   if (jsfiles.length <= 0) {
     return console.log('ERROR: No commands found.')
   }
-  console.log('→ Module Status: \n-------------------------------------')
+  console.log('→ Module Status:')
+  let count = 0
   // load modules
   jsfiles.forEach((f, i) => {
     let props = require(`./commands/${f}`)
-    console.log(`√ ${f.slice(0, -3)} loaded successfully`)
+    count++
     bot.commands.set(props.help.name.toLowerCase(), props)
   })
+  console.log(`→ Loaded ${count} commands`)
   // terminal beautification
   console.log('-------------------------------------')
 })
@@ -55,13 +57,15 @@ fs.readdir('./devCmds/', (err, files) => {
   if (jsfiles.length <= 0) {
     return console.log('ERROR: No dev commands found.')
   }
-  console.log('→ Dev Module Status: \n-------------------------------------')
+  console.log('→ Dev Module Status:')
+  let count = 0
   // load modules
   jsfiles.forEach((f, i) => {
     let props = require(`./devCmds/${f}`)
-    console.log(`√ ${f.slice(0, -3)} loaded successfully`)
+    count++
     bot.devCommands.set(props.help.name, props)
   })
+  console.log(`→ Loaded ${count} dev commands`)
   // terminal beautification
   console.log('-------------------------------------')
 })
@@ -75,13 +79,15 @@ fs.readdir('./events/', (err, files) => {
   if (jsfiles.length <= 0) {
     return console.log('ERROR: No events found.')
   }
-  console.log('→ Events Status: \n-------------------------------------')
+  console.log('→ Events Status:')
+  let count = 0
   // load modules
   jsfiles.forEach((f, i) => {
     let ev = require(`./events/${f}`)
-    console.log(`√ ${f.slice(0, -3)} loaded successfully`)
+    count++
     ev(bot)
   })
+  console.log(`→ Loaded ${count} events`)
   // terminal beautification
   console.log('-------------------------------------')
 })

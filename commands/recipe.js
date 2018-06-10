@@ -47,12 +47,12 @@ module.exports.run = async (bot, msg, args, prefix) => {
       if (!message) return
       let filter = m =>
         m.author.id === msg.author.id &&
-        ~~parseInt(m.content) <= recipe.data.hits.length &&
-        ~~parseInt(m.content) > 0
+        parseInt(m.content) <= recipe.data.hits.length &&
+        parseInt(m.content) > 0
       message.channel
         .awaitMessages(filter, { maxMatches: 1, time: 20000, errors: ['time'] })
         .then(c => {
-          let index = ~~parseInt(c.first().content) - 1
+          let index = parseInt(c.first().content) - 1
           let newR = recipe.data.hits[index].recipe
           let rYield = `**${newR.yield}** servings` || 'N/A'
           let nEmbed = new Discord.RichEmbed()

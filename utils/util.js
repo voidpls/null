@@ -12,7 +12,7 @@ module.exports.delCatch = e => {
 // get member function
 module.exports.getMember = (msg, args) => {
   let user = msg.guild.member(
-    msg.mentions.users.first() || msg.guild.members.get(args[0])
+    msg.mentions.users.last() || msg.guild.members.get(args[0])
   )
 
   if (!user) {
@@ -31,18 +31,42 @@ module.exports.getUser = (bot, msg, args) => {
     return msg.author
   } else {
     try {
+      msg.guild.fetchMembers(args[0])
       user =
+        msg.mentions.users.last() ||
         bot.users.get(args[0]) ||
-        msg.mentions.users.first() ||
-        msg.guild.members.find(
-          m => m.user.username.toLowerCase() === args[0].toLowerCase()
-        ).user
+        msg.guild.members.find(m =>
+          m.user.username.toLowerCase().includes(args[0].toLowerCase())
+        ).user ||
+        msg.author
     } catch (e) {
-      if (e) return msg.author
+      console.log('e')
     }
   }
   if (!user) return msg.author
   else return user
+}
+
+//get user array
+module.exports.getUserArr = (bot, msg, arr) => {
+  try {
+    let resolved = arr.map(i => {
+      let id = i.replace(/\D/g, '')
+      msg.guild.fetchMembers(i)
+
+      let user = bot.users.get(id) ||
+        msg.guild.members.find(m =>
+          m.user.username.toLowerCase().includes(i.toLowerCase())
+        ) || { id: null }
+      if (user.user) return user.user
+      else return user
+    })
+    return Array.from(
+      new Set(resolved.filter(user => user.id).map(user => user.id))
+    )
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 // get user ANY ARG function
