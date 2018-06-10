@@ -117,9 +117,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .then(m => m.delete(3000).catch(e => util.delCatch(e)))
         .catch(e => util.delCatch(e))
     let msgs = await msg.channel.fetchMessages({ limit: 100 })
-    let pruneNum = valBetween(parseInt(param), 0, 100)
+    pruneNum = valBetween(parseInt(param), 0, 100)
     msgs = msgs.filter(m => !m.pinned).array()
-
+    if (msgs.length > pruneNum) msgs.length = pruneNum
     if (msgs.length === 0) return
     msg.channel
       .bulkDelete(msgs, true)
@@ -136,5 +136,5 @@ module.exports.help = {
   desc: 'Prune messages',
   usage: `prune [bots | images | with | user | #]`,
   category: 'Moderation [WIP]',
-  aliases: ['purge', 'clean', 'clear']
+  aliases: ['purge', 'clear', 'clr']
 }
