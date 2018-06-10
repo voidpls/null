@@ -18,7 +18,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   // prune 50
   if (!args[0]) {
     console.log('prune 50')
-    msg.delete().catch(e => util.delCatch(e))
+    //msg.delete().catch(e => util.delCatch(e))
     let msgs = await msg.channel.fetchMessages({ limit: 75 })
     msgs = msgs.filter(m => !m.pinned).array()
     if (msgs.length > pruneNum) msgs.length = pruneNum
@@ -110,14 +110,15 @@ module.exports.run = async (bot, msg, args, prefix) => {
     //prune #
 
     console.log('prune #')
-    msg.delete().catch(e => util.delCatch(e))
+    // msg.delete().catch(e => util.delCatch(e))
     if (parseInt(param) > 100)
       return msg.channel
         .send(`**Error:** Max prunable messages at once is 100`)
         .then(m => m.delete(3000).catch(e => util.delCatch(e)))
         .catch(e => util.delCatch(e))
     let msgs = await msg.channel.fetchMessages({ limit: 100 })
-    pruneNum = valBetween(parseInt(param), 0, 100)
+    param = parseInt(param) + 1
+    pruneNum = valBetween(param, 0, 100)
     msgs = msgs.filter(m => !m.pinned).array()
     if (msgs.length > pruneNum) msgs.length = pruneNum
     if (msgs.length === 0) return
