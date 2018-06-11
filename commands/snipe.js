@@ -6,6 +6,12 @@ const config = require('../config/config.json')
 const invRegEx = config.regex.invites
 
 module.exports.run = async (bot, msg, args, prefix) => {
+  let userPerms = msg.channel.permissionsFor(msg.member)
+  if (!userPerms.has('MANAGE_MESSAGES'))
+    return msg.channel
+      .send(`**Error:** You have insufficient permissions.`)
+      .catch(e => console.log(e))
+
   let regex = new RegExp(invRegEx, 'gi')
   let clean = text => {
     if (text.length > 1024) text = text.substr(0, 1021) + '...'

@@ -22,6 +22,7 @@ module.exports = async bot => {
   bot.on('messageUpdate', async (oldMsg, newMsg) => {
     if (oldMsg.author.bot || oldMsg.channel.type === 'dm') return
     if (!oldMsg || !newMsg) return
+    if (oldMsg.content === newMsg.content) return
     let after = new Message(newMsg)
     sniped[oldMsg.channel.id] = [oldMsg.content, after]
   })
