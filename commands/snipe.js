@@ -10,7 +10,10 @@ module.exports.run = async (bot, msg, args, prefix) => {
   if (!userPerms.has('MANAGE_MESSAGES'))
     return msg.channel
       .send(`**Error:** You have insufficient permissions.`)
-      .catch(e => console.log(e))
+      .then(m => {
+        m.delete(3000)
+        msg.delete(3000).catch(e => util.delCatch(e))
+      })
 
   let regex = new RegExp(invRegEx, 'gi')
   let clean = text => {
