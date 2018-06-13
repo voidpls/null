@@ -133,6 +133,7 @@ module.exports.wSearch = (msg, loc) => {
       let cond = item.condition
       let location = info.location
       let forecast = item.forecast[0]
+      let astro = info.astronomy
 
       let embed = new Discord.RichEmbed()
 
@@ -149,14 +150,20 @@ module.exports.wSearch = (msg, loc) => {
         )
         .addField(
           '**High/Low:**',
-          `**${forecast.high}**°/**${forecast.low}**°F **| ${toC(
+          `**${forecast.high}**°/**${forecast.low}**°F | **${toC(
             forecast.high
           )}**°/**${toC(forecast.low)}**°C`,
           true
         )
         .addField(
           '**Condition**:',
-          `${cond.text} | **${info.atmosphere.humidity}**% humidity`,
+          `${cond.text} | **\\💦 ${info.atmosphere.humidity}**%`,
+          true
+        )
+
+        .addField(
+          '**Sunrise/Sunset**:',
+          `**${astro.sunrise}** | **${astro.sunset}**`,
           true
         )
 
@@ -164,7 +171,7 @@ module.exports.wSearch = (msg, loc) => {
         .send(embed)
         .catch(e => msg.channel.send('**Error:** ' + e.message))
 
-      function toC (f) {
+      function toC(f) {
         return Math.round((f - 32) * 5 / 9)
       }
     })
