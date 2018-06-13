@@ -41,7 +41,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       user.discrim
     }** edited a message **${timeDiff}**...`
     embed
-      .setAuthor('Snipe', user.avatar)
+      .setAuthor('Message Snipe', user.avatar)
       .setDescription(tag)
       .addField('Before', clean(sniped[0]))
       .addField('After', clean(sniped[1].content))
@@ -52,9 +52,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
       user.discrim
     }** deleted a message **${timeDiff}**...`
     embed
-      .setAuthor('Snipe', user.avatar)
+      .setAuthor('Message Snipe', user.avatar)
       .setDescription(tag)
-      .addField('Message', clean(sniped.content))
+      .addField('Content', clean(sniped.content))
   }
 
   msg.channel
