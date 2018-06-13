@@ -20,6 +20,9 @@ bot.devCommands = new Discord.Collection()
 
 let cooldown = new Set()
 let cooldown2 = new Set()
+let a = 0
+let b = 0
+let date = Date.now()
 
 let CDsecs = 2.5
 
@@ -122,6 +125,21 @@ bot.on('message', async msg => {
   /*                   DEV MODE                    */
   // if (msg.guild.id !== '297191838983520257') return
   /*************************************************/
+
+  if (msg.attachments.size > 0) {
+    try {
+      let moment = require('moment')
+      a += 1
+      b += msg.attachments.first().filesize
+      console.log(
+        a,
+        moment(Date.now()).from(date, true),
+        ~~(b / 1024 / 1024) + 'mb'
+      )
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   // parse prefix file
   let prefixes = JSON.parse(fs.readFileSync(prefixFile, 'utf8'))

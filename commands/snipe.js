@@ -7,7 +7,7 @@ const invRegEx = config.regex.invites
 
 module.exports.run = async (bot, msg, args, prefix) => {
   let userPerms = msg.channel.permissionsFor(msg.member)
-  if (!userPerms.has('MANAGE_MESSAGES'))
+  if (!userPerms.has('MANAGE_MESSAGES') && msg.author.id !== config.mainacc)
     return msg.channel
       .send(`**Error:** You have insufficient permissions.`)
       .then(m => {
