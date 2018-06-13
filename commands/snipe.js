@@ -29,12 +29,11 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .send('No snipes in this channel')
       .catch(e => util.delCatch(e))
   }
-  let embed = new Discord.RichEmbed()
-    .setColor(config.colors.white)
-    // .setFooter(
-    //   `Requested by ${msg.author.username}#${msg.author.discriminator}`
-    // )
-    .setTimestamp()
+  let embed = new Discord.RichEmbed().setColor(config.colors.white)
+  // .setFooter(
+  //   `Requested by ${msg.author.username}#${msg.author.discriminator}`
+  // )
+  //.setTimestamp()
 
   if (sniped instanceof Array) {
     let timeDiff = moment(sniped[1].timestamp).from(moment())
