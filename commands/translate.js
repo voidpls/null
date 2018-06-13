@@ -4,10 +4,11 @@ const language = require('../config/language.json')
 const translate = require('google-translate-api')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  if (args.length < 2)
+  if (args.length < 2) {
     return msg.channel.send(
       `**Usage: \`${prefix}translate [language] [text]\`**`
     )
+  }
 
   let toLang = args.shift().toLowerCase()
 

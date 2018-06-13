@@ -6,15 +6,15 @@ module.exports.run = async (bot, msg, args, prefix) => {
   if (
     !msg.member.hasPermission('ADMINISTRATOR') &&
     msg.author.id !== config.mainacc
-  )
-    return errors.noPerms(msg, 'Administrator')
+  ) { return errors.noPerms(msg, 'Administrator') }
 
   let prefixes = JSON.parse(fs.readFileSync('./config/prefix.json', 'utf8'))
 
-  if (!args[0])
+  if (!args[0]) {
     return msg.channel.send(
       `My current prefix is **${prefix}** \n\n**Usage:** \`${prefix}prefix [new prefix]\``
     )
+  }
   prefixes[msg.guild.id] = args[0]
 
   fs.writeFile(

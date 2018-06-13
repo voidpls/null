@@ -19,7 +19,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setColor(config.colors.white)
     .setDescription(`Search results for: **${query}**`)
 
-  google(query, function(err, res) {
+  google(query, function (err, res) {
     if (err) return msg.channel.send('**Error: ** ' + err.message)
     let count = 0
     let count2 = 0

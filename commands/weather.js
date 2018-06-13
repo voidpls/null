@@ -24,10 +24,11 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let loc = args.join(' ')
     return util.wSearch(msg, loc)
   } else if (args.length >= 1 && args[0] === 'set') {
-    if (!args[1])
+    if (!args[1]) {
       return msg.channel
         .send(`Type ${prefix}weather set \`[location]\` to set a location.`)
         .catch(e => msg.channel.send('**Error:** ' + e.message))
+    }
     args.shift()
     let loc = args.join(' ')
 
@@ -53,7 +54,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
     if (loc) {
       return util.wSearch(msg, loc.get('location'))
-    } else
+    } else {
       msg.channel
         .send(
           `No weather data found for user **${
@@ -61,13 +62,15 @@ module.exports.run = async (bot, msg, args, prefix) => {
           }**`
         )
         .catch(e => msg.channel.send('**Error:** ' + e.message))
+    }
   } else if (args.length === 0) {
     let loc = await Weather.findOne({ where: { userid: msg.author.id } })
     if (loc) return util.wSearch(msg, loc.get('location'))
-    else
+    else {
       msg.channel
         .send(`Type \`${prefix}weather set [location]\` to set a location.`)
         .catch(e => msg.channel.send('**Error:** ' + e.message))
+    }
   }
 }
 

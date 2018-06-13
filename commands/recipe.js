@@ -6,8 +6,7 @@ let apikey = config.api_keys.edamam
 let appID = '476d170f'
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  if (!args[0])
-    return msg.channel.send(`**Usage:** \`${prefix}recipe [query]\``)
+  if (!args[0]) { return msg.channel.send(`**Usage:** \`${prefix}recipe [query]\``) }
   let q = args.join(' ')
   let embed = new Discord.RichEmbed()
   let recipe = await axios.get(
@@ -16,12 +15,13 @@ module.exports.run = async (bot, msg, args, prefix) => {
       headers: { 'Accept-Encoding': 'gzip' }
     }
   )
-  if (recipe.data.hits.length === 0)
+  if (recipe.data.hits.length === 0) {
     return msg.channel
       .send(`**Error:** No results found for **${q}**`)
       .catch(e => {
         msg.channel.send(`**Error:** ${e.message}`)
       })
+  }
 
   recipe.data.hits.forEach(hit => {
     let r = hit.recipe
@@ -69,14 +69,10 @@ module.exports.run = async (bot, msg, args, prefix) => {
               `**${newR.ingredientLines.length}** Ingredients`,
               true
             )
-          if (newR.totalTime > 0)
-            nEmbed.addField('Time', `**${newR.totalTime}** mins`, true)
-          if (newR.healthLabels.length > 0)
-            nEmbed.addField('Health Labels', newR.healthLabels.join(', '), true)
-          if (newR.dietLabels.length > 0)
-            nEmbed.addField('Diet Labels', newR.dietLabels.join(', '), true)
-          if (newR.cautions.length > 0)
-            nEmbed.addField('Cautions', newR.cautions.join(', '), true)
+          if (newR.totalTime > 0) { nEmbed.addField('Time', `**${newR.totalTime}** mins`, true) }
+          if (newR.healthLabels.length > 0) { nEmbed.addField('Health Labels', newR.healthLabels.join(', '), true) }
+          if (newR.dietLabels.length > 0) { nEmbed.addField('Diet Labels', newR.dietLabels.join(', '), true) }
+          if (newR.cautions.length > 0) { nEmbed.addField('Cautions', newR.cautions.join(', '), true) }
           nEmbed
             .addField('Recipe Link', `**${newR.url}**`, true)
             .setFooter('Powered by Edamam Recipe Search')

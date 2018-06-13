@@ -59,7 +59,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
         msg.channel.send(`**Error:** ${e.message}`)
       })
 
-      function fstat(stats, str) {
+      function fstat (stats, str) {
         return stats.find(s => s[str])[str]
       }
     })

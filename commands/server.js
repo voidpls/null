@@ -39,7 +39,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let botMem = msg.guild.member(bot.user)
   let botPerms = msg.channel.permissionsFor(botMem)
 
-  function format(timestamp) {
+  function format (timestamp) {
     return moment.unix(timestamp / 1000).format('MMMM Do, YYYY hh:mma')
   }
 

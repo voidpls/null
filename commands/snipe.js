@@ -7,13 +7,14 @@ const invRegEx = config.regex.invites
 
 module.exports.run = async (bot, msg, args, prefix) => {
   let userPerms = msg.channel.permissionsFor(msg.member)
-  if (!userPerms.has('MANAGE_MESSAGES') && msg.author.id !== config.mainacc)
+  if (!userPerms.has('MANAGE_MESSAGES') && msg.author.id !== config.mainacc) {
     return msg.channel
       .send(`**Error:** You have insufficient permissions.`)
       .then(m => {
         m.delete(3000)
         msg.delete(3000).catch(e => util.delCatch(e))
       })
+  }
 
   let regex = new RegExp(invRegEx, 'gi')
   let clean = text => {
@@ -23,15 +24,16 @@ module.exports.run = async (bot, msg, args, prefix) => {
     return text
   }
   let sniped = await sniper.get(msg.channel.id)
-  if (!sniped)
+  if (!sniped) {
     return msg.channel
       .send('No snipes in this channel')
       .catch(e => util.delCatch(e))
+  }
   let embed = new Discord.RichEmbed()
     .setColor(config.colors.white)
-    .setFooter(
-      `Requested by ${msg.author.username}#${msg.author.discriminator}`
-    )
+    // .setFooter(
+    //   `Requested by ${msg.author.username}#${msg.author.discriminator}`
+    // )
     .setTimestamp()
 
   if (sniped instanceof Array) {
@@ -39,7 +41,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let user = sniped[1].author
     let tag = `**${user.username}#${
       user.discrim
-    }** edited a message **${timeDiff}**...`
+    }** edited a message *${timeDiff}*...`
     embed
       .setAuthor('Message Snipe', user.avatar)
       .setDescription(tag)
@@ -50,7 +52,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let user = sniped.author
     let tag = `**${user.username}#${
       user.discrim
-    }** deleted a message **${timeDiff}**...`
+    }** deleted a message *${timeDiff}*...`
     embed
       .setAuthor('Message Snipe', user.avatar)
       .setDescription(tag)

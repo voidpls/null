@@ -5,10 +5,11 @@ const moment = require('moment')
 
 module.exports.run = async (bot, msg, args, prefix) => {
   let user = await util.getUser(bot, msg, args)
-  if (!user)
+  if (!user) {
     return msg.channel.send(
       `**Error:** Could not find user info for **${args.join()}**`
     )
+  }
   let avatar = user.displayAvatarURL
   let color = config.colors.white
   let joinTime = 'N/A'
@@ -27,7 +28,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     online: '<:online:438877428807368705>'
   }
 
-  function format(timestamp) {
+  function format (timestamp) {
     return moment.unix(timestamp / 1000).format('MMMM Do, YYYY hh:mma')
   }
 
