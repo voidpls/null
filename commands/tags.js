@@ -34,11 +34,13 @@ module.exports.run = async (bot, msg, args, prefix) => {
   // if no tag specified
   if (args.length === 0) {
     return msg.channel.send(
-      `**Error:** Please specify a tag or function! **\`${prefix}help tags\`** for more info.`
+      `**Error:** Invalid tag or function. **\`${prefix}help tags\`** for more info.`
     )
-  } else if (args.length === 1 && args[0].toLowerCase() !== 'list') {
+  }
+  let param = args[0].toLowerCase()
+  if (args.length === 1 && param !== 'list') {
     // get tag
-    let tagname = args[0].toLowerCase()
+    let tagname = param
     let tag = await Tags.findOne({
       where: { tagname: `${msg.guild.id} ${tagname}` }
     })
@@ -53,8 +55,10 @@ module.exports.run = async (bot, msg, args, prefix) => {
   } else {
     // message includes function
     // add tag func
-    if (args[0].toLowerCase() === 'add' || args[0].toLowerCase() === 'create') {
-      if (!args[1]) { return msg.channel.send(`**Error:** Specify a tag name to add!`) }
+    if (param === 'add' || param === 'create') {
+      if (!args[1]) {
+        return msg.channel.send(`**Error:** Specify a tag name to add!`)
+      }
 
       let tagname = args[1].toLowerCase()
       let tag = await Tags.findOne({
@@ -66,7 +70,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
           `**Error:** The tag **\`${tagname.split(' ')[1]}\`** already exists!`
         )
       }
-      if (!args[2]) { return msg.channel.send(`**Error:** Specify the tag's content to add!`) }
+      if (!args[2]) {
+        return msg.channel.send(`**Error:** Specify the tag's content to add!`)
+      }
 
       args.splice(0, 2)
       let tagcontent = tFormat(args.join(' '))
@@ -93,14 +99,11 @@ module.exports.run = async (bot, msg, args, prefix) => {
           }\`** has been successfully created.`
         )
       }
-    }
-
-    // delete tag func
-    if (
-      args[0].toLowerCase() === 'delete' ||
-      args[0].toLowerCase() === 'remove'
-    ) {
-      if (!args[1]) { return msg.channel.send(`**Error:** Specify a tag name to delete!`) }
+    } else if (param === 'delete' || param === 'remove') {
+      // delete tag func
+      if (!args[1]) {
+        return msg.channel.send(`**Error:** Specify a tag name to delete!`)
+      }
       let tagname = args[1].toLowerCase()
 
       let tag = await Tags.findOne({
@@ -124,11 +127,11 @@ module.exports.run = async (bot, msg, args, prefix) => {
           }\`** has been successfully deleted.`
         )
       }
-    }
-
-    // edit tag func
-    if (args[0].toLowerCase() === 'edit') {
-      if (!args[1]) { return msg.channel.send(`**Error:** Specify a tag name to edit!`) }
+    } else if (param === 'edit') {
+      // edit tag func
+      if (!args[1]) {
+        return msg.channel.send(`**Error:** Specify a tag name to edit!`)
+      }
       let tagname = args[1].toLowerCase()
 
       let tag = await Tags.findOne({
@@ -172,11 +175,11 @@ module.exports.run = async (bot, msg, args, prefix) => {
           }\`** has been successfully edited.`
         )
       }
-    }
-
-    // get tag info
-    if (args[0].toLowerCase() === 'info') {
-      if (!args[1]) { return msg.channel.send(`**Error:** Specify a tag name to view info!`) }
+    } else if (param === 'info') {
+      // get tag info
+      if (!args[1]) {
+        return msg.channel.send(`**Error:** Specify a tag name to view info!`)
+      }
       let tagname = args[1].toLowerCase()
       let tag = await Tags.findOne({
         where: { tagname: `${msg.guild.id} ${tagname}` }
@@ -208,13 +211,14 @@ module.exports.run = async (bot, msg, args, prefix) => {
           .send(`📋 Info for tag **${tagname}**:`, embed)
           .catch(e => msg.channel.send('**Error:** ' + e.message))
       }
-    }
-    // list user tags
-    if (args[0].toLowerCase() === 'list') {
+    } else if (param === 'list') {
+      // list user tags
       if (args.length >= 2) {
         let user = util.getUserFromArg(bot, msg, args[1])
 
-        if (!user) { return msg.channel.send(`**Error:** User **${args[1]}** not found!`) } else {
+        if (!user) {
+          return msg.channel.send(`**Error:** User **${args[1]}** not found!`)
+        } else {
           let tagArr = await getTags(user, msg)
           if (tagArr.length === 0) {
             return msg.channel.send(
@@ -261,11 +265,16 @@ module.exports.run = async (bot, msg, args, prefix) => {
           embed
         )
       }
-    }
+    } else
+      return msg.channel
+        .send(
+          `**Error:** Invalid tag or function. **\`${prefix}help tags\`** for more info.`
+        )
+        .catch(e => util.delCatch(e))
   }
 }
 
-function tFormat (txt) {
+function tFormat(txt) {
   txt = '\u180E' + txt
   txt = txt
     .replace('@everyone', '@\u200beveryone')
@@ -276,7 +285,7 @@ function tFormat (txt) {
   return txt
 }
 
-async function getTags (user, msg) {
+async function getTags(user, msg) {
   let usertags = await Tags.findAll({
     where: { userid: user.id },
     attributes: ['tagname']

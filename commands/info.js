@@ -28,7 +28,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     online: '<:online:438877428807368705>'
   }
 
-  function format (timestamp) {
+  function format(timestamp) {
     return moment.unix(timestamp / 1000).format('MMMM Do, YYYY hh:mma')
   }
 
@@ -88,5 +88,5 @@ module.exports.help = {
   desc: 'Shows user info',
   usage: 'info [user]',
   category: 'Info',
-  aliases: ['userinfo', 'user']
+  aliases: ['userinfo', 'user', 'whois']
 }
