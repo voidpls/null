@@ -8,11 +8,13 @@
     "fortnite": "489b9338-c790-4e12-9fdf-7390783c1f3d",
     "pubg": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2MmYzYTAxMC0xOWE5LTAxMzYtZjMzYS01M2VjNGIzZGE3NzkiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTIyNzg2NDA0LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6Im51bGwiLCJzY29wZSI6ImNvbW11bml0eSIsImxpbWl0IjoxMH0.9PoRsPOqnL3DcFQKr_5hGmjn0FSdWJ0o9yLL2VuqWLk",
     "edamam": "a9361b51d8fcf0b25b53e09c496fcd4c",
-    "mapbox": "pk.eyJ1Ijoidm9pZHBscyIsImEiOiJjamhlenZmbzYxMTFoM2RwY28wNXplaXR2In0.UCHDkjtshLi2fWVOLTkufg"
+    "mapbox": "pk.eyJ1Ijoidm9pZHBscyIsImEiOiJjamhlenZmbzYxMTFoM2RwY28wNXplaXR2In0.UCHDkjtshLi2fWVOLTkufg",
+    "geocode": "AIzaSyCHPggP1RiOKYwdN74GxOSKFwM4yxFd_lw",
+    "darksky": "5c31fa190ecc553da8bb0535c5e41a8e"
   },
   "mainacc": "394413240731435009",
   "regex": {
-    "invites": "(http[s]?:\\/\\/)*discord((app\\.com\\/invite)|(\\.gg)|(\\.io)|(\\.me))\\/(invite\\/)?(#\\/)?([A-Za-z0-9\\-]+)(\\/)?"
+    "invites": "(https?:\\/\\/)?discord(app\\.com\\/invite|\\.gg|\\.io|\\.me)\\/(invite\\/)?([A-Za-z0-9-]+)\\/?"
   },
   "invite": "https://discordapp.com/api/oauth2/authorize?client_id=430081374444191775&permissions=0&scope=bot"
 }
