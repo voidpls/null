@@ -127,7 +127,7 @@ async function wSearch(msg, loc) {
       true
     )
     .addField('Condition', `${currently.summary}`, true)
-    .addField('Humidity', `\\💦 **${humidity}%**`, true)
+    .addField('Humidity', `\\💦 **${humidity}**%`, true)
     .addField('Precipitation', `\\☔ **${precip}**% chance`, true)
     .addField('Sunrise/Sunset', `${sunrise} | ${sunset}`, true)
 

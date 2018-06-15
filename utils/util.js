@@ -1,7 +1,6 @@
 const Discord = require('discord.js')
 const config = require('../config/config.json')
 const errors = require('../utils/errors.js')
-const weather = require('yahoo-weather')
 
 // No missing perm log
 module.exports.delCatch = e => {
@@ -122,58 +121,4 @@ module.exports.getColor = async url => {
   let palette = await vibrant.getPalette()
   if (palette.Vibrant) return palette.Vibrant.getHex()
   else return config.colors.white
-}
-
-// weather search
-module.exports.wSearch = (msg, loc) => {
-  weather(loc, 'f')
-    .then(info => {
-      if (!info) return errors.weather(msg, loc)
-      let item = info.item
-      let cond = item.condition
-      let location = info.location
-      let forecast = item.forecast[0]
-      let astro = info.astronomy
-
-      let embed = new Discord.RichEmbed()
-
-        .setColor(config.colors.white)
-        .setAuthor(`${location.city}, ${location.region}, ${location.country}`)
-        .setFooter(info.lastBuildDate.replace(/\w+[.!?]?$/, ''))
-        .setDescription(`Search Term: ${loc}`)
-        .setThumbnail(`https://voidxd.me/null/weather/${cond.code}.png`)
-
-        .addField(
-          '**Temperature:**',
-          `**${cond.temp}**°F/**${toC(cond.temp)}**°C`,
-          true
-        )
-        .addField(
-          '**High/Low:**',
-          `**${forecast.high}**°/**${forecast.low}**°F | **${toC(
-            forecast.high
-          )}**°/**${toC(forecast.low)}**°C`,
-          true
-        )
-        .addField(
-          '**Condition**:',
-          `${cond.text} | **\\💦 ${info.atmosphere.humidity}**%`,
-          true
-        )
-
-        .addField(
-          '**Sunrise/Sunset**:',
-          `**${astro.sunrise}** | **${astro.sunset}**`,
-          true
-        )
-
-      msg.channel
-        .send(embed)
-        .catch(e => msg.channel.send('**Error:** ' + e.message))
-
-      function toC(f) {
-        return Math.round((f - 32) * 5 / 9)
-      }
-    })
-    .catch(e => errors.weather(msg, loc))
 }
