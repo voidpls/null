@@ -17,25 +17,24 @@
   },
   "homepage": "https://github.com/voidpls/null#readme",
   "dependencies": {
-    "ansi-canvas": "^1.0.0",
     "axios": "^0.18.0",
+    "cron": "^1.3.0",
     "cryptocompare": "^0.5.0",
-    "d3": "^5.4.0",
-    "d3-cloud": "*",
     "discord.js": "^11.3.2",
     "fortnite": "^4.1.1",
+    "form-data": "*",
     "google": "^2.1.0",
     "google-translate-api": "^2.3.0",
+    "mime": "^2.3.1",
     "moment": "^2.22.1",
     "moment-timezone": "^0.5.17",
     "node-fetch": "^2.1.2",
     "node-vibrant": "*",
     "pidusage": "^2.0.6",
+    "rimraf": "^2.6.2",
     "sequelize": "^4.37.8",
     "sqlite3": "^4.0.0",
-    "superagent": "^3.8.3",
     "urban": "^0.3.1",
-    "xkcd-api": "^1.0.1",
-    "yahoo-weather": "^2.2.2"
+    "xkcd-api": "^1.0.1"
   }
 }

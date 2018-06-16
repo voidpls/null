@@ -9,6 +9,11 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let cmd = args[0].toLowerCase()
     let cmdFile = bot.commands.get(cmd)
 
+    if (!cmdFile) {
+      bot.commands.forEach(c => {
+        if (c.help.aliases.includes(cmd)) cmdFile = c
+      })
+    }
     if (cmdFile) {
       let cmdName =
         cmdFile.help.name[0].toUpperCase() + cmdFile.help.name.substr(1)

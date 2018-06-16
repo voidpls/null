@@ -51,3 +51,7 @@ module.exports = async bot => {
     })
   })
 }
+
+module.exports.help = {
+  name: 'guildCreate'
+}

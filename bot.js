@@ -1,5 +1,9 @@
 const Discord = require('discord.js')
+const Cron = require('cron').CronJob
+const rimraf = require('rimraf')
+const axios = require('axios')
 const fs = require('fs')
+const path = require('path')
 const util = require('./utils/util.js')
 
 const config = require('./config/config.json')
@@ -17,11 +21,10 @@ const bot = new Discord.Client({
 })
 bot.commands = new Discord.Collection()
 bot.devCommands = new Discord.Collection()
+bot.events = new Discord.Collection()
 
 let cooldown = new Set()
 let cooldown2 = new Set()
-let a = 0
-let b = 0
 let date = Date.now()
 
 let CDsecs = 2.5
@@ -29,71 +32,33 @@ let CDsecs = 2.5
 // terminal beautification
 console.log('-------------------------------------')
 
-// check command files
-fs.readdir('./commands/', (err, files) => {
-  if (err) console.log(err)
+function loadModules(dir, name, setAs, botObj) {
+  fs.readdir(dir, (err, files) => {
+    if (err) console.log(err)
 
-  // remove '.js'
-  let jsfiles = files.filter(f => f.endsWith('js'))
-  if (jsfiles.length <= 0) {
-    return console.log('ERROR: No commands found.')
-  }
-  console.log('→ Module Status:')
-  let count = 0
-  // load modules
-  jsfiles.forEach((f, i) => {
-    let props = require(`./commands/${f}`)
-    count++
-    bot.commands.set(props.help.name.toLowerCase(), props)
+    // remove '.js'
+    let jsfiles = files.filter(f => f.endsWith('js'))
+    if (jsfiles.length <= 0) {
+      return console.log('ERROR: No commands found.')
+    }
+    console.log('→ Module Status:')
+    let count = 0
+    // load modules
+    jsfiles.forEach((f, i) => {
+      let props = require(dir + f)
+      count++
+      if (botObj) props(botObj)
+      bot[setAs].set(props.help.name.toLowerCase(), props)
+    })
+    console.log(`→ Loaded ${count} ${name}`)
+    // terminal beautification
+    console.log('-------------------------------------')
   })
-  console.log(`→ Loaded ${count} commands`)
-  // terminal beautification
-  console.log('-------------------------------------')
-})
+}
 
-// check dev command files
-fs.readdir('./devCmds/', (err, files) => {
-  if (err) console.log(err)
-
-  // remove '.js'
-  let jsfiles = files.filter(f => f.endsWith('js'))
-  if (jsfiles.length <= 0) {
-    return console.log('ERROR: No dev commands found.')
-  }
-  console.log('→ Dev Module Status:')
-  let count = 0
-  // load modules
-  jsfiles.forEach((f, i) => {
-    let props = require(`./devCmds/${f}`)
-    count++
-    bot.devCommands.set(props.help.name, props)
-  })
-  console.log(`→ Loaded ${count} dev commands`)
-  // terminal beautification
-  console.log('-------------------------------------')
-})
-
-//check event files
-fs.readdir('./events/', (err, files) => {
-  if (err) console.log(err)
-
-  // remove '.js'
-  let jsfiles = files.filter(f => f.endsWith('js'))
-  if (jsfiles.length <= 0) {
-    return console.log('ERROR: No events found.')
-  }
-  console.log('→ Events Status:')
-  let count = 0
-  // load modules
-  jsfiles.forEach((f, i) => {
-    let ev = require(`./events/${f}`)
-    count++
-    ev(bot)
-  })
-  console.log(`→ Loaded ${count} events`)
-  // terminal beautification
-  console.log('-------------------------------------')
-})
+loadModules('./commands/', 'commands', 'commands')
+loadModules('./devCmds/', 'dev commands', 'devCommands')
+loadModules('./events/', 'events', 'events', bot)
 
 // on connect event handler
 bot.on('ready', async () => {
@@ -105,16 +70,42 @@ bot.on('ready', async () => {
       bot.users.size
     } members`
   )
-
   // set bot status
-  bot.user.setActivity(`${bot.guilds.size} servers | >help`, {
+  bot.user.setActivity(`💦💦💦 | >help`, {
     type: 'PLAYING'
   })
   bot.user.setStatus('online')
-
   // terminal beautification
   console.log('-------------------------------------')
 })
+
+new Cron(
+  '0 */30 * * * *',
+  () => {
+    let snipeDir = path.join(__dirname, `/db/snipes`)
+    fs.readdir(snipeDir, (err, files) => {
+      //  console.log('files', files.length)
+      //  console.log(moment(new Date().getTime()).format('M/D, YYYY h:mm a'))
+      files.forEach((file, i) => {
+        let filePath = path.join(snipeDir, file)
+        fs.stat(filePath, (err, stat) => {
+          let now = new Date().getTime()
+          let end = new Date(stat.birthtime).getTime() + 10800000
+          //  console.log(file, moment(end).format('M/D, YYYY h:mm a'))
+          if (now >= end) {
+            rimraf(filePath, err => {
+              if (err) console.log(err)
+              //  else console.log('Deleted file', file)
+            })
+          }
+        })
+      })
+    })
+  },
+  null,
+  true,
+  'America/New_York'
+)
 
 // message event handler
 bot.on('message', async msg => {
@@ -127,23 +118,22 @@ bot.on('message', async msg => {
   /*************************************************/
 
   if (msg.attachments.size > 0) {
-    try {
-      let moment = require('moment')
-      a += 1
-      b += msg.attachments.first().filesize
-      console.log(
-        a,
-        moment(Date.now()).from(date, true),
-        ~~(b / 1024 / 1024) + 'mb'
+    msg.attachments.map(async attach => {
+      let ext = attach.filename.slice(
+        ((attach.filename.lastIndexOf('.') - 1) >>> 0) + 2
       )
-    } catch (e) {
-      console.log(e)
-    }
+      axios
+        .get(attach.url, {
+          responseType: 'stream'
+        })
+        .then(res => {
+          res.data.pipe(fs.createWriteStream(`./db/snipes/${attach.id}.${ext}`))
+        })
+    })
   }
 
   // parse prefix file
   let prefixes = JSON.parse(fs.readFileSync(prefixFile, 'utf8'))
-
   let blacklist = JSON.parse(fs.readFileSync(blacklistFile, 'utf8'))
 
   // set prefix
@@ -151,7 +141,6 @@ bot.on('message', async msg => {
   let preLen = prefix.length
 
   // array of words in the message
-
   if (msg.content.startsWith(`<@${bot.user.id}>`))
     preLen = `<@${bot.user.id}>`.length + 1
   else if (msg.content.startsWith(`<@!${bot.user.id}>`))

@@ -47,6 +47,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .addField('Before', clean(sniped[0]))
       .addField('After', clean(sniped[1].content))
   } else {
+    let attachments = sniped.attachments
     let timeDiff = moment(sniped.timestamp).from(moment())
     let user = sniped.author
     let tag = `**${user.username}#${
@@ -56,6 +57,17 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .setAuthor('Message Snipe', user.avatar)
       .setDescription(tag)
       .addField('Content', clean(sniped.content))
+    if (attachments.length > 0) {
+      let attach = attachments.map((a, i) => {
+        if (!a) return `**${parseInt(i) + 1}.** Missing File`
+        let size = ~~(a.size / 1024 * 10) / 10
+        if (!a.type) a.type = '???'
+        return `**${parseInt(i) + 1}.** [${a.type}] **${size}**kb - ** [Link](${
+          a.url
+        }) **`
+      })
+      embed.addField('Attachments', attach.join('\n'))
+    }
   }
 
   msg.channel
@@ -65,7 +77,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
 module.exports.help = {
   name: 'snipe',
-  desc: 'Snipe the last deleted or edited message',
+  desc:
+    'Snipe the last deleted or edited message\n\n' +
+    '*Note: Message attachments are only saved (for 24h) if the message is deleted within 3h.*',
   usage: `snipe`,
   category: 'Moderation [WIP]',
   aliases: []

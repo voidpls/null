@@ -64,4 +64,5 @@ typings/
 
 !package.json
 !config.json
+db/snipes/*
 *.sqlite
