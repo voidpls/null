@@ -30,17 +30,19 @@ module.exports = async bot => {
     if (msg.attachments.size > 0)
       attachments = await Promise.all(
         msg.attachments.map(async attach => {
-          let filename = attach.filename
-          let ext = filename.slice(((filename.lastIndexOf('.') - 1) >>> 0) + 2)
-          let fPath = path.join(
-            __dirname,
-            '../db/snipes',
-            `/${attach.id}.${ext}`
-          )
+
+          try {
+			let filename = attach.filename
+			let ext = filename.slice(((filename.lastIndexOf('.') - 1) >>> 0) + 2)
+			let fPath = path.join(
+				__dirname,
+				'../db/snipes',
+				`/${attach.id}.${ext}`
+			)
+			let file = fs.createReadStream(fPath)
+
 
           if (prohibited.includes(ext.toLowerCase())) return
-          try {
-            let file = fs.createReadStream(fPath)
             let form = new FormData()
             form.append('file', file, {
               filename: filename
