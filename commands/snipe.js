@@ -26,7 +26,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let sniped = await sniper.get(msg.channel.id)
   if (!sniped) {
     return msg.channel
-      .send('No snipes in this channel')
+      .send('No recorded message deletes/edits in this channel.')
       .catch(e => util.delCatch(e))
   }
   let embed = new Discord.RichEmbed().setColor(config.colors.white)
