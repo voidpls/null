@@ -41,7 +41,6 @@ function loadModules(dir, name, setAs, botObj) {
     if (jsfiles.length <= 0) {
       return console.log('ERROR: No commands found.')
     }
-    console.log('→ Module Status:')
     let count = 0
     // load modules
     jsfiles.forEach((f, i) => {
@@ -52,7 +51,6 @@ function loadModules(dir, name, setAs, botObj) {
     })
     console.log(`→ Loaded ${count} ${name}`)
     // terminal beautification
-    console.log('-------------------------------------')
   })
 }
 
@@ -60,20 +58,29 @@ loadModules('./commands/', 'commands', 'commands')
 loadModules('./devCmds/', 'dev commands', 'devCommands')
 loadModules('./events/', 'events', 'events', bot)
 
+const db = require('./db/models/tag.js')
+
 // on connect event handler
 bot.on('ready', async () => {
   console.log(`→ Successfully connected as ${bot.user.username}`)
   // terminal beautification
   console.log('-------------------------------------')
+  let usercount = bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
   console.log(
-    `→ Bot is currently in ${bot.guilds.size} server(s) \n→ Bot is serving ${
-      bot.users.size
-    } members`
+    `→ Bot is currently in ${
+      bot.guilds.size
+    } server(s) \n→ Bot is serving ${usercount} members`
   )
   // set bot status
-  bot.user.setActivity(`💦💦💦 | >help`, {
+  bot.user.setActivity(`${util.commas(usercount)} users | >help`, {
     type: 'PLAYING'
   })
+  setTimeout(() => {
+    usercount = bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
+    bot.user.setActivity(`${util.commas(usercount)} users | >help`, {
+      type: 'PLAYING'
+    })
+  }, 3e5)
   bot.user.setStatus('online')
   // terminal beautification
   console.log('-------------------------------------')

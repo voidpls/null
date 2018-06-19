@@ -30,10 +30,6 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .catch(e => util.delCatch(e))
   }
   let embed = new Discord.RichEmbed().setColor(config.colors.white)
-  // .setFooter(
-  //   `Requested by ${msg.author.username}#${msg.author.discriminator}`
-  // )
-  //.setTimestamp()
 
   if (sniped instanceof Array) {
     let timeDiff = moment(sniped[1].timestamp).from(moment())
@@ -60,7 +56,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     if (attachments.length > 0) {
       let attach = attachments.map((a, i) => {
         if (!a) return `**${parseInt(i) + 1}.** Missing File`
-        let size = ~~(a.size / 1024 * 10) / 10
+        let size = ~~((a.size / 1024) * 10) / 10
         if (!a.type) a.type = '???'
         return `**${parseInt(i) + 1}.** [${a.type}] **${size}**kb - ** [Link](${
           a.url

@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 const util = require('../utils/util.js')
 const config = require('../config/config.json')
 const mongoose = require('mongoose')
-const TagSchema = require('../db/models/tagSchema.js')
+const Tag = mongoose.model('Tag')
 const moment = require('moment')
 //tag funcs [list, create/add, delete/remove, edit/update, info]
 
@@ -11,51 +11,48 @@ module.exports.run = async (bot, msg, args, prefix) => {
     return msg.channel
       .send(`**Error:** Please specify a valid tag parameter.`)
       .catch(e => util.delCatch(e))
-  //connect to mongodb server
-  mongoose.connect(
-    'mongodb+srv://admin:PAqOWfFhGkjwtWdx@null-reos2.mongodb.net/tags?retryWrites=true'
-  )
-  const Tag = TagSchema(msg.guild.id)
 
+  const conn = mongoose.connection
   const param = args.shift().toLowerCase()
+  const modifyParams = ['add', 'create', 'delete', 'remove', 'edit', 'info']
 
-  if (['add', 'create'].includes(param)) {
+  if (modifyParams.includes(param)) {
     if (args.length < 2)
       return msg.channel
         .send(`**Error:** Please specify tag name and tag content.`)
         .catch(e => util.delCatch(e))
-
+    const gID = msg.guild.id
     const tagname = args.shift().toLowerCase()
-    const tagcontent = args.join(' ')
-    console.log('name', tagname, '\ncontent', tagcontent)
-    // Tag.findById(tagname)
-    //   .then(res => console.log(res))
-    //   .catch(e => console.log(e))
+    const tagcontent = sanitize(args.join(' '))
+    if (tagname.length > 32) {
+      let text = `**Error:** The tag's name cannot exceed **32** characters.`
+      return msg.channel.send(text)
+    }
 
-    // Tag.findById(tagname)
-    //   .then(res => console.log(res))
-    //   .catch(e => console.log(e))
-    const tag = new Tag({
-      _id: tagname,
-      content: tagcontent,
-      userid: msg.author.id,
-      uses: 0
-    })
-    tag
-      .save()
-      .then(res => {
-        console.log(res)
-        msg.channel.send(`The tag **\`${res._id}\`** has been created.`)
-        return mongoose.connection.close()
+    if (['add', 'create'].includes(param)) {
+      let checktag = await Tag.findOne({
+        tagname: tagname,
+        guildID: gID
+      }).catch(e => console.log(e))
+      if (checktag) {
+        let text = `**Error:** The tag **\`${tagname}\`** already exists.`
+        return msg.channel.send(text)
+      }
+      if (tagcontent.length > 1950) {
+        let text = `**Error:** The tag's content cannot exceed **1950** characters.`
+        return msg.channel.send(text)
+      }
+      const tag = new Tag({
+        tagname: tagname,
+        content: tagcontent,
+        userID: msg.author.id,
+        guildID: msg.guild.id
       })
-      .catch(err => {
-        if (err.code === 11000)
-          msg.channel.send(
-            `**Error:** The tag **\`${tagname}\`** already exists.`
-          )
-        else console.log(err)
-        return mongoose.connection.close()
+      return tag.save().then(res => {
+        let text = `<:check:335548356552294410> The tag **\`${tagname}\`** has been created.`
+        msg.channel.send(text)
       })
+    }
   }
 }
 
@@ -66,9 +63,9 @@ function sanitize(txt) {
     .replace('@here', '@\u200bhere')
     .replace("'", `\'`)
     .replace('"', `\"`)
-
   return txt
 }
+
 // if no tag specified
 //   if (args.length === 0) {
 //     return msg.channel.send(

@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const util = require('../utils/util.js')
 
 module.exports = async bot => {
   bot.on('guildDelete', async guild => {
@@ -22,7 +23,7 @@ module.exports = async bot => {
     let members = await guild.members.filter(m => !m.user.bot).size
     let bots = (await guild.members.size) - members
 
-    let ratio = Math.floor(bots / members * 100).toFixed(1)
+    let ratio = Math.floor((bots / members) * 100).toFixed(1)
     if (ratio > 75) {
       desc = '**Might be a bot farm!** Bot to Member ratio is **'
     }
@@ -45,7 +46,8 @@ module.exports = async bot => {
       .setTimestamp()
 
     channel.send(embed)
-    bot.user.setActivity(`${bot.guilds.size} servers | >help`, {
+    let usercount = bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
+    bot.user.setActivity(`${util.commas(usercount)} users | >help`, {
       type: 'PLAYING'
     })
   })
