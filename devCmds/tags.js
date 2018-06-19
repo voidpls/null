@@ -12,7 +12,6 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .send(`**Error:** Please specify a valid tag parameter.`)
       .catch(e => util.delCatch(e))
 
-  const conn = mongoose.connection
   const param = args.shift().toLowerCase()
   const modifyParams = ['add', 'create', 'delete', 'remove', 'edit', 'info']
 

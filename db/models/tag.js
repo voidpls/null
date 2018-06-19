@@ -1,30 +1,31 @@
 const mongoose = require('mongoose')
+const tagsConfig = require('../../config/config.json').mongodb.tags
 
-const uri =
-  'mongodb+srv://admin:PAqOWfFhGkjwtWdx@null-reos2.mongodb.net/Tags?retryWrites=true'
-mongoose.connect(uri)
+const tagConn = mongoose.createConnection(tagsConfig.uri, {
+    keepAlive: true
+})
 
 // When successfully connected
-mongoose.connection.on('connected', () => {
+tagConn.on('connected', () => {
   console.log('-------------------------------------')
-  console.log('Mongoose connection open to ' + uri)
+  console.log(`Mongoose/${tagsConfig.name} connection open`)
   console.log('-------------------------------------')
 })
 
 // If the connection throws an error
-mongoose.connection.on('error', err => {
-  console.log('Mongoose connection error: ' + err)
+tagConn.on('error', err => {
+  console.log(`Mongoose/${tagsConfig.name} connection error: ${err}` )
 })
 
 // When the connection is disconnected
-mongoose.connection.on('disconnected', () => {
-  console.log('Mongoose connection disconnected')
+tagConn.on('disconnected', () => {
+  console.log(`Mongoose/${tagsConfig.name} connection to disconnected`)
 })
 
 // If the Node process ends, close the Mongoose connection
 process.on('SIGINT', () => {
   console.log('App terminated')
-  mongoose.connection.close(() => process.exit(0))
+  tagConn.close(() => process.exit(0))
 })
 
 const tagSchema = new mongoose.Schema({
@@ -37,4 +38,4 @@ const tagSchema = new mongoose.Schema({
   uses: { type: Number, default: 0 }
 })
 
-module.exports = mongoose.model('Tag', tagSchema)
+module.exports = tagConn.model('Tag', tagSchema)

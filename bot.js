@@ -31,6 +31,7 @@ let CDsecs = 2.5
 
 // terminal beautification
 console.log('-------------------------------------')
+console.log('Module Status:')
 
 function loadModules(dir, name, setAs, botObj) {
   fs.readdir(dir, (err, files) => {
@@ -63,8 +64,6 @@ const db = require('./db/models/tag.js')
 // on connect event handler
 bot.on('ready', async () => {
   console.log(`→ Successfully connected as ${bot.user.username}`)
-  // terminal beautification
-  console.log('-------------------------------------')
   let usercount = bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
   console.log(
     `→ Bot is currently in ${
