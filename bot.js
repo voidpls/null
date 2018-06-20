@@ -59,7 +59,7 @@ loadModules('./commands/', 'commands', 'commands')
 loadModules('./devCmds/', 'dev commands', 'devCommands')
 loadModules('./events/', 'events', 'events', bot)
 
-const db = require('./db/models/tag.js')
+const db = require('./db/models/db.js')
 
 // on connect event handler
 bot.on('ready', async () => {

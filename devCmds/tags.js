@@ -22,7 +22,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .catch(e => util.delCatch(e))
     const gID = msg.guild.id
     const tagname = args.shift().toLowerCase()
-    const tagcontent = sanitize(args.join(' '))
+    const tagcontent = args.join(' ')
     if (tagname.length > 32) {
       let text = `**Error:** The tag's name cannot exceed **32** characters.`
       return msg.channel.send(text)
@@ -57,12 +57,16 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
 function sanitize(txt) {
   txt = '\u180E' + txt
-  txt = txt
-    .replace('@everyone', '@\u200beveryone')
-    .replace('@here', '@\u200bhere')
+  return txt
+    .replace(/@(everyone|here)/g, '@\u200b$1')
     .replace("'", `\'`)
     .replace('"', `\"`)
-  return txt
+    .replace(/<@!?[0-9]+>/g, input => {
+      let id = input.replace(/<|!|>|@/g, '')
+      let member = msg.guild.members.get(id)
+      if (member) return `@${member.user.username}`
+      return input
+    })
 }
 
 // if no tag specified
