@@ -5,7 +5,7 @@ const tagSchema = new mongoose.Schema({
   content: String,
   userID: String,
   guildID: String,
-  createdAt: { type: Date, default: new Date() },
+  createdAt: Date,
   lastModified: { type: Date, default: new Date() },
   uses: { type: Number, default: 0 }
 })

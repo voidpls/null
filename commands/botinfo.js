@@ -53,5 +53,5 @@ module.exports.help = {
   desc: 'Shows bot info',
   usage: 'botinfo',
   category: 'Info',
-  aliases: ['stats', 'bot', 'uptime']
+  aliases: ['stats', 'bot', 'uptime', 'about']
 }

@@ -13,15 +13,28 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .catch(e => util.delCatch(e))
 
   const param = args.shift().toLowerCase()
-  const modifyParams = ['add', 'create', 'delete', 'remove', 'edit', 'info']
+  const allParams = [
+    'add',
+    'create',
+    'edit',
+    'modify',
+    'delete',
+    'remove',
+    'info',
+    'owner',
+    'list'
+  ]
+  const modifyParams = ['add', 'create', 'edit', 'modify']
 
+  //modify tag functions
   if (modifyParams.includes(param)) {
     if (args.length < 2)
       return msg.channel
-        .send(`**Error:** Please specify tag name and tag content.`)
+        .send(`**Error:** Please specify the tag name and content.`)
         .catch(e => util.delCatch(e))
     const gID = msg.guild.id
     const tagname = args.shift().toLowerCase()
+
     const tagcontent = args.join(' ')
     if (tagname.length > 32) {
       let text = `**Error:** The tag's name cannot exceed **32** characters.`
@@ -29,6 +42,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
     }
 
     if (['add', 'create'].includes(param)) {
+      // ADD TAG
+      console.log('add')
+
       let checktag = await Tag.findOne({
         tagname: tagname,
         guildID: gID
@@ -42,6 +58,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
         return msg.channel.send(text)
       }
       const tag = new Tag({
+        createdAt: new Date(),
         tagname: tagname,
         content: tagcontent,
         userID: msg.author.id,
@@ -51,22 +68,145 @@ module.exports.run = async (bot, msg, args, prefix) => {
         let text = `<:check:335548356552294410> The tag **\`${tagname}\`** has been created.`
         msg.channel.send(text)
       })
+    } else if (['edit', 'modify'].includes(param)) {
+      // EDIT TAG
+      console.log('edit')
+      const tag = await Tag.findOne({
+        tagname: tagname,
+        guildID: gID
+      }).catch(e => console.log(e))
+      if (!tag) {
+        let text = `**Error:** The tag **\`${tagname}\`** doesn't exist.`
+        return msg.channel.send(text)
+      } else if (tag.userID !== msg.author.id) {
+        let text = `**Error:** You do not own the tag **\`${tagname}\`**.`
+        return msg.channel.send(text)
+      }
+      if (tagcontent.length > 1950) {
+        let text = `**Error:** The tag's content cannot exceed **1950** characters.`
+        return msg.channel.send(text)
+      }
+      return tag
+        .update({ content: tagcontent, lastModified: new Date() })
+        .then(res => {
+          let text = `<:check:335548356552294410> Edited **\`${tagname}\`** successfully.`
+          msg.channel.send(text)
+        })
     }
-  }
-}
+  } else if (['delete', 'remove'].includes(param)) {
+    // DELETE TAG
+    console.log('delete')
+    const tagname = args.shift().toLowerCase()
 
-function sanitize(txt) {
-  txt = '\u180E' + txt
-  return txt
-    .replace(/@(everyone|here)/g, '@\u200b$1')
-    .replace("'", `\'`)
-    .replace('"', `\"`)
-    .replace(/<@!?[0-9]+>/g, input => {
-      let id = input.replace(/<|!|>|@/g, '')
-      let member = msg.guild.members.get(id)
-      if (member) return `@${member.user.username}`
-      return input
+    const tag = await Tag.findOne({
+      tagname: tagname,
+      guildID: msg.guild.id
+    }).catch(e => console.log(e))
+
+    if (!tag) {
+      let text = `**Error:** The tag **\`${tagname}\`** doesn't exist.`
+      return msg.channel.send(text)
+    } else if (tag.userID !== msg.author.id) {
+      let text = `**Error:** You do not own the tag **\`${tagname}\`**.`
+      return msg.channel.send(text)
+    }
+    return Tag.findByIdAndDelete(tag.id).then(res => {
+      let text = `<:check:335548356552294410> Edited **\`${tagname}\`** successfully.`
+      msg.channel.send(text)
     })
+  } else if (['info', 'owner'].includes(param)) {
+    // GET TAG INFO
+    console.log('info')
+    const tagname = args.shift().toLowerCase()
+
+    const tag = await Tag.findOne({
+      tagname: tagname,
+      guildID: msg.guild.id
+    }).catch(e => console.log(e))
+
+    if (!tag) {
+      let text = `**Error:** The tag **\`${tagname}\`** doesn't exist.`
+      return msg.channel.send(text)
+    }
+    let username = `N/A`
+    if ((user = bot.users.get(tag.userID)))
+      username = `${user.username}#${user.discriminator}`
+
+    let desc =
+      `☉ Tag Owner: **${username}**\n` +
+      `☉ Usage Count: **${tag.uses}**\n` +
+      `☉ Creation: **${moment(tag.createdAt).format('MMMM Do, YYYY')}**\n` +
+      `☉ Last Update: **${moment(tag.modifiedAt).format('MMMM Do, YYYY')}**`
+    let embed = new Discord.RichEmbed()
+      .setTitle(`\\📋 Tag Info for ${tagname}:`)
+      .setColor(config.colors.white)
+      .setDescription(desc)
+    msg.channel
+      .send(embed)
+      .catch(e => msg.channel.send('**Error:** ' + e.message))
+  } else if (param === 'list') {
+    // list user tags
+    console.log('list')
+    let user = msg.author
+    if (args[0]) user = util.getUserFromArg(bot, msg, args[0]) || msg.author
+    let tags = await Tag.find(
+      {
+        userID: user.id,
+        guildID: msg.guild.id
+      },
+      'tagname'
+    ).catch(e => console.log(e))
+    if (tags.length < 1) {
+      let username = user.username
+      let gName = msg.guild.name
+      let text = `**Error:** User **${username}** does not own any tags on **${gName}**`
+      return msg.channel.send(text)
+    }
+    let tagsDesc = tags.map((t, i) => `**\`${t.tagname}\`**`).join(', ')
+    if (tagsDesc.length > 1024) tagsDesc = tagsDesc.substr(0, 1021) + '...'
+    let embed = new Discord.RichEmbed()
+      .setTitle(`\\📋 Tag List for ${user.username}:`)
+      .setDescription(tagsDesc)
+      .setColor(config.colors.white)
+    msg.channel.send(embed)
+  } else if (args.length === 0) {
+    // GET TAG CONTENT
+    console.log('check')
+
+    let checktag = await Tag.findOneAndUpdate(
+      {
+        tagname: param,
+        guildID: msg.guild.id
+      },
+      { $inc: { uses: 1 } }
+    ).catch(e => console.log(e))
+    if (checktag) {
+      let text = sanitize(checktag.content)
+      return msg.channel.send(text)
+    } else
+      return msg.channel.send(
+        `**Error:** The tag **\`${param}\`** doesn't exist.`
+      )
+  }
+
+  function sanitize(txt) {
+    txt = '\u200B' + txt
+    return txt
+      .replace(/@(everyone|here)/g, '@\u200b$1')
+      .replace("'", `\'`)
+      .replace('"', `\"`)
+      .replace(/<@!?[0-9]+>/g, input => {
+        let id = input.replace(/<|!|>|@/g, '')
+        let member = msg.guild.members.get(id)
+        if (member) return `@${member.user.username}`
+        return input
+      })
+      .replace(/<@&[0-9]+>/g, input => {
+        let role = msg.guild.roles.get(input.replace(/<|@|>|&/g, ''))
+        if (role) return `@${role.name}`
+        return input
+      })
+  }
 }
 
 // if no tag specified
