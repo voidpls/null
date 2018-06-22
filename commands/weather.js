@@ -82,17 +82,16 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
 async function wSearch(msg, loc) {
   let geoQ = `https://maps.googleapis.com/maps/api/geocode/json?key=${geocodeKey}&address=${loc}`
-  let geocode = await axios.get(geoQ)
-  if (geocode.status >= 400)
-    return msg.channel.send(`**Error:** Location not found.`)
+  let geocode = await axios
+    .get(geoQ)
+    .catch(msg.channel.send(`**Error:** Location not found.`))
   let lat = geocode.data.results[0].geometry.location.lat,
     long = geocode.data.results[0].geometry.location.lng,
     formatLoc = geocode.data.results[0].formatted_address
 
   let weatherQ = `https://api.darksky.net/forecast/${darkskyKey}/${lat},${long}?exclude=[minutely,alerts,flags]`
-  let weather = await axios.get(weatherQ)
-  if (weather.status >= 400)
-    return msg.channel.send(`**Error:** Location not found.`)
+  let weather = await axios.get(weatherQ).catch(e => console.log(e))
+
   let currently = weather.data.currently,
     hourly = weather.data.hourly,
     daily = weather.data.daily.data[0]
