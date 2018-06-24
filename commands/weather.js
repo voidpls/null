@@ -3,27 +3,10 @@ const config = require('../config/config.json')
 const util = require('../utils/util.js')
 const axios = require('axios')
 const moment = require('moment-timezone')
-const Sequelize = require('sequelize')
+const mongoose = require('mongoose')
+const Weather = mongoose.model('Weather')
 const geocodeKey = config.api_keys.geocode
 const darkskyKey = config.api_keys.darksky
-
-const sequelize = new Sequelize('database', 'root', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
-  logging: false,
-  storage: 'db/database.sqlite',
-  operatorsAliases: false
-})
-
-const Weather = sequelize.define('weather', {
-  userid: {
-    type: Sequelize.STRING,
-    unique: true
-  },
-  location: Sequelize.STRING
-})
-
-Weather.sync()
 
 module.exports.run = async (bot, msg, args, prefix) => {
   if (args.length >= 1 && args[0] !== 'set' && msg.mentions.users.size === 0) {
@@ -38,25 +21,30 @@ module.exports.run = async (bot, msg, args, prefix) => {
     args.shift()
     let loc = args.join(' ')
 
-    let userloc = await Weather.findOne({ where: { userid: msg.author.id } })
+    let userloc = await Weather.findOne({ userID: msg.author.id }).catch(e =>
+      console.log(e)
+    )
     if (!userloc) {
-      Weather.create({
-        userid: msg.author.id,
+      const weather = new Weather({
+        userID: msg.author.id,
         location: loc
-      }).get('location')
+      })
+      weather.save().catch(e => console.log(e))
     } else {
-      Weather.update({ location: loc }, { where: { userid: msg.author.id } })
+      userloc.update({ location: loc }).catch(e => console.log(e))
     }
     return msg.channel
       .send(`Your location has been successfully updated to **${loc}**`)
-      .catch(e => msg.channel.send('**Error:** ' + e.message))
+      .catch(e => console.log(e))
   } else if (
-    msg.mentions.users.size !== 0 &&
+    msg.mentions.users.size > 0 &&
     msg.mentions.users.last().id !== bot.user.id
   ) {
     let mentionID = msg.mentions.users.last().id
 
-    let loc = await Weather.findOne({ where: { userid: mentionID } })
+    let loc = await Weather.findOne({ userID: mentionID }).catch(e =>
+      console.log(e)
+    )
 
     if (loc) {
       return wSearch(msg, loc.get('location'))
@@ -70,7 +58,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .catch(e => msg.channel.send('**Error:** ' + e.message))
     }
   } else if (args.length === 0) {
-    let loc = await Weather.findOne({ where: { userid: msg.author.id } })
+    let loc = await Weather.findOne({ userID: msg.author.id }).catch(e =>
+      console.log(e)
+    )
     if (loc) return wSearch(msg, loc.get('location'))
     else {
       msg.channel
@@ -84,13 +74,16 @@ async function wSearch(msg, loc) {
   let geoQ = `https://maps.googleapis.com/maps/api/geocode/json?key=${geocodeKey}&address=${loc}`
   let geocode = await axios
     .get(geoQ)
-    .catch(msg.channel.send(`**Error:** Location not found.`))
+    .catch(e => msg.channel.send(`**Error:** Location not found.`))
+  if (!geocode || geocode.status >= 400 || geocode.data.results.length === 0)
+    return
   let lat = geocode.data.results[0].geometry.location.lat,
     long = geocode.data.results[0].geometry.location.lng,
     formatLoc = geocode.data.results[0].formatted_address
 
   let weatherQ = `https://api.darksky.net/forecast/${darkskyKey}/${lat},${long}?exclude=[minutely,alerts,flags]`
   let weather = await axios.get(weatherQ).catch(e => console.log(e))
+  if (!weather || weather.status >= 400) return
 
   let currently = weather.data.currently,
     hourly = weather.data.hourly,

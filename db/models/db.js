@@ -32,3 +32,4 @@ process.once('SIGINT', () => {
 })
 
 require('./tag.js')
+require('./weather.js')
