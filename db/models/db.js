@@ -33,3 +33,4 @@ process.once('SIGINT', () => {
 
 require('./tag.js')
 require('./weather.js')
+require('./prefix.js')

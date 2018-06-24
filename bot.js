@@ -3,11 +3,11 @@ const Cron = require('cron').CronJob
 const rimraf = require('rimraf')
 const axios = require('axios')
 const fs = require('fs')
+const mongoose = require('mongoose')
 const path = require('path')
 const util = require('./utils/util.js')
 
 const config = require('./config/config.json')
-const prefixFile = './config/prefix.json'
 const blacklistFile = './config/blacklist.json'
 
 const bot = new Discord.Client({
@@ -59,7 +59,8 @@ loadModules('./commands/', 'commands', 'commands')
 loadModules('./devCmds/', 'dev commands', 'devCommands')
 loadModules('./events/', 'events', 'events', bot)
 
-const db = require('./db/models/db.js')
+require('./db/models/db.js')
+const Prefix = mongoose.model('Prefix')
 
 // on connect event handler
 bot.on('ready', async () => {
@@ -138,12 +139,13 @@ bot.on('message', async msg => {
     })
   }
 
-  // parse prefix file
-  let prefixes = JSON.parse(fs.readFileSync(prefixFile, 'utf8'))
+  // parse blacklist file
   let blacklist = JSON.parse(fs.readFileSync(blacklistFile, 'utf8'))
 
   // set prefix
-  let prefix = prefixes[msg.guild.id] || config.prefix
+  let prefix = await Prefix.findById(msg.guild.id)
+  if (!prefix) prefix = config.prefix
+  else prefix = prefix.prefix
   let preLen = prefix.length
 
   // array of words in the message
