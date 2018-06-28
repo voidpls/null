@@ -6,9 +6,8 @@ const cc = require('cryptocompare')
 
 module.exports.run = async (bot, msg, args, prefix) => {
   if (args.length === 0) {
-    cc
-      .priceMulti(['BTC', 'BCH', 'ETH', 'LTC', 'XRP', 'EOS'], 'USD')
-      .then(prices => {
+    cc.priceMulti(['BTC', 'BCH', 'ETH', 'LTC', 'XRP', 'EOS'], 'USD').then(
+      prices => {
         let embed = new Discord.RichEmbed()
           .setAuthor(
             'Cryptocurrency Values',
@@ -26,17 +25,18 @@ module.exports.run = async (bot, msg, args, prefix) => {
         msg.channel
           .send(embed)
           .catch(e => msg.channel.send('**Error: **' + e.message))
-      })
+      }
+    )
   } else {
     let coin = args[0].toUpperCase()
     let currency = args[1] || 'USD'
     let coinlist = await cc.coinList()
-
-    cc
-      .priceFull(coin, currency.toUpperCase())
+    cc.priceFull(coin, [currency.toUpperCase(), 'BTC', 'ETH'])
       .then(prices => {
         let cData = coinlist.Data[coin]
-        let pData = prices[coin][currency.toUpperCase()]
+        currency = currency.toUpperCase()
+        let cPrice = prices[coin]
+        let pData = cPrice[currency]
 
         let embed = new Discord.RichEmbed()
           .setAuthor(
@@ -44,16 +44,35 @@ module.exports.run = async (bot, msg, args, prefix) => {
             `https://www.cryptocompare.com${cData.ImageUrl}`
           )
           .setColor(config.colors.white)
-          .addField(`Price (${currency})`, pData.PRICE)
+          .addField(
+            `Price (${currency})`,
+            pData.PRICE.toString().slice(0, 8),
+            true
+          )
+          .addField(
+            `Price (BTC/ETH)`,
+            `${cPrice['BTC'].PRICE.toString().slice(0, 8)} | ${cPrice[
+              'ETH'
+            ].PRICE.toString().slice(0, 8)}`,
+            true
+          )
+
           .addField(
             `Market Cap (${currency})`,
-            Math.round(pData.MKTCAP).toLocaleString()
+            pData.MKTCAP.toLocaleString(),
+            true
           )
           .addField(
-            `% Change (24h)`,
-            Math.round(pData.CHANGEPCT24HOUR * 10) / 10 + '%'
+            `% Change [24h]`,
+            pData.CHANGEPCT24HOUR.toFixed(2) + '%',
+            true
           )
-          .addField(`Supply`, Math.round(pData.SUPPLY).toLocaleString())
+          .addField(
+            `High/Low [24h] (${currency})`,
+            `${pData.HIGH24HOUR.toFixed(2)} | ${pData.LOW24HOUR.toFixed(2)}`,
+            true
+          )
+          .addField(`Supply`, pData.SUPPLY.toLocaleString(), true)
           .setFooter(`Last Market: ${pData.LASTMARKET}`)
 
         msg.channel
