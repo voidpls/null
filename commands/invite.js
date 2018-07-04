@@ -1,5 +1,8 @@
 module.exports.run = async (bot, msg, args, prefix) => {
-  let message = `**Want to add me to your server?** \nHere's my invite link, ${msg.author.toString()}:\n**:link: https://voidxd.me/null/ :link:**`
+  let message = `**☉ Want to add me to your server?**
+**☉ https://voidxd.me/null/ **
+**☉ Want to join my support server?**
+**☉ https://voidxd.me/support/ **`
 
   msg.channel
     .send(message)
@@ -8,7 +11,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
 module.exports.help = {
   name: 'invite',
-  desc: 'Sends the invite for this bot',
+  desc: 'Sends my support server and bot invite',
   usage: 'invite',
   category: 'Bot',
   aliases: []

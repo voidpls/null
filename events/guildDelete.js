@@ -3,8 +3,8 @@ const util = require('../utils/util.js')
 
 module.exports = async bot => {
   bot.on('guildDelete', async guild => {
-    let gID = '297191838983520257'
-    let cID = '447206453749612545'
+    let gID = '464190709134655500'
+    let cID = '464192572458532864'
 
     await guild.fetchMembers()
 

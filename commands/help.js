@@ -39,7 +39,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let embed = new Discord.RichEmbed()
     .setAuthor(bot.user.username + ' Bot Help', bot.user.avatarURL)
     .setDescription(
-      `Use **${prefix}invite** to add me! My prefix is **${prefix}**`
+      `**${prefix}**invite for my support server and invite. My prefix is **${prefix}**`
     )
     .setColor(config.colors.white)
     .setFooter(`Use ${prefix}help [command] for command specific help!`)
