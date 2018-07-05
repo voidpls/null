@@ -30,10 +30,9 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .user(username, platform)
     .then(data => {
       let stats = data.stats.lifetime
-
       let wins = fstat(stats, 'Wins')
       let winPercent = fstat(stats, 'Win%')
-      let top3 = parseInt(fstat(stats, 'Top 3')) + parseInt(wins)
+      let top3 = parseInt(fstat(stats, 'Top 3s')) + parseInt(wins)
       let kills = fstat(stats, 'Kills')
       let KD = fstat(stats, 'K/d')
       let mPlayed = fstat(stats, 'Matches Played')
@@ -59,11 +58,12 @@ module.exports.run = async (bot, msg, args, prefix) => {
         msg.channel.send(`**Error:** ${e.message}`)
       })
 
-      function fstat (stats, str) {
+      function fstat(stats, str) {
         return stats.find(s => s[str])[str]
       }
     })
     .catch(e => {
+      console.log(e)
       msg.channel.send(
         `**Error:** Player **${username}** on **${platform.toUpperCase()}** not found`
       )
