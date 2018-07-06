@@ -47,7 +47,7 @@ module.exports = async bot => {
 
     channel.send(embed)
     let usercount = bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
-    bot.user.setActivity(`${util.commas(usercount)} users | >help`, {
+    bot.user.setActivity(`${util.commas(usercount)} users | >invite`, {
       type: 'PLAYING'
     })
   })

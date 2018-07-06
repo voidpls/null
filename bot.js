@@ -72,15 +72,15 @@ bot.on('ready', async () => {
     } server(s) \n→ Bot is serving ${usercount} members`
   )
   // set bot status
-  bot.user.setActivity(`${util.commas(usercount)} users | >help`, {
+  bot.user.setActivity(`${util.commas(usercount)} users | >invite`, {
     type: 'PLAYING'
   })
   setTimeout(() => {
     usercount = bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
-    bot.user.setActivity(`${util.commas(usercount)} users | >help`, {
+    bot.user.setActivity(`${util.commas(usercount)} users | >invite`, {
       type: 'PLAYING'
     })
-  }, 3e5)
+  }, 6e5)
   bot.user.setStatus('online')
   // terminal beautification
   console.log('-------------------------------------')

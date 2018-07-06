@@ -14,7 +14,11 @@ module.exports.run = async (bot, msg, args, prefix) => {
     .setAuthor('Bot Info', 'http://i.imgur.com/2x6vqOb.png')
     .setColor(botMember.displayHexColor)
     .addField('Servers', `**${bot.guilds.size}**`, true)
-    .addField('Users', `**${bot.users.size}**`, true)
+    .addField(
+      'Users',
+      `**${bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)}**`,
+      true
+    )
 
   pidusage(process.pid, (err, stats) => {
     if (err) return msg.channel.send(`**Error: ** ${err.message}`)
