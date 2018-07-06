@@ -1,7 +1,7 @@
 const util = require('../utils/util.js')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  let user = util.getUser(bot, msg, args)
+  let user = (await util.getUser(bot, msg, args)) || undefined
   if (user) {
     msg.channel.send(
       `Here is **${user.username}**'s avatar: \n` + user.displayAvatarURL
