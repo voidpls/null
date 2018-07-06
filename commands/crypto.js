@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-// const errors = require("../utils/errors.js");
+const ChartNode = require('chartjs-node')
 global.fetch = require('node-fetch')
 const config = require('../config/config.json')
 const cc = require('cryptocompare')
@@ -14,9 +14,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
             'https://cdn-images-1.medium.com/max/1600/1*U7phpu7aKKrU05JvMvs-wA.png'
           )
           .setColor(config.colors.white)
-          .setFooter(
-            `Use ${prefix}crypto [crypto symbol] [currency] to get custom results`
-          )
+          .setFooter(`Use ${prefix}cc [crypto] [currency] for detailed info.`)
 
         for (const i in prices) {
           embed.addField(i, '$' + prices[i]['USD'], true)
@@ -27,14 +25,59 @@ module.exports.run = async (bot, msg, args, prefix) => {
           .catch(e => msg.channel.send('**Error: **' + e.message))
       }
     )
+  } else if (['chart', 'graph', 'c'].includes(args[0])) {
+    let coin = args[1] || 'BTC'
+    let currency = args[2] || 'USD'
+    coin = coin.toUpperCase()
+    currency = currency.toUpperCase()
+
+    const histoMin = await cc.histoMinute(coin, currency)
+    const data = histoMin.map(m => m.close)
+    const labels = histoMin.map((m, i) => 1440 - i)
+    console.log(histoMin[0])
+
+    const chartNode = new ChartNode(1000, 500)
+    chartNode.on('beforeDraw', Chartjs => {
+      global = Chartjs.defaults.global
+      global.defaultFontColor = '#fff'
+      global.defaultFontSize = 16
+      global.defaultFontStyle = 'bold'
+    })
+    const cjsOptions = {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: `BTC Value in USD (Last 24h)`,
+            data: data,
+            backgroundColor: 'rgba(255,255,255,.3)',
+            borderColor: '#fff',
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: false,
+        legend: { labels: { fontSize: 18 } },
+        animation: false
+      }
+    }
+
+    chartNode.drawChart(cjsOptions).then(async () => {
+      const buffer = await chartNode.getImageBuffer('image/png')
+      let attach = new Discord.Attachment(buffer, 'cc.png')
+      msg.channel.send(attach)
+    })
   } else {
     let coin = args[0].toUpperCase()
     let currency = args[1] || 'USD'
+    currency = currency.toUpperCase()
     let coinlist = await cc.coinList()
-    cc.priceFull(coin, [currency.toUpperCase(), 'BTC', 'ETH'])
+
+    cc.priceFull(coin, [currency, 'BTC', 'ETH'])
       .then(prices => {
         let cData = coinlist.Data[coin]
-        currency = currency.toUpperCase()
         let cPrice = prices[coin]
         let pData = cPrice[currency]
 
