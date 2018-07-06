@@ -4,7 +4,7 @@ const util = require('../utils/util.js')
 const moment = require('moment')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  let user = await util.getUser(bot, msg, args)
+  let user = (await util.getUser(bot, msg, args)) || undefined
   if (!user) {
     return msg.channel.send(
       `**Error:** Could not find user info for **${args.join()}**`
@@ -22,10 +22,10 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let roles = 'N/A'
 
   let statusMap = {
-    offline: '<:offline:313956277237710868>',
-    idle: '<:idle:438877481831890944>',
-    dnd: '<:dnd:438877374726144001>',
-    online: '<:online:438877428807368705>'
+    offline: '<:offline:313956277237710868> Offline',
+    idle: '<:idle:438877481831890944> Idle',
+    dnd: '<:dnd:438877374726144001> DND',
+    online: '<:online:438877428807368705> Online'
   }
 
   function format(timestamp) {
@@ -35,6 +35,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   if (user.bot) {
     accType = 'Bot'
   }
+
   if (msg.guild.member(user)) {
     let member = msg.guild.member(user)
     color = member.displayHexColor
@@ -56,7 +57,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let desc =
     `☉ Account Type: **${accType}**\n` +
     `☉ User ID: **${user.id}**\n` +
-    `☉ Status: **${statusMap[status]}${status.toUpperCase()}**\n` +
+    `☉ Status: **${statusMap[status]}**\n` +
     `☉ Shared Servers: **${serverCt}**\n` +
     `☉ Nickname: **${nick}**\n` +
     `☉ Roles: **${roles}** [Top - **${topRole}**]\n` +

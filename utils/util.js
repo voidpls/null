@@ -24,7 +24,7 @@ module.exports.getMember = (msg, args) => {
 }
 
 // get user function
-module.exports.getUser = (bot, msg, args) => {
+module.exports.getUser = async (bot, msg, args) => {
   let user = false
   if (!args[0]) {
     return msg.author
@@ -33,16 +33,14 @@ module.exports.getUser = (bot, msg, args) => {
       msg.guild.fetchMembers(args[0])
       user =
         msg.mentions.users.last() ||
-        bot.users.get(args[0]) ||
         msg.guild.members.find(m =>
           m.user.username.toLowerCase().includes(args[0].toLowerCase())
-        ).user ||
-        msg.author
-    } catch (e) {
-      console.log('e')
-    }
+        ) ||
+        (await bot.fetchUser(args[0]))
+    } catch (e) {}
   }
-  if (!user) return msg.author
+  if (!user) return undefined
+  else if (user.user) return user.user
   else return user
 }
 
