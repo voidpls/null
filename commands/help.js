@@ -65,6 +65,6 @@ module.exports.help = {
   name: 'help',
   desc: 'View command info',
   usage: `help [command]`,
-  category: 'Info',
-  aliases: []
+  category: 'Bot',
+  aliases: ['cmd', 'command']
 }
