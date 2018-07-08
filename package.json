@@ -18,6 +18,8 @@
   "homepage": "https://github.com/voidpls/null#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "chart.js": "^2.7.2",
+    "chartjs-node": "^1.7.1",
     "cron": "^1.3.0",
     "cryptocompare": "^0.5.0",
     "discord.js": "^11.3.2",
@@ -33,8 +35,6 @@
     "node-vibrant": "*",
     "pidusage": "^2.0.6",
     "rimraf": "^2.6.2",
-    "sequelize": "^4.37.8",
-    "sqlite3": "^4.0.0",
     "urban": "^0.3.1",
     "xkcd-api": "^1.0.1"
   }
