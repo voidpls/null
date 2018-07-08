@@ -133,7 +133,7 @@ function toC(f) {
 module.exports.help = {
   name: 'weather',
   desc: 'Checks the weather',
-  usage: 'weather [location] | weather set [location]',
+  usage: 'weather [location] | set [location]',
   category: 'Utilities',
   aliases: ['w', 'forecast']
 }

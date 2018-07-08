@@ -31,44 +31,79 @@ module.exports.run = async (bot, msg, args, prefix) => {
     coin = coin.toUpperCase()
     currency = currency.toUpperCase()
 
-    const histoMin = await cc.histoMinute(coin, currency)
+    const histoMin = await cc
+      .histoMinute(coin, currency)
+      .catch(e => console.log(e))
+    let errtxt = `**Error:** Could not find coin data for **${coin}** in **${currency.toUpperCase()}**`
+    if (!histoMin) return msg.channel.send(errtxt)
+
     const data = histoMin.map(m => m.close)
-    const labels = histoMin.map((m, i) => 1440 - i)
-    console.log(histoMin[0])
+    const labels = histoMin.map((m, i) => ~~((1440 - i) / 60))
 
     const chartNode = new ChartNode(1000, 500)
     chartNode.on('beforeDraw', Chartjs => {
-      global = Chartjs.defaults.global
+      let global = Chartjs.defaults.global
       global.defaultFontColor = '#fff'
       global.defaultFontSize = 16
       global.defaultFontStyle = 'bold'
     })
+
     const cjsOptions = {
       type: 'line',
       data: {
         labels: labels,
         datasets: [
           {
-            label: `BTC Value in USD (Last 24h)`,
+            label: `${coin} Value in ${currency} (Last 24h)`,
             data: data,
             backgroundColor: 'rgba(255,255,255,.3)',
-            borderColor: '#fff',
-            borderWidth: 2
+            borderColor: 'rgb(255,255,255)',
+            borderWidth: 2,
+            pointRadius: 0
           }
         ]
       },
       options: {
         responsive: false,
         legend: { labels: { fontSize: 18 } },
-        animation: false
+        animation: false,
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: `Value (${currency})`
+              },
+              gridLines: { color: 'rgba(255,255,255,.3)' }
+            }
+          ],
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: `Time Until Present (Hours)`,
+                padding: 0
+              },
+              time: { unit: 'minute' },
+              gridLines: { color: 'rgba(255,255,255,.3)' },
+              ticks: { maxTicksLimit: 20 }
+            }
+          ]
+        }
       }
     }
 
-    chartNode.drawChart(cjsOptions).then(async () => {
-      const buffer = await chartNode.getImageBuffer('image/png')
-      let attach = new Discord.Attachment(buffer, 'cc.png')
-      msg.channel.send(attach)
-    })
+    chartNode
+      .drawChart(cjsOptions)
+      .then(async () => {
+        const buffer = await chartNode
+          .getImageBuffer('image/png')
+          .catch(e => console.log(e))
+        let attach = new Discord.Attachment(buffer, 'ccgraph.png')
+        msg.channel.send(attach).catch(e => `**Error:** ${e.message}`)
+        chartNode.destroy()
+      })
+      .catch(e => console.log(e))
   } else {
     let coin = args[0].toUpperCase()
     let currency = args[1] || 'USD'
@@ -123,10 +158,8 @@ module.exports.run = async (bot, msg, args, prefix) => {
           .catch(e => msg.channel.send('**Error: **' + e.message))
       })
       .catch(e => {
-        console.log(e)
-        return msg.channel.send(
-          `**Error:** Could not find coin data for **${coin}** in **${currency.toUpperCase()}**`
-        )
+        let text = `**Error:** Could not find coin data for **${coin}** in **${currency.toUpperCase()}**`
+        return msg.channel.send(text)
       })
   }
 }
@@ -134,7 +167,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
 module.exports.help = {
   name: 'crypto',
   desc: 'Checks the worth of any crypto, in any currency.',
-  usage: 'crypto [crypto symbol] [currency]',
+  usage: 'crypto [crypto] [currency] | chart [crypto]',
   category: 'Utilities',
   aliases: ['cryptocurrency', 'cc']
 }

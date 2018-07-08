@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 const config = require('../config/config.json')
 const errors = require('../utils/errors.js')
+const Vibrant = require('node-vibrant')
 
 // No missing perm log
 module.exports.delCatch = e => {
@@ -114,7 +115,6 @@ module.exports.commas = num => {
 
 // get color
 module.exports.getColor = async url => {
-  const Vibrant = require('node-vibrant')
   let vibrant = new Vibrant(url)
   let palette = await vibrant.getPalette()
   if (palette.Vibrant) return palette.Vibrant.getHex()

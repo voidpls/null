@@ -18,7 +18,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       let cmdName =
         cmdFile.help.name[0].toUpperCase() + cmdFile.help.name.substr(1)
       let aliasArr = cmdFile.help.aliases
-      let aliases = cmd
+      let aliases = cmdFile.help.name
       if (aliasArr.length !== 0) {
         aliases = aliases + ` | ${aliasArr.join(' | ')}`
       }
