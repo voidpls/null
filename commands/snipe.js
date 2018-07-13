@@ -20,8 +20,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let clean = text => {
     if (text.length > 1024) text = text.substr(0, 1021) + '...'
     else if (text.length === 0) text = '[no content]'
-    text.replace(regex, '[redacted]')
-    return text
+    return text.replace(regex, '[redacted]')
   }
   let sniped = await sniper.get(msg.channel.id)
   if (!sniped) {
@@ -48,7 +47,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let user = sniped.author
     let tag = `**${user.username}#${
       user.discrim
-    }** deleted a message *${timeDiff}*...`
+    }**'s message was deleted *${timeDiff}*...`
     embed
       .setAuthor('Message Snipe', user.avatar)
       .setDescription(tag)
