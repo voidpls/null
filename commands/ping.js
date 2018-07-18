@@ -1,10 +1,7 @@
 module.exports.run = async (bot, msg, args, prefix) => {
-  let start = process.hrtime()
-
-  msg.channel.send(':ping_pong:  |  Pong! - Time taken:').then(m => {
-    const diff = process.hrtime(start)
-    let time = diff[0] * 1000 + diff[1] / 1000000
-    m.edit(':ping_pong:  |  Pong! - Time taken: **' + Math.round(time) + 'ms**')
+  await msg.channel.send(':ping_pong:  |  Pong! - Time taken:').then(m => {
+    const diff = m.createdTimestamp - msg.createdTimestamp
+    m.edit(':ping_pong:  |  Pong! - Time taken: **' + diff + 'ms**')
   })
 }
 
@@ -14,5 +11,4 @@ module.exports.help = {
   usage: `ping`,
   category: 'Bot',
   aliases: []
-
 }
