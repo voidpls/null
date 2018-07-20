@@ -35,7 +35,10 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .catch(e => msg.channel.send('**Error: **' + e.message))
     } else return errors.noCmd(msg, args[0])
   }
-
+  let listlinks =
+    '**[Discord Bots](https://bots.discord.pw/bots/430081374444191775) | ' +
+    '[Listcord](https://listcord.com/bot/430081374444191775) | ' +
+    '[Discord Bot List](https://discordbots.org/bot/430081374444191775)**'
   let embed = new Discord.RichEmbed()
     .setAuthor(bot.user.username + ' Bot Help', bot.user.avatarURL)
     .setDescription(
@@ -52,12 +55,12 @@ module.exports.run = async (bot, msg, args, prefix) => {
           '**`' + c.help.name[0].toUpperCase() + c.help.name.substr(1) + '`**'
       )
       .join(' ')
-
+    // '[a](http://google.com)
     embed.addField(i, cmds, true)
   })
 
   msg.channel
-    .send(embed)
+    .send(embed.addField('Bot List Links', listlinks, true))
     .catch(e => msg.channel.send('**Error: **' + e.message))
 }
 
