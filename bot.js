@@ -6,6 +6,7 @@ const fs = require('fs')
 const mongoose = require('mongoose')
 const path = require('path')
 const util = require('./utils/util.js')
+const chatbot = require('./utils/chatbot.js')
 
 const config = require('./config/config.json')
 const blacklistFile = './config/blacklist.json'
@@ -148,12 +149,16 @@ bot.on('message', async msg => {
   else prefix = prefix.prefix
   let preLen = prefix.length
 
+  let runChatbot = false
+
   // array of words in the message
-  if (msg.content.startsWith(`<@${bot.user.id}>`))
+  if (msg.content.startsWith(`<@${bot.user.id}>`)) {
     preLen = `<@${bot.user.id}>`.length + 1
-  else if (msg.content.startsWith(`<@!${bot.user.id}>`))
+    runChatbot = true
+  } else if (msg.content.startsWith(`<@!${bot.user.id}>`)) {
     preLen = `<@!${bot.user.id}>`.length + 1
-  else if (!msg.content.startsWith(prefix)) return
+    runChatbot = true
+  } else if (!msg.content.startsWith(prefix)) return
 
   /************************************************************/
   /** * Code below this line will ignore messages w/o prefix ***/
@@ -163,6 +168,7 @@ bot.on('message', async msg => {
     .slice(preLen)
     .split(' ')
     .slice(1)
+
   // pulls command from message
   let cmd = msg.content
     .slice(preLen)
@@ -180,15 +186,22 @@ bot.on('message', async msg => {
 
   let cmdFile = bot.commands.get(cmd)
 
-  if (cmdFile) return runCMD(cmdFile)
-  else if (bot.devCommands.get(cmd) && msg.author.id === config.mainacc)
+  if (cmdFile) {
+    runChatbot = false
+    return runCMD(cmdFile)
+  } else if (bot.devCommands.get(cmd) && msg.author.id === config.mainacc) {
+    runChatbot = false
     return bot.devCommands.get(cmd).run(bot, msg, args, prefix)
-  else {
+  } else {
     //if alias matches
     bot.commands.forEach(c => {
-      if (c.help.aliases.includes(cmd)) return runCMD(c)
+      if (c.help.aliases.includes(cmd)) {
+        runChatbot = false
+        return runCMD(c)
+      }
     })
   }
+  if (runChatbot === true) chatbot(msg, msg.content.slice(preLen).split(' '))
 
   function runCMD(c) {
     // check if user is in cooldown set
