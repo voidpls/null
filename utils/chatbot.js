@@ -34,8 +34,8 @@ async function scrapeHTML(text) {
 }
 
 function formatReply(reply, msg) {
-  // if (reply.match(/you were 12 years old/gi))
-  //   reply = 'how the fuck should I know?'
+  if (reply.match(/you were(.+)years old/gi))
+    reply = 'how the fuck should I know?'
   return reply
     .replace(/maid-chan/gi, 'Null')
     .replace(/alex badger/gi, 'Void')
