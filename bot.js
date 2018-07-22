@@ -233,7 +233,7 @@ bot.on('message', async msg => {
     }, CDsecs * 1000)
     // run command if not in the cooldown set
     let memUsed = Math.round(process.memoryUsage().rss / 1000000)
-    console.log(`${memUsed} MB - ${c.help.name} ran`)
+    console.log(`[${new Date}] ${memUsed} MB - ${c.help.name} ran`)
     return c.run(bot, msg, args, prefix)
   }
 })

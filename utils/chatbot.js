@@ -5,19 +5,23 @@ const chatEndpoint =
   'https://www.pandorabots.com/pandora/talk?botid=d979c4a56e34cb17'
 
 module.exports = async (msg, args) => {
-  await msg.channel.startTyping()
+  console.log(`[${new Date}] chatbot ran`)
+  msg.channel.startTyping()
   const text = cleanContent(args.join(' '))
   let reply = await scrapeHTML(text)
   if (reply) {
     reply = formatReply(reply, msg)
     await msg.channel.send(reply)
   } else await msg.channel.send("I don't know how to respond :/")
+  return msg.channel.stopTyping(true)
 }
 
 async function scrapeHTML(text) {
   return new Promise(async (res, rej) => {
     try {
-      let html = await axios.post(chatEndpoint, qs.stringify({ input: text }))
+      let html = await axios.post(chatEndpoint, qs.stringify({
+        input: text
+      }))
       if (html.status >= 400) rej(`API Error: ${html.status}`)
       let reply = html.data.match(
         /Maid-Chan:<\/b> (.+)(\n| <br><\/body><\/html>)/i
