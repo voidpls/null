@@ -7,6 +7,7 @@ const chatEndpoint =
 module.exports = async (msg, args) => {
   console.log(`[${new Date()}] chatbot ran`)
   msg.channel.startTyping()
+  if (!args[0]) return
   const text = cleanContent(args.join(' '))
   let reply = await scrapeHTML(text)
   if (reply) {
