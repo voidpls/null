@@ -30,6 +30,8 @@ async function scrapeHTML(text) {
       let reply = html.data.match(
         /Maid-Chan:<\/b> (.+)(\n| <br><\/body><\/html>)/i
       )
+      if (html.data.includes('you were  years old'))
+        reply[1] = 'how the fuck should I know?'
       if (reply) res(reply[1]).trim()
     } catch (e) {
       rej(e)
@@ -38,8 +40,8 @@ async function scrapeHTML(text) {
 }
 
 function formatReply(reply, msg) {
-  if (reply.match(/you were(.+)years old/gi))
-    reply = 'how the fuck should I know?'
+  if (reply.includes('drwallace@alicebot.org')) reply = 'Nice try 😡'
+
   return reply
     .replace(/<br> ?/gi, '\n')
     .replace(/maid-chan/gi, 'Null')
