@@ -9,7 +9,7 @@ module.exports = async (msg, args) => {
   msg.channel.startTyping()
   if (!args[0]) return
   const text = cleanContent(args.join(' '))
-  let reply = await scrapeHTML(text)
+  let reply = await scrapeHTML(text).catch(e => console.log(e))
   if (reply) {
     reply = formatReply(reply, msg)
     await msg.channel.send(reply)
@@ -19,6 +19,9 @@ module.exports = async (msg, args) => {
 
 async function scrapeHTML(text) {
   return new Promise(async (res, rej) => {
+    setTimeout(() => {
+      rej('Request timed out (5s)')
+    }, 5000)
     try {
       let html = await axios.post(
         chatEndpoint,
