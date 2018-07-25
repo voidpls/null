@@ -5,9 +5,9 @@ const chatEndpoint =
   'https://www.pandorabots.com/pandora/talk?botid=d979c4a56e34cb17'
 
 module.exports = async (msg, args) => {
+  if (!args[0]) return
   console.log(`[${new Date()}] chatbot ran`)
   msg.channel.startTyping()
-  if (!args[0]) return
   const text = cleanContent(args.join(' '))
   let reply = await scrapeHTML(text).catch(e => console.log(e))
   if (reply) {
