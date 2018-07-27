@@ -20,8 +20,8 @@ module.exports = async (msg, args) => {
 async function scrapeHTML(text) {
   return new Promise(async (res, rej) => {
     setTimeout(() => {
-      rej('Request timed out (5s)')
-    }, 5000)
+      rej('Request timed out (7.5s)')
+    }, 7500)
     try {
       let html = await axios.post(
         chatEndpoint,
