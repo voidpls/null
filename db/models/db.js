@@ -3,7 +3,10 @@ const uri = require('../../config/config.json').mongouri
 
 mongoose.connect(
   uri,
-  { keepAlive: true }
+  {
+    keepAlive: true,
+    useNewUrlParser: true
+  }
 )
 
 // When successfully connected
