@@ -18,7 +18,6 @@ module.exports.run = async (bot, msg, args, prefix) => {
 
   // prune 50
   if (!args[0]) {
-    console.log('prune 50')
     // msg.delete().catch(e => util.delCatch(e))
     let msgs = await msg.channel.fetchMessages({ limit: 75 })
     msgs = msgs.filter(m => !m.pinned).array()
@@ -33,7 +32,6 @@ module.exports.run = async (bot, msg, args, prefix) => {
   // prune images
 
   if (['images', 'image', 'pics', 'img', 'imgs'].includes(param)) {
-    console.log('prune images')
     msg.delete().catch(e => util.delCatch(e))
     if (parseInt(args[1]) && parseInt(args[1]) > 0) pruneNum = parseInt(args[1])
     let msgs = await msg.channel.fetchMessages({ limit: 100 })
@@ -47,8 +45,6 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .catch(e => msg.channel.send(e.message).catch(e => util.delCatch(e)))
   } else if (['bots', 'bot'].includes(param)) {
     // prune bots
-
-    console.log('prune bots')
     msg.delete().catch(e => util.delCatch(e))
     if (parseInt(args[1]) && parseInt(args[1]) > 0) pruneNum = parseInt(args[1])
     let msgs = await msg.channel.fetchMessages({ limit: 100 })
@@ -60,8 +56,6 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .catch(e => msg.channel.send(e.message).catch(e => util.delCatch(e)))
   } else if (['with', 'includes', 'w'].includes(param)) {
     // prune with
-
-    console.log('prune with')
     msg.delete().catch(e => util.delCatch(e))
     let msgs = await msg.channel.fetchMessages({ limit: 100 })
 
@@ -77,7 +71,6 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .catch(e => msg.channel.send(e.message).catch(e => util.delCatch(e)))
   } else if (isNaN(parseInt(param)) || param.length > 4) {
     // prune user
-    console.log('prune user')
     msg.delete().catch(e => util.delCatch(e))
     let userIDs = util.getUserArr(bot, msg, args)
     if (userIDs.length === 0) {
@@ -100,8 +93,6 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .catch(e => msg.channel.send(e.message).catch(e => util.delCatch(e)))
   } else {
     // prune #
-
-    console.log('prune #')
     // msg.delete().catch(e => util.delCatch(e))
     if (parseInt(param) > 100) {
       return msg.channel
