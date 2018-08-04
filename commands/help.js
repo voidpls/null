@@ -15,8 +15,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       })
     }
     if (cmdFile) {
-      let cmdName =
-        cmdFile.help.name[0].toUpperCase() + cmdFile.help.name.substr(1)
+      let cmdName = cmdFile.help.name[0].toUpperCase() + cmdFile.help.name.substr(1)
       let aliasArr = cmdFile.help.aliases
       let aliases = cmdFile.help.name
       if (aliasArr.length !== 0) {
@@ -30,9 +29,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
         .addField('Usage', prefix + cmdFile.help.usage)
         .addField('Aliases', aliases)
 
-      return msg.channel
-        .send(embed)
-        .catch(e => msg.channel.send('**Error: **' + e.message))
+      return msg.channel.send(embed).catch(e => msg.channel.send('**Error: **' + e.message))
     } else return errors.noCmd(msg, args[0])
   }
   let listlinks =
@@ -50,17 +47,14 @@ module.exports.run = async (bot, msg, args, prefix) => {
   categories.forEach(i => {
     let cmds = bot.commands
       .filter(c => c.help.category === i)
-      .map(
-        c =>
-          '**`' + c.help.name[0].toUpperCase() + c.help.name.substr(1) + '`**'
-      )
+      .map(c => '**`' + c.help.name[0].toUpperCase() + c.help.name.substr(1) + '`**')
       .join(' ')
     // '[a](http://google.com)
     embed.addField(i, cmds, true)
   })
 
   msg.channel
-    .send(embed.addField('Bot List Links', listlinks, true))
+    .send(embed /*.addField('Bot List Links', listlinks, true)*/)
     .catch(e => msg.channel.send('**Error: **' + e.message))
 }
 

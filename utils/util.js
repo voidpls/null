@@ -11,14 +11,10 @@ module.exports.delCatch = e => {
 
 // get member function
 module.exports.getMember = (msg, args) => {
-  let user = msg.guild.member(
-    msg.mentions.users.last() || msg.guild.members.get(args[0])
-  )
+  let user = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]))
 
   if (!user) {
-    user = msg.guild.members.find(
-      m => m.user.username.toLowerCase() === args[0].toLowerCase()
-    )
+    user = msg.guild.members.find(m => m.user.username.toLowerCase() === args[0].toLowerCase())
     if (user) return user
     else return undefined
   } else return user
@@ -33,7 +29,7 @@ module.exports.getUser = async (bot, msg, args) => {
     try {
       msg.guild.fetchMembers(args[0])
       user =
-        msg.mentions.users.last() ||
+        msg.mentions.users.first() ||
         msg.guild.members.find(m =>
           m.user.username.toLowerCase().includes(args[0].toLowerCase())
         ) ||
@@ -53,15 +49,13 @@ module.exports.getUserArr = (bot, msg, arr) => {
       msg.guild.fetchMembers(i)
 
       let user = bot.users.get(id) ||
-        msg.guild.members.find(m =>
-          m.user.username.toLowerCase().includes(i.toLowerCase())
-        ) || { id: null }
+        msg.guild.members.find(m => m.user.username.toLowerCase().includes(i.toLowerCase())) || {
+          id: null
+        }
       if (user.user) return user.user
       else return user
     })
-    return Array.from(
-      new Set(resolved.filter(user => user.id).map(user => user.id))
-    )
+    return Array.from(new Set(resolved.filter(user => user.id).map(user => user.id)))
   } catch (e) {
     console.log(e)
   }
@@ -69,9 +63,7 @@ module.exports.getUserArr = (bot, msg, arr) => {
 
 // get user ANY ARG function
 module.exports.getUserFromArg = (bot, msg, arg) => {
-  let nameSearch = msg.guild.members.find(
-    m => m.user.username.toLowerCase() === arg.toLowerCase()
-  )
+  let nameSearch = msg.guild.members.find(m => m.user.username.toLowerCase() === arg.toLowerCase())
   if (bot.users.get(arg)) return bot.users.get(arg)
   else if (msg.mentions.users.first()) return msg.mentions.users.first()
   else if (nameSearch) return nameSearch.user

@@ -12,11 +12,7 @@ const config = require('./config/config.json')
 const blacklistFile = './config/blacklist.json'
 
 const bot = new Discord.Client({
-  disabledEvents: [
-    'TYPING_START',
-    'MESSAGE_REACTION_ADD',
-    'MESSAGE_REACTION_REMOVE'
-  ],
+  disabledEvents: ['TYPING_START', 'MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'],
   messageCacheMaxSize: 150,
   disableEveryone: true
 })
@@ -71,10 +67,11 @@ bot.on('ready', async () => {
   console.log(`→ Successfully connected as ${bot.user.username}`)
   let usercount = bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
   console.log(
-    `→ Bot is currently in ${
-      bot.guilds.size
-    } server(s) \n→ Bot is serving ${usercount} members`
+    `→ Bot is currently in ${bot.guilds.size} server(s) \n→ Bot is serving ${usercount} members`
   )
+  // terminal beautification
+  console.log('-------------------------------------')
+
   // set bot status
   bot.user.setActivity(`${util.commas(usercount)} users | >invite`, {
     type: 'PLAYING'
@@ -86,8 +83,6 @@ bot.on('ready', async () => {
     })
   }, 6e5)
   bot.user.setStatus('online')
-  // terminal beautification
-  console.log('-------------------------------------')
 })
 
 new Cron(
@@ -130,9 +125,7 @@ bot.on('message', async msg => {
 
   if (msg.attachments.size > 0) {
     msg.attachments.map(async attach => {
-      let ext = attach.filename.slice(
-        ((attach.filename.lastIndexOf('.') - 1) >>> 0) + 2
-      )
+      let ext = attach.filename.slice(((attach.filename.lastIndexOf('.') - 1) >>> 0) + 2)
       axios
         .get(attach.url, {
           responseType: 'stream'
@@ -158,9 +151,11 @@ bot.on('message', async msg => {
   if (msg.content.startsWith(`<@${bot.user.id}>`)) {
     preLen = `<@${bot.user.id}>`.length + 1
     runChatbot = true
+    msg.mentions.users.delete(msg.mentions.users.firstKey())
   } else if (msg.content.startsWith(`<@!${bot.user.id}>`)) {
     preLen = `<@!${bot.user.id}>`.length + 1
     runChatbot = true
+    msg.mentions.users.delete(msg.mentions.users.firstKey())
   } else if (!msg.content.startsWith(prefix)) return
 
   /************************************************************/
@@ -217,11 +212,7 @@ bot.on('message', async msg => {
       cooldown2.add(msg.author.id)
       // warn + delete messages
       return msg.channel
-        .send(
-          `Please wait **3** seconds between commands, **${
-            msg.author.username
-          }**.`
-        )
+        .send(`Please wait **3** seconds between commands, **${msg.author.username}**.`)
         .then(m => {
           m.delete(3000)
           msg.delete(3000).catch(e => util.delCatch(e))

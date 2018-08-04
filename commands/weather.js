@@ -21,9 +21,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     args.shift()
     let loc = args.join(' ')
 
-    let userloc = await Weather.findOne({ userID: msg.author.id }).catch(e =>
-      console.log(e)
-    )
+    let userloc = await Weather.findOne({ userID: msg.author.id }).catch(e => console.log(e))
     if (!userloc) {
       const weather = new Weather({
         userID: msg.author.id,
@@ -36,31 +34,20 @@ module.exports.run = async (bot, msg, args, prefix) => {
     return msg.channel
       .send(`Your location has been successfully updated to **${loc}**`)
       .catch(e => console.log(e))
-  } else if (
-    msg.mentions.users.size > 0 &&
-    msg.mentions.users.last().id !== bot.user.id
-  ) {
-    let mentionID = msg.mentions.users.last().id
+  } else if (msg.mentions.users.size > 0 && msg.mentions.users.first().id !== bot.user.id) {
+    let mentionID = msg.mentions.users.first().id
 
-    let loc = await Weather.findOne({ userID: mentionID }).catch(e =>
-      console.log(e)
-    )
+    let loc = await Weather.findOne({ userID: mentionID }).catch(e => console.log(e))
 
     if (loc) {
       return wSearch(msg, loc.get('location'))
     } else {
       msg.channel
-        .send(
-          `No weather data found for user **${
-            msg.mentions.users.last().username
-          }**`
-        )
+        .send(`No weather data found for user **${msg.mentions.users.first().username}**`)
         .catch(e => msg.channel.send('**Error:** ' + e.message))
     }
   } else if (args.length === 0) {
-    let loc = await Weather.findOne({ userID: msg.author.id }).catch(e =>
-      console.log(e)
-    )
+    let loc = await Weather.findOne({ userID: msg.author.id }).catch(e => console.log(e))
     if (loc) return wSearch(msg, loc.get('location'))
     else {
       msg.channel
