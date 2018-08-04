@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const axios = require('axios')
 const config = require('../config/config.json')
 const errors = require('../utils/errors.js')
 const Vibrant = require('node-vibrant')
@@ -111,4 +112,21 @@ module.exports.getColor = async url => {
   let palette = await vibrant.getPalette()
   if (palette.Vibrant) return palette.Vibrant.getHex()
   else return config.colors.white
+}
+
+// is url
+module.exports.isURL = async string => {
+  const prot = /^(?:\w+:)?\/\/(\S+)$/
+  const local = /^localhost[\:?\d]*(?:[^\:?\d]\S*)?$/
+  const nonLocal = /^[^\s\.]+\.\S{2,}$/
+  if (typeof string !== 'string') return false
+
+  const match = string.match(prot)
+  if (!match) return false
+
+  const evAfter = match[1]
+  if (!evAfter) return false
+  if (local.test(evAfter) || nonLocal.test(evAfter)) return true
+
+  return false
 }

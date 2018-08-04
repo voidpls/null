@@ -39,11 +39,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     let msgs = await msg.channel.fetchMessages({ limit: 100 })
     msgs = msgs
       .filter(m => !m.pinned)
-      .filter(
-        m =>
-          m.attachments.size !== 0 ||
-          m.embeds.some(e => e.type === 'image' || e.image)
-      )
+      .filter(m => m.attachments.size !== 0 || m.embeds.some(e => e.type === 'image' || e.image))
     if (msgs.length > pruneNum) msgs.length = pruneNum
     if (msgs.length === 0) return
     msg.channel
@@ -73,9 +69,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
       .slice(1)
       .join(' ')
       .toLowerCase()
-    msgs = msgs
-      .filter(m => !m.pinned && m.content.toLowerCase().includes(matchTxt))
-      .array()
+    msgs = msgs.filter(m => !m.pinned && m.content.toLowerCase().includes(matchTxt)).array()
 
     if (msgs.length === 0) return
     msg.channel
@@ -97,11 +91,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
     msgs = msgs.filter(m => !m.pinned && userIDs.includes(m.author.id)).array()
     if (msgs.length === 0) return
     msg.channel
-      .send(
-        `Deleting **${msgs.length}** messages from **${
-          userIDs.length
-        }** user(s)`
-      )
+      .send(`Deleting **${msgs.length}** messages from **${userIDs.length}** user(s)`)
       .then(m => m.delete(3000).catch(e => util.delCatch(e)))
       .catch(e => util.delCatch(e))
 

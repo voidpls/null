@@ -64,13 +64,13 @@ process.on('unhandledRejection', r => console.log(`[${new Date()}]`, r))
 
 // on connect event handler
 bot.on('ready', async () => {
+  // terminal beautification
+  console.log('-------------------------------------')
   console.log(`→ Successfully connected as ${bot.user.username}`)
   let usercount = bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
   console.log(
     `→ Bot is currently in ${bot.guilds.size} server(s) \n→ Bot is serving ${usercount} members`
   )
-  // terminal beautification
-  console.log('-------------------------------------')
 
   // set bot status
   bot.user.setActivity(`${util.commas(usercount)} users | >invite`, {
