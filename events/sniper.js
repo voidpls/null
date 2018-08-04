@@ -30,37 +30,33 @@ module.exports = async bot => {
     if (msg.attachments.size > 0)
       attachments = await Promise.all(
         msg.attachments.map(async attach => {
-
+          let filename = attach.filename
+          let ext = filename.slice(((filename.lastIndexOf('.') - 1) >>> 0) + 2)
+          let fPath = path.join(__dirname, '../db/snipes', `/${attach.id}.${ext}`)
+          let file
           try {
-			let filename = attach.filename
-			let ext = filename.slice(((filename.lastIndexOf('.') - 1) >>> 0) + 2)
-			let fPath = path.join(
-				__dirname,
-				'../db/snipes',
-				`/${attach.id}.${ext}`
-			)
-			let file = fs.createReadStream(fPath)
-
-
-          if (prohibited.includes(ext.toLowerCase())) return
-            let form = new FormData()
-            form.append('file', file, {
-              filename: filename
-            })
-            form.append('name', `.${ext}`)
-            let headers = form.getHeaders()
-            let url = 'https://cockfile.com/api.php?d=upload-tool'
-            let res = await axios.post(url, form, { headers: headers })
-            return {
-              id: attach.id,
-              filename: filename,
-              size: attach.filesize,
-              type: mime.getType(attach.filename),
-              ext: ext,
-              url: res.data
-            }
+            fs.accessSync(fPath)
           } catch (e) {
-            if (e.code === 'ENOENT') return
+            return null
+          }
+          file = fs.createReadStream(fPath)
+
+          if (!file || prohibited.includes(ext.toLowerCase())) return null
+          let form = new FormData()
+          form.append('file', file, {
+            filename: filename
+          })
+          form.append('name', `.${ext}`)
+          let headers = form.getHeaders()
+          let url = 'https://cockfile.com/api.php?d=upload-tool'
+          let res = await axios.post(url, form, { headers: headers })
+          return {
+            id: attach.id,
+            filename: filename,
+            size: attach.filesize,
+            type: mime.getType(attach.filename),
+            ext: ext,
+            url: res.data
           }
         })
       )

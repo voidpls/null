@@ -43,7 +43,7 @@ function formatReply(reply, msg) {
 
   return reply
     .replace(/<br> ?/gi, '\n')
-    .replace(/maid-chan/gi, 'Null')
+    .replace(/(maid-chan)|(alice)/gi, 'Null')
     .replace(/alex badger/gi, 'Void')
     .replace('Your name is ,', `Your name is ${msg.author.username},`)
 }
