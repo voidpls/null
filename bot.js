@@ -52,7 +52,26 @@ function loadModules(dir, name, setAs, botObj) {
   })
 }
 
-loadModules('./commands/', 'commands', 'commands')
+fs.readdir('./commands', (err, dirs) => {
+  if (err) console.log(err)
+  let count = 0
+
+  dirs.forEach(d => {
+    fs.readdir(`./commands/${d}`, (err, files) => {
+      count++
+      if (err) console.log(err)
+      let jsfiles = files.filter(f => f.endsWith('js'))
+      jsfiles.forEach((f, i) => {
+        let props = require(`./commands/${d}/${f}`)
+        count++
+        bot['commands'].set(props.help.name.toLowerCase(), props)
+      })
+      if (d === dirs[dirs.length - 1]) console.log(`→ Loaded ${count} commands`)
+    })
+  })
+})
+console.log(bot.commands)
+
 loadModules('./devCmds/', 'dev commands', 'devCommands')
 loadModules('./events/', 'events', 'events', bot)
 
