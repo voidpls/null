@@ -73,6 +73,6 @@ module.exports.help = {
     'Snipe the last deleted or edited message\n\n' +
     '*Note: Message attachments are only saved (for 24h) if the message is deleted within 3h.*',
   usage: `snipe`,
-  category: 'Moderation [WIP]',
+  category: 'Moderation',
   aliases: []
 }

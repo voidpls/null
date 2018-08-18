@@ -2,6 +2,7 @@ const Discord = require('discord.js')
 const axios = require('axios')
 const config = require('../config/config.json')
 const errors = require('../utils/errors.js')
+const moment = require('moment')
 const Vibrant = require('node-vibrant')
 
 // No missing perm log
@@ -71,18 +72,6 @@ module.exports.getUserFromArg = (bot, msg, arg) => {
   else return undefined
 }
 
-// seconds to hours, mins, seconds
-module.exports.secsToHMS = secs => {
-  let h = Math.floor(secs / 3600)
-  let m = Math.floor((secs % 3600) / 60)
-  let s = Math.floor((secs % 3600) % 60)
-
-  let hDisplay = h > 0 ? h + (h === 1 ? ' hour, ' : ' hrs, ') : ''
-  let mDisplay = m > 0 ? m + (m === 1 ? ' minute, ' : ' mins ') : ''
-  let sDisplay = s > 0 ? s + (s === 1 ? ' second' : ' secs') : ''
-  return hDisplay + mDisplay + sDisplay
-}
-
 // clean
 module.exports.clean = text => {
   if (typeof text === 'string') {
@@ -129,4 +118,11 @@ module.exports.isURL = async string => {
   if (local.test(evAfter) || nonLocal.test(evAfter)) return true
 
   return false
+}
+
+// timestamp
+module.exports.timestamp = async cmd => {
+  const memUsed = Math.round(process.memoryUsage().rss / 1000000)
+  const ts = moment().format('M.D.YY h:mm a')
+  return console.log(`[${ts}] ${memUsed} MB - ${cmd} ran`)
 }

@@ -70,7 +70,6 @@ fs.readdir('./commands', (err, dirs) => {
     })
   })
 })
-console.log(bot.commands)
 
 loadModules('./devCmds/', 'dev commands', 'devCommands')
 loadModules('./events/', 'events', 'events', bot)
@@ -109,18 +108,14 @@ new Cron(
   () => {
     let snipeDir = path.join(__dirname, `/db/snipes`)
     fs.readdir(snipeDir, (err, files) => {
-      //  console.log('files', files.length)
-      //  console.log(moment(new Date().getTime()).format('M/D, YYYY h:mm a'))
       files.forEach((file, i) => {
         let filePath = path.join(snipeDir, file)
         fs.stat(filePath, (err, stat) => {
           let now = new Date().getTime()
           let end = new Date(stat.birthtime).getTime() + 10800000
-          //  console.log(file, moment(end).format('M/D, YYYY h:mm a'))
           if (now >= end) {
             rimraf(filePath, err => {
               if (err) console.log(err)
-              //  else console.log('Deleted file', file)
             })
           }
         })
@@ -218,7 +213,10 @@ bot.on('message', async msg => {
       }
     })
   }
-  if (runChatbot === true) chatbot(msg, msg.content.slice(preLen).split(' '))
+  if (runChatbot === true) {
+    util.timestamp('chatbot')
+    return chatbot(msg, msg.content.slice(preLen).split(' '))
+  }
 
   function runCMD(c) {
     // check if user is in cooldown set
@@ -245,8 +243,7 @@ bot.on('message', async msg => {
       cooldown2.delete(msg.author.id)
     }, CDsecs * 1000)
     // run command if not in the cooldown set
-    let memUsed = Math.round(process.memoryUsage().rss / 1000000)
-    console.log(`[${new Date()}] ${memUsed} MB - ${c.help.name} ran`)
+    util.timestamp(c.help.name)
     return c.run(bot, msg, args, prefix)
   }
 })

@@ -120,6 +120,6 @@ module.exports.help = {
   name: 'prune',
   desc: 'Prune messages',
   usage: `prune [bots | images | with | user | #]`,
-  category: 'Moderation [WIP]',
+  category: 'Moderation',
   aliases: ['purge', 'clear', 'clr']
 }

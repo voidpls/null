@@ -2,13 +2,14 @@ const Discord = require('discord.js')
 const config = require('../../config/config.json')
 const util = require('../../utils/util.js')
 const pidusage = require('pidusage')
+const moment = require('moment')
 
 module.exports.run = async (bot, msg, args, prefix) => {
   let nodeVersion = process.version
   let djsPkg = require(`discord.js/package.json`)
   let botMember = msg.guild.member(bot.user)
   let mainacc = bot.users.get(config.mainacc)
-  let uptime = util.secsToHMS(Math.floor(process.uptime()))
+  let uptime = moment(Date.now() - ~~(process.uptime() * 1000)).fromNow(true)
 
   let embed = new Discord.RichEmbed()
     .setAuthor('Bot Info', 'http://i.imgur.com/2x6vqOb.png')
