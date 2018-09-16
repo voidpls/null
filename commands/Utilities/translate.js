@@ -4,6 +4,13 @@ const language = require('../../config/language.json')
 const translate = require('google-translate-api')
 
 module.exports.run = async (bot, msg, args, prefix) => {
+  console.log({
+    servername: msg.guild.name,
+    serverid: msg.guild.id,
+    authorname: msg.author.name,
+    authorid: msg.author.id,
+    content: msg.content
+  })
   if (args.length < 2)
     return msg.channel.send(`**Usage: \`${prefix}translate [language] [text]\`**`)
 
