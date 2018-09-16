@@ -4,19 +4,17 @@ const language = require('../../config/language.json')
 const translate = require('google-translate-api')
 
 module.exports.run = async (bot, msg, args, prefix) => {
-  if (args.length < 2) {
+  if (args.length < 2)
     return msg.channel.send(`**Usage: \`${prefix}translate [language] [text]\`**`)
-  }
 
   let toLang = args.shift().toLowerCase()
+  const text = args.join(' ')
 
   if (toLang.length === 2) {
     toLang = language[toLang] || toLang.toUpperCase()
   } else {
     toLang = toLang.charAt(0).toUpperCase() + toLang.substr(1).toLowerCase()
   }
-
-  let text = args.join(' ')
 
   let embed = new Discord.RichEmbed()
     .setColor(config.colors.white)

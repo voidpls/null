@@ -4,23 +4,26 @@ const config = require('../../config/config.json')
 const urban = require('urban')
 
 module.exports.run = async (bot, msg, args, prefix) => {
+  msg.channel.startTyping()
   if (args.length > 0) {
     urban(args.join(' ')).first(json => {
       if (!json) return errors.notFound(msg, args.join(' '))
-      if (json.definition.length > 1024) {
+      if (json.definition.length > 1000) {
         return msg.channel.send(
           `Definition is too long to send. Here's the link: **${json.permalink}**`
         )
       }
+      msg.channel.stopTyping(true)
       msg.channel.send(urbanMsg(json, args)).catch(e => msg.channel.send('**Error:** ' + e.message))
     })
   } else {
     urban.random().first(json => {
-      if (json.definition.length > 1024) {
+      if (json.definition.length > 1000) {
         return msg.channel.send(
           `Definition is too long to send. Here's the link: **${json.permalink}**`
         )
       }
+      msg.channel.stopTyping(true)
       msg.channel
         .send(urbanMsg(json, ['None']))
         .catch(e => msg.channel.send('**Error:** ' + e.message))

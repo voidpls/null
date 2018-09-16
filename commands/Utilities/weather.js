@@ -58,6 +58,8 @@ module.exports.run = async (bot, msg, args, prefix) => {
 }
 
 async function wSearch(msg, loc) {
+  msg.channel.startTyping()
+
   let geoQ = `https://maps.googleapis.com/maps/api/geocode/json?key=${geocodeKey}&address=${loc}`
   let geocode = await axios.get(geoQ).catch(e => console.log(e))
   if (!geocode || geocode.status >= 400 || geocode.data.results.length === 0)
@@ -111,6 +113,7 @@ async function wSearch(msg, loc) {
     .addField('Precipitation', `\\☔ **${precip}**% chance`, true)
     .addField('Sunrise/Sunset', `${sunrise} | ${sunset}`, true)
 
+  msg.channel.stopTyping(true)
   msg.channel.send(embed).catch(e => msg.channel.send(`**Error:** ${e}`))
 }
 function toC(f) {

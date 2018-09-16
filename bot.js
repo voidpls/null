@@ -78,7 +78,7 @@ require('./db/models/db.js')
 const Prefix = mongoose.model('Prefix')
 
 //catch unhandled rejections
-process.on('unhandledRejection', r => console.log(`[${new Date()}]`, r))
+process.on('unhandledRejection', r => console.log(`[${util.ts()}]`, r))
 
 // on connect event handler
 bot.on('ready', async () => {
@@ -214,7 +214,9 @@ bot.on('message', async msg => {
     })
   }
   if (runChatbot === true) {
-    util.timestamp('chatbot')
+    const ts = util.timestamp()
+    const memUsed = Math.round(process.memoryUsage().rss / 1000000)
+    console.log(`[${ts}] ${memUsed} MB - chatbot ran`)
     return chatbot(msg, msg.content.slice(preLen).split(' '))
   }
 
@@ -243,7 +245,9 @@ bot.on('message', async msg => {
       cooldown2.delete(msg.author.id)
     }, CDsecs * 1000)
     // run command if not in the cooldown set
-    util.timestamp(c.help.name)
+    const ts = util.timestamp()
+    const memUsed = Math.round(process.memoryUsage().rss / 1000000)
+    console.log(`[${ts}] ${memUsed} MB - ${c.help.name} ran`)
     return c.run(bot, msg, args, prefix)
   }
 })

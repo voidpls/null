@@ -121,8 +121,7 @@ module.exports.isURL = async string => {
 }
 
 // timestamp
-module.exports.timestamp = async cmd => {
-  const memUsed = Math.round(process.memoryUsage().rss / 1000000)
+module.exports.timestamp = () => {
   const ts = moment().format('M.D.YY h:mm a')
-  return console.log(`[${ts}] ${memUsed} MB - ${cmd} ran`)
+  return ts
 }
