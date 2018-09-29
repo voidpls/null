@@ -78,7 +78,7 @@ require('./db/models/db.js')
 const Prefix = mongoose.model('Prefix')
 
 //catch unhandled rejections
-process.on('unhandledRejection', r => console.log(`[${util.ts()}]`, r))
+process.on('unhandledRejection', r => console.log(`[${util.timestamp()}]`, r))
 
 // on connect event handler
 bot.on('ready', async () => {
