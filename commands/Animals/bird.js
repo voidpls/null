@@ -10,7 +10,7 @@ module.exports.run = async (bot, msg, args, prefix) => {
   let embed = new Discord.RichEmbed()
     .setColor(config.colors.white)
     .setTitle('🐦 Random Bird')
-    .setImage(res.data[0])
+    .setImage(`https://cdn.shibe.online/birds/${res.data[0]}.jpg`)
 
   msg.channel.send(embed).catch(e => msg.channel.send('**Error: **' + e.message))
 }

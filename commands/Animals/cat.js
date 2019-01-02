@@ -4,9 +4,7 @@ const config = require('../../config/config.json')
 
 module.exports.run = async (bot, msg, args, prefix) => {
   let res = await axios.get(`https://thecatapi.com/api/images/get`)
-
-  let url = res.headers.original_image
-
+  let url = res.request.res.responseUrl
   let embed = new Discord.RichEmbed()
     .setColor(config.colors.white)
     .setTitle('🐱 Random Cat')
