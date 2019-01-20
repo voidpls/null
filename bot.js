@@ -131,7 +131,7 @@ new Cron(
 bot.on('message', async msg => {
   // ignore bots
   if (msg.author.bot || msg.channel.type === 'dm') return
-
+  if (msg.guild.id === '499913378610020352') return
   /*************************************************/
   /*                   DEV MODE                    */
   // if (msg.guild.id !== '297191838983520257') return
