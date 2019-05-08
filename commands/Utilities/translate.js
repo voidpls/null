@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 const config = require('../../config/config.json')
 const language = require('../../config/language.json')
-const translate = require('google-translate-api')
+const translate = require('@vitalets/google-translate-api')
 
 module.exports.run = async (bot, msg, args, prefix) => {
   console.log({

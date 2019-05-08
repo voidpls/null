@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/voidpls/null#readme",
   "dependencies": {
+    "@vitalets/google-translate-api": "^2.8.0",
     "axios": "^0.18.0",
     "canvas": "^1.6.11",
     "chart.js": "^2.7.2",
@@ -27,7 +28,6 @@
     "form-data": "*",
     "fortnite": "^4.1.1",
     "google": "^2.1.0",
-    "google-translate-api": "^2.3.0",
     "mime": "^2.3.1",
     "moment": "^2.22.1",
     "moment-timezone": "^0.5.17",

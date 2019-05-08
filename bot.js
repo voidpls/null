@@ -127,6 +127,10 @@ new Cron(
   'America/New_York'
 )
 
+
+// ws error handler
+bot.on('error', err => console.error)
+
 // message event handler
 bot.on('message', async msg => {
   // ignore bots
